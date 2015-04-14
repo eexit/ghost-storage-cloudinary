@@ -82,4 +82,4 @@ development: {
 },
 ```
 
-[1]: #config
+[1]: #editing-configjs
