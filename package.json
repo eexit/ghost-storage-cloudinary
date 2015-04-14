@@ -11,7 +11,14 @@
     "storage",
     "module"
   ],
-  "author": "Seth Brasile <seth.brasile@gmail.com> (http://sethbrasile.geekedout.biz)",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/sethbrasile/ghost-cloudinary-store"
+  },
+  "bugs": {
+      "url": "https://github.com/sethbrasile/ghost-cloudinary-store/issues"
+  },
+  "author": "Seth Brasile <seth.brasile@gmail.com> (http://sethbrasile.com)",
   "license": "ISC",
   "dependencies": {
     "cloudinary": "1.2.x"
