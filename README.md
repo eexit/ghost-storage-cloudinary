@@ -7,11 +7,11 @@ Fancy stuff** is not currently supported
 <span style="font-size: 0.6em;">
 **Cloudinary has some "advanced configuration options" for Pro users and etc.. that this module does not currently handle.
 
-#To Use
+# To Use
 
 Note: There are some funky folder-renaming steps here due to the way that Ghost wants it's storage directory structure to be
 
-##Git Installation Method
+## Git Installation Method
 
 Note: The `master` branch reflects what is published on NPM
 
@@ -23,7 +23,7 @@ Note: The `master` branch reflects what is published on NPM
 
 4. Follow the instructions below for [editing config.js][1]
 
-##NPM Installation Method
+## NPM Installation Method
 
 1. Navigate to Ghost's `content` directory and run `npm install ghost-cloudinary-store`
 
@@ -32,7 +32,7 @@ Note: The `master` branch reflects what is published on NPM
 3. Follow the instructions below for [editing config.js][1]
 
 
-##Editing config.js
+## Editing config.js
 
 In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
 
