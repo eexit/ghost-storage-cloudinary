@@ -32,7 +32,7 @@ Note: The `master` branch reflects what is published on NPM
 3. Follow the instructions below for [editing config.js][1]
 
 
-##<span id="config">Editing config.js</span>
+##Editing config.js
 
 In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
 
