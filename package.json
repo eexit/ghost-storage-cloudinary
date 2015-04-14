@@ -1,6 +1,6 @@
 {
   "name": "ghost-cloudinary-store",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Cloudinary image storage module for Ghost blogs.",
   "main": "index.js",
   "keywords": [
@@ -12,11 +12,11 @@
     "module"
   ],
   "repository": {
-      "type": "git",
-      "url": "https://github.com/sethbrasile/ghost-cloudinary-store"
+    "type": "git",
+    "url": "https://github.com/sethbrasile/ghost-cloudinary-store"
   },
   "bugs": {
-      "url": "https://github.com/sethbrasile/ghost-cloudinary-store/issues"
+    "url": "https://github.com/sethbrasile/ghost-cloudinary-store/issues"
   },
   "author": "Seth Brasile <seth.brasile@gmail.com> (http://sethbrasile.com)",
   "license": "ISC",
