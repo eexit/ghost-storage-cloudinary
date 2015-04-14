@@ -1,6 +1,6 @@
 {
   "name": "ghost-cloudinary-store",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A Cloudinary image storage module for Ghost blogs.",
   "main": "index.js",
   "keywords": [
