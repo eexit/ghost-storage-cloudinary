@@ -1,0 +1,19 @@
+{
+  "name": "ghost-cloudinary-store",
+  "version": "0.0.0",
+  "description": "A Cloudinary image storage module for Ghost blogs.",
+  "main": "index.js",
+  "keywords": [
+    "cloudinary",
+    "ghost",
+    "blog",
+    "image",
+    "storage",
+    "module"
+  ],
+  "author": "Seth Brasile <seth.brasile@gmail.com> (http://sethbrasile.geekedout.biz)",
+  "license": "ISC",
+  "dependencies": {
+    "cloudinary": "^1.2.0"
+  }
+}
