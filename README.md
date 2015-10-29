@@ -9,16 +9,15 @@ Fancy stuff** is not currently supported
 
 # To Use
 
-Note: There are some funky folder-renaming steps here due to the way that Ghost wants it's storage directory structure to be
-
-
 ## NPM Installation Method
 
-1. Navigate to Ghost's `content` directory and run `npm install ghost-cloudinary-store --prefix ./`
+1. Run `npm install ghost-cloudinary-store --save`
 
-2. Rename the `node_modules` directory that is created to `storage`
+2. Create file `content/storage/ghost-cloudinary-store/index.js`
 
-3. Follow the instructions below for [editing config.js][1]
+3. Put `module.exports = require('ghost-cloudinary-store');` into this file
+
+4. Follow the instructions below for [editing config.js][1]
 
 
 ## Git Installation Method
