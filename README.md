@@ -2,10 +2,7 @@
 
 **PLEASE** create an issue if you have any problems.
 
-Fancy stuff** is not currently supported
-
-<span style="font-size: 0.6em;">
-**Cloudinary has some "advanced configuration options" for Pro users and etc.. that this module does not currently handle.
+Cloudinary has some "advanced configuration options" for Pro users and etc.. that this module does not currently handle. If you would like support for these options added, please create an issue or submit a PR!
 
 # To Use
 
