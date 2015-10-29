@@ -17,7 +17,7 @@ Fancy stuff** is not currently supported
 
 3. Put `module.exports = require('ghost-cloudinary-store');` into this file
 
-4. Follow the instructions below for [editing config.js][1].
+4. Follow the instructions below for [editing config.js][1]
 
 
 ## Git Installation Method
