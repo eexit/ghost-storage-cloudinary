@@ -17,7 +17,7 @@ Fancy stuff** is not currently supported
 
 3. Put `module.exports = require('ghost-cloudinary-store');` into this file
 
-4. Follow the instructions below for [editing config.js][1]
+4. Follow the instructions below for [editing config.js][1].
 
 
 ## Git Installation Method
@@ -34,9 +34,15 @@ Note: The `master` branch reflects what is published on NPM
 
 ## Editing config.js
 
+You have two options for configuring Ghost to work with your Cloudinary account:
+
+1. By using your Cloudinary credentials: `cloud_name`, `api_key`, and `api_secret`.
+2. By setting a `CLOUDINARY_URL` environment variable.
+
+#### With Cloudinary credentials
+
 In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
 
-<span style="font-size: 0.6em;">
 Note: These values can be obtained from your Cloudinary management console.
 
 ```javascript
@@ -50,36 +56,26 @@ storage: {
 }
 ```
 
-Here's a full example:
+Further reading available [here][2].
+
+#### With a `CLOUDINARY_URL` environment variable
+
+In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
 
 ```javascript
-development: {
-    url: 'http://localhost:2368',
-    storage: {
-        active: 'ghost-cloudinary-store',
-        'ghost-cloudinary-store': {
-            cloud_name: 'xxxxxxx',
-            api_key: 'xxxxxxx',
-            api_secret: 'xxxxxxxx'
-        }
-    },
-    database: {
-        client: 'sqlite3',
-        connection: {
-            filename: path.join(__dirname, '/content/data/ghost-dev.db')
-        },
-        debug: false
-    },
-    server: {
-        // Host to be passed to node's `net.Server#listen()`
-        host: '127.0.0.1',
-        // Port to be passed to node's `net.Server#listen()`, for iisnode set this to `process.env.PORT`
-        port: '2368'
-    },
-    paths: {
-        contentPath: path.join(__dirname, '/content/')
-    }
-},
+storage: {
+    active: 'ghost-cloudinary-store'
+}
 ```
 
+Then set the `CLOUDINARY_URL` environment variable, available from your Cloudinary management console.
+
+It will look something like `CLOUDINARY_URL=cloudinary://874837483274837:a676b67565c6767a6767d6767f676fe1@sample`.
+
+Further reading available [here][2].
+
+If you don't know what an environment variable is, [read this][3].
+
 [1]: #editing-configjs
+[2]: http://cloudinary.com/documentation/node_additional_topics#configuration_options
+[3]: https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps
