@@ -1,32 +1,32 @@
-var Promise = require('bluebird'),
-    cloudinary = require('cloudinary');
+var Promise = require('bluebird');
+var cloudinary = require('cloudinary');
 
 // TODO: Add support for private_cdn
 // TODO: Add support for secure_distribution
 // TODO: Add support for cname
 // TODO: Add support for secure
 // TODO: Add support for cdn_subdomain
-// TODO: Add support for CLOUDINARY_URL
 // http://cloudinary.com/documentation/node_additional_topics#configuration_options
 
 function store(config) {
-    this.config = config;
-    cloudinary.config(config);
+  this.config = config;
+  cloudinary.config(config);
 }
 
 store.prototype.save = function(image) {
-    var secure = this.config.secure || false;
-    return new Promise(function(resolve) {
-        cloudinary.uploader.upload(image.path, function(result) {
-            resolve(secure ? result.secure_url : result.url);
-        });
+  var secure = this.config.secure || false;
+
+  return new Promise(function(resolve) {
+    cloudinary.uploader.upload(image.path, function(result) {
+      resolve(secure ? result.secure_url : result.url);
     });
+  });
 };
 
 store.prototype.serve = function() {
-    return function (req, res, next) {
-        next();
-    };
+  return function (req, res, next) {
+    next();
+  };
 };
 
 module.exports = store;
