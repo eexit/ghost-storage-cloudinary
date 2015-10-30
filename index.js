@@ -10,13 +10,15 @@ var Promise = require('bluebird'),
 // http://cloudinary.com/documentation/node_additional_topics#configuration_options
 
 function store(config) {
+    this.config = config;
     cloudinary.config(config);
 }
 
 store.prototype.save = function(image) {
+    var secure = this.config.secure || false;
     return new Promise(function(resolve) {
         cloudinary.uploader.upload(image.path, function(result) {
-            resolve(result.url);
+            resolve(secure ? result.secure_url : result.url);
         });
     });
 };
