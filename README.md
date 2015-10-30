@@ -61,6 +61,9 @@ Further reading available [here][2].
 
 #### With a `CLOUDINARY_URL` environment variable
 
+**note** I haven't personally gotten this option to work, but it **should** according to Cloudinary's documentation.
+Maybe stick with the credentials option above. If you make this option work, please let me know [here][4].
+
 In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
 
 ```javascript
@@ -94,3 +97,4 @@ storage: {
 [1]: #editing-configjs
 [2]: http://cloudinary.com/documentation/node_additional_topics#configuration_options
 [3]: https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps
+[4]: https://github.com/sethbrasile/ghost-cloudinary-store/issues/1
