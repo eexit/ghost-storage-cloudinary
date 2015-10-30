@@ -8,7 +8,7 @@ var cloudinary = require('cloudinary');
 // http://cloudinary.com/documentation/node_additional_topics#configuration_options
 
 function store(config) {
-  this.config = config;
+  this.config = config || {};
   cloudinary.config(config);
 }
 
