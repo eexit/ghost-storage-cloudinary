@@ -21,7 +21,7 @@
   "author": "Seth Brasile <seth.brasile@gmail.com> (http://sethbrasile.com)",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^2.9.34",
+    "bluebird": "2.10.x",
     "cloudinary": "1.2.x"
   }
 }
