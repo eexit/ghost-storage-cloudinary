@@ -4,7 +4,6 @@ var cloudinary = require('cloudinary');
 // TODO: Add support for private_cdn
 // TODO: Add support for secure_distribution
 // TODO: Add support for cname
-// TODO: Add support for secure
 // TODO: Add support for cdn_subdomain
 // http://cloudinary.com/documentation/node_additional_topics#configuration_options
 
