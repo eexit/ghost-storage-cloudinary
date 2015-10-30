@@ -6,6 +6,7 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 # To Use
 
+
 ## NPM Installation Method
 
 1. Run `npm install ghost-cloudinary-store --save`
@@ -29,12 +30,14 @@ Note: The `master` branch reflects what is published on NPM
 
 4. Follow the instructions below for [editing config.js][1]
 
+
 ## Editing config.js
 
 You have two options for configuring Ghost to work with your Cloudinary account:
 
 1. By using your Cloudinary credentials: `cloud_name`, `api_key`, and `api_secret`.
 2. By setting a `CLOUDINARY_URL` environment variable.
+
 
 #### With Cloudinary credentials
 
@@ -55,6 +58,7 @@ storage: {
 
 Further reading available [here][2].
 
+
 #### With a `CLOUDINARY_URL` environment variable
 
 In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
@@ -72,6 +76,18 @@ It will look something like `CLOUDINARY_URL=cloudinary://874837483274837:a676b67
 Further reading available [here][2].
 
 If you don't know what an environment variable is, [read this][3].
+
+
+## Using HTTPS Cloudinary URLs
+
+If you set `secure` to `true` in `config.js`, your blog will use secure (https) URLs.
+
+```javascript
+storage: {
+    active: 'ghost-cloudinary-store',
+    secure: true
+}
+```
 
 [1]: #editing-configjs
 [2]: http://cloudinary.com/documentation/node_additional_topics#configuration_options
