@@ -85,7 +85,9 @@ If you set `secure` to `true` in `config.js`, your blog will use secure (https) 
 ```javascript
 storage: {
     active: 'ghost-cloudinary-store',
-    secure: true
+    'ghost-cloudinary-store': {
+      secure: true
+    }
 }
 ```
 
