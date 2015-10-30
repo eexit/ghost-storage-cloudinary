@@ -61,7 +61,7 @@ Further reading available [here][2].
 
 #### With a `CLOUDINARY_URL` environment variable
 
-**note** I haven't personally gotten this option to work, but it **should** according to Cloudinary's documentation.
+**NOTE:** I haven't personally gotten this option to work, but it **should** according to Cloudinary's documentation.
 Maybe stick with the credentials option above. If you make this option work, please let me know [here][4].
 
 In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
