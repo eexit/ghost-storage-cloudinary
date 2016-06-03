@@ -9,11 +9,16 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 ## NPM Installation Method
 
-1. Run `npm install ghost-cloudinary-store --save`
+*In Ghost's root directory*
 
-2. Create file `content/storage/ghost-cloudinary-store/index.js`
+1. Run `npm install ghost-cloudinary-store` (note the lack of `--save`)
 
-3. Put `module.exports = require('ghost-cloudinary-store');` into this file
+2. Make the storage folder if it doesn't already exist `mkdir content/storage`
+
+3. Copy `ghost-cloudinary-store` from `node_modules` to `content/storage`
+  ```
+  cp -r node_modules/ghost-cloudinary-store content/storage/ghost-cloudinary-store
+  ```
 
 4. Follow the instructions below for [editing config.js][1]
 
