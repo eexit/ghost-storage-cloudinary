@@ -30,11 +30,12 @@ CloudinaryStore.prototype.save = function(image) {
 
 CloudinaryStore.prototype.exists = function(filename) {
   return new Promise(function(resolve) {
-  if (cloudinary.image(filename, { })) {
-      resolve(true);
-  }
-
-  resolve(false);
+    if (cloudinary.image(filename, { })) {
+        resolve(true);
+    } else {
+        resolve(false);
+    }
+  });
 
 }
 
