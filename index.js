@@ -2,6 +2,8 @@ var Promise = require('bluebird');
 var cloudinary = require('cloudinary');
 var util = require('util');
 
+baseStore = require('../../core/server/storage/base');
+
 // TODO: Add support for private_cdn
 // TODO: Add support for secure_distribution
 // TODO: Add support for cname
@@ -9,12 +11,12 @@ var util = require('util');
 // http://cloudinary.com/documentation/node_additional_topics#configuration_options
 
 function CloudinaryStore() {
-    BaseStore.call(this);
+    baseStore.call(this);
     this.config = config || {};
     cloudinary.config(config);
 }
 
-util.inherits(CloudinaryStore, BaseStore);
+util.inherits(CloudinaryStore, baseStore);
 
 CloudinaryStore.prototype.save = function(image) {
   var secure = this.config.secure || false;
