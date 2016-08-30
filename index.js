@@ -10,7 +10,7 @@ baseStore = require('../../../core/server/storage/base');
 // TODO: Add support for cdn_subdomain
 // http://cloudinary.com/documentation/node_additional_topics#configuration_options
 
-function CloudinaryStore() {
+function CloudinaryStore(config) {
     baseStore.call(this);
     this.config = config || {};
     cloudinary.config(config);
