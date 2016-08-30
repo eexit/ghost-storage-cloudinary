@@ -28,6 +28,15 @@ CloudinaryStore.prototype.save = function(image) {
   });
 };
 
+CloudinaryStore.prototype.delete = function(image) {
+
+  return new Promise(function(resolve) {
+    cloudinary.uploader.destroy('zombie', function(result) {
+      resolve(result)
+    });
+  });
+};
+
 CloudinaryStore.prototype.exists = function(filename) {
   return new Promise(function(resolve) {
     if (cloudinary.image(filename, { })) {
