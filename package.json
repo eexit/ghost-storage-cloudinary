@@ -13,12 +13,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmornati/ghost-cloudinary-store"
+    "url": "https://github.com/sethbrasile/ghost-cloudinary-store"
   },
   "bugs": {
-    "url": "https://github.com/mmornati/ghost-cloudinary-store/issues"
+    "url": "https://github.com/sethbrasile/ghost-cloudinary-store/issues"
   },
-  "author": "Marco Mornati <marco@mornati.net>",
+  "author": "Seth Brasile <seth.brasile@gmail.com>",
+  "contributors": [{
+      "name": "Marco Mornati",
+      "email": "marco@mornati.net"
+  }],
   "license": "ISC",
   "dependencies": {
     "bluebird": "3.5.0",
