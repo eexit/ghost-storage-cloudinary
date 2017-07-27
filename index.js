@@ -23,11 +23,11 @@ class CloudinaryAdapter extends BaseAdapter{
   }
 
   save(image, targetDir) {
-    var secure = this.config.secure || false;
+    var cloudinaryImageSetting = this.config.configuration;
 
     return new Promise(function(resolve) {
       cloudinary.uploader.upload(image.path, function(result) {
-        resolve(secure ? result.secure_url : result.url);
+        resolve(cloudinary.url(result.public_id.concat(".", result.format), cloudinaryImageSetting ));
       });
     });
   }
@@ -40,7 +40,7 @@ class CloudinaryAdapter extends BaseAdapter{
 
   delete(image) {
     return new Promise(function(resolve) {
-      cloudinary.uploader.destroy('zombie', function(result) {
+      cloudinary.uploader.destroy(image.path, function(result) {
         resolve(result)
       });
     });

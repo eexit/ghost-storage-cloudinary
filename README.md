@@ -86,18 +86,26 @@ Further reading available [here][2].
 If you don't know what an environment variable is, [read this][3].
 
 
-## Using HTTPS Cloudinary URLs
+## Using Cloudinary API
 
-If you set `secure` to `true` in `config.js`, your blog will use secure (https) URLs.
+You can find the documentation of what you can configure, directly on the Cloudinary website: http://cloudinary.com/documentation/image_transformations
 
 ```javascript
 storage: {
     active: 'ghost-cloudinary-store',
     'ghost-cloudinary-store': {
-      secure: true
+        cloud_name: 'yourCloudName',
+        api_key: 'yourApiKey',
+        api_secret: 'yourApiSecret'
+        configuration: {
+            quality: "auto:good",
+            secure: true,
+            [...]
+         }
     }
 }
 ```
+**NOTE:** The **cloud_name**, **api_key** and **api_secret** environment variables are not needed if you use the **CLOUDINARY_URL** environment variable.
 
 [1]: #editing-configjs
 [2]: http://cloudinary.com/documentation/node_additional_topics#configuration_options

@@ -22,6 +22,10 @@
   "contributors": [{
       "name": "Marco Mornati",
       "email": "marco@mornati.net"
+  },
+  {
+      "name": "aphe",
+      "email": "?"
   }],
   "license": "ISC",
   "dependencies": {
