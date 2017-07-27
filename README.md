@@ -36,7 +36,7 @@ Note: The `master` branch reflects what is published on NPM
 4. Follow the instructions below for [editing config.js][1]
 
 
-## Editing config.js
+## Editing config.production.json
 
 You have two options for configuring Ghost to work with your Cloudinary account:
 
@@ -46,17 +46,17 @@ You have two options for configuring Ghost to work with your Cloudinary account:
 
 #### With Cloudinary credentials
 
-In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
+In Ghost's `config.production.json` (the file where you set your URL, mail settings, etc..) as follows:
 
 Note: These values can be obtained from your Cloudinary management console.
 
-```javascript
-storage: {
-    active: 'ghost-cloudinary-store',
-    'ghost-cloudinary-store': {
-        cloud_name: 'yourCloudName',
-        api_key: 'yourApiKey',
-        api_secret: 'yourApiSecret'
+```json
+"storage": {
+    "active": "ghost-cloudinary-store",
+    "ghost-cloudinary-store": {
+        "cloud_name": "yourCloudName",
+        "api_key": "yourApiKey",
+        "api_secret": "yourApiSecret"
     }
 }
 ```
@@ -66,41 +66,34 @@ Further reading available [here][2].
 
 #### With a `CLOUDINARY_URL` environment variable
 
-**NOTE:** I haven't personally gotten this option to work, but it **should** according to Cloudinary's documentation.
-Maybe stick with the credentials option above. If you make this option work, please let me know [here][4].
+In Ghost's `config.production.json` (the file where you set your URL, mail settings, etc..) as follows:
 
-In Ghost's `config.js` (the file where you set your URL, mail settings, etc..) add a block to whichever environment you're using (`production`, `development`, etc...) as follows:
-
-```javascript
-storage: {
-    active: 'ghost-cloudinary-store'
+```json
+"storage": {
+    "active": "ghost-cloudinary-store"
 }
 ```
 
 Then set the `CLOUDINARY_URL` environment variable, available from your Cloudinary management console.
-
 It will look something like `CLOUDINARY_URL=cloudinary://874837483274837:a676b67565c6767a6767d6767f676fe1@sample`.
-
 Further reading available [here][2].
-
 If you don't know what an environment variable is, [read this][3].
-
 
 ## Using Cloudinary API
 
 You can find the documentation of what you can configure, directly on the Cloudinary website: http://cloudinary.com/documentation/image_transformations
 
-```javascript
-storage: {
-    active: 'ghost-cloudinary-store',
-    'ghost-cloudinary-store': {
-        cloud_name: 'yourCloudName',
-        api_key: 'yourApiKey',
-        api_secret: 'yourApiSecret'
-        configuration: {
-            quality: "auto:good",
-            secure: true,
-            [...]
+```json
+"storage": {
+    "active": "ghost-cloudinary-store",
+    "ghost-cloudinary-store": {
+        "cloud_name": "yourCloudName",
+        "api_key": "yourApiKey",
+        "api_secret": "yourApiSecret",
+        "configuration": {
+            "quality": "auto:good",
+            "secure": "true",
+            "anything-else": "values"
          }
     }
 }
