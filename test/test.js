@@ -24,7 +24,7 @@ describe('Image Upload', function () {
         url: 'http://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/favicon.png',
         secure_url: 'https://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/favicon.png',
         existing: true 
-    }
+    };
 
     before(function () {
         config = {
