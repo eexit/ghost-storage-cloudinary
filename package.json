@@ -19,18 +19,33 @@
     "url": "https://github.com/sethbrasile/ghost-cloudinary-store/issues"
   },
   "author": "Seth Brasile <seth.brasile@gmail.com>",
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Marco Mornati",
       "email": "marco@mornati.net"
-  },
-  {
+    },
+    {
       "name": "aphe",
       "email": "afriyandi@cizzu.com"
-  }],
+    }
+  ],
   "license": "ISC",
+  "scripts": {
+    "test": "mocha --recursive",
+    "cover": "istanbul cover _mocha -- --recursive"
+  },
   "dependencies": {
     "bluebird": "3.5.0",
     "cloudinary": "1.2.x",
     "ghost-storage-base": "0.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "codeclimate-test-reporter": "^0.4.0",
+    "crypto": "0.0.3",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.9.3",
+    "mocha-jshint": "^2.3.1",
+    "sinon": "^2.1.0"
   }
 }

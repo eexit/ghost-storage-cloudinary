@@ -1,4 +1,4 @@
-**IMPORTANT**: You **MUST** be running Ghost 0.6.0 or later. Previous versions of Ghost do not support external storage solutions.
+**IMPORTANT**: You **MUST** be running Ghost 1.0.0 or later.
 
 **PLEASE** create an issue if you have any problems.
 

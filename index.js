@@ -1,9 +1,8 @@
-'use strict';
-
-var Promise = require('bluebird');
+var BlueBird = require('bluebird');
 var cloudinary = require('cloudinary');
 var util = require('util');
 var BaseAdapter = require('ghost-storage-base');
+var path = require('path');
 
 class CloudinaryAdapter extends BaseAdapter{
   constructor(options) {
@@ -13,35 +12,45 @@ class CloudinaryAdapter extends BaseAdapter{
   }
 
   exists(filename) {
-    return new Promise(function(resolve) {
-      if (cloudinary.image(filename, { })) {
-          resolve(true);
-      } else {
+    return new BlueBird(function(resolve) {
+      cloudinary.v2.api.resource(path.parse(filename).name, {type: 'upload'}, function(error, result) {
+        if (result) {
+          resolve(result);
+        } else {
           resolve(false);
-      }
+        }
+      });
     });
   }
 
   save(image, targetDir) {
-    var cloudinaryImageSetting = this.config.configuration;
+    var cloudinaryImageSettings = this.config.configuration.image;
+    var cloudinaryFileSettings = this.config.configuration.file || {};
 
-    return new Promise(function(resolve) {
+    return new BlueBird(function(resolve) {
       cloudinary.uploader.upload(image.path, function(result) {
-        resolve(cloudinary.url(result.public_id.concat(".", result.format), cloudinaryImageSetting ));
-      });
+        if (result.error) {
+          return reject(new errors.GhostError({
+              err: result.error,
+              message: 'Could not upload the image: ' + image.path
+          }));
+        } else {
+          resolve(cloudinary.url(result.public_id.concat(".", result.format), cloudinaryImageSettings));
+        }
+      }, cloudinaryFileSettings);
     });
   }
 
   serve() {
     return function customServe(req, res, next) {
       next();
-    }
+    };
   }
 
-  delete(image) {
-    return new Promise(function(resolve) {
-      cloudinary.uploader.destroy(image.path, function(result) {
-        resolve(result)
+  delete(filename) {
+    return new BlueBird(function(resolve) {
+      cloudinary.uploader.destroy(path.parse(filename).name, function(result) {
+        resolve(result);
       });
     });
   }
