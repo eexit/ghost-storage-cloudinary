@@ -94,14 +94,29 @@ You can find the documentation of what you can configure, directly on the Cloudi
         "api_key": "yourApiKey",
         "api_secret": "yourApiSecret",
         "configuration": {
-            "quality": "auto:good",
-            "secure": "true",
-            "anything-else": "values"
+            "image": {
+                "quality": "auto:good",
+                "secure": "true"
+            },
+            "file": {
+                "use_filename": "true", 
+                "unique_filename": "false", 
+                "phash": "true", 
+                "overwrite": "false", 
+                "invalidate": "true"
+            }       
          }
     }
 }
 ```
 **NOTE:** The **cloud_name**, **api_key** and **api_secret** environment variables are not needed if you use the **CLOUDINARY_URL** environment variable.
+
+The **file** part into the configuration json is used to define the filename to use. By default, without any configuration, cloudinary will select a random name for the uploaded image.
+This can't allow you to block the same image to be uploaded plenty of times. Anytime you will upload the image it gets a new name.
+Configuring this part you can, for example, force Cloudinary to use the name you are providing (it is up to you to be sure about the unicity of the name).
+
+You can find more information about and the list of possible parameters directly on the official Cloudinary documentation: http://cloudinary.com/documentation/image_upload_api_reference#upload
+
 
 [1]: #editing-configjs
 [2]: http://cloudinary.com/documentation/node_additional_topics#configuration_options
