@@ -8,6 +8,7 @@ var cloudinaryAdapter;
 
 describe('Image Upload', function () {
     var result = false;
+    var config = {};
 
     var uploadExistsResult = { 
         public_id: 'favicon', 
@@ -43,19 +44,17 @@ describe('Image Upload', function () {
             }
           };
         cloudinaryAdapter = new CloudinaryAdapter(config); 
-        sinon.stub(cloudinary.uploader, 'upload');
     });
 
-    beforeEach(function(done) {
+    it("should report OK for upload", function(done){ 
         image = {
             path: path.join(__dirname, "favicon.png"),
             name: 'favicon.png',
             type: 'image/jpeg'
         };
 
-        
+        sinon.stub(cloudinary.uploader, 'upload');
         cloudinary.uploader.upload.callsArgWith(1, uploadExistsResult);
-
         sinon.stub(cloudinary, 'url').callsFake(function fakeFn() {
             return "https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png";
         });
@@ -63,14 +62,44 @@ describe('Image Upload', function () {
         var promise = cloudinaryAdapter.save(image, "");
         promise.then(function(value){
             result = value;
+            expect(result).equals("https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png");
             done();
         });
-       
+
     });
 
-    it("should report OK for upload", function(done){ 
-        expect(result).equals("https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png");
-        done();
+    it("should remove spaces before upload", function(done){ 
+        image = {
+            path: path.join(__dirname, "favicon.png"),
+            name: 'favicon with spaces.png',
+            type: 'image/jpeg'
+        };
+
+        var expectedConfig = { 
+            use_filename: 'true',
+            unique_filename: 'false',
+            phash: 'true',
+            overwrite: 'false',
+            invalidate: 'true',
+            public_id: 'favicon-with-spaces.png' 
+        };
+
+        sinon.stub(cloudinary.uploader, 'upload').withArgs(image.path, sinon.match.any, expectedConfig).callsArgWith(1, uploadExistsResult);
+        sinon.stub(cloudinary, 'url').callsFake(function fakeFn() {
+            return "https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon-with-spaces.png";
+        });
+
+        var promise = cloudinaryAdapter.save(image, "");
+        promise.then(function(value){
+            result = value;
+            expect(result).equals("https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon-with-spaces.png");
+            done();
+        });
+    });
+
+    afterEach(function () {
+        cloudinary.uploader.upload.restore(); // Unwraps the spy
+        cloudinary.url.restore();
     });
   
     after(function () {
