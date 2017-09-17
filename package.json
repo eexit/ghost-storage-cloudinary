@@ -36,16 +36,16 @@
   },
   "dependencies": {
     "bluebird": "3.5.0",
-    "cloudinary": "1.2.x",
+    "cloudinary": "~1.9.0",
     "ghost-storage-base": "0.0.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "codeclimate-test-reporter": "^0.4.0",
-    "crypto": "0.0.3",
+    "chai": "^4.1.2",
+    "codeclimate-test-reporter": "^0.5.0",
+    "crypto": "1.0.1",
     "istanbul": "^0.4.5",
     "jshint": "^2.9.3",
     "mocha-jshint": "^2.3.1",
-    "sinon": "^2.1.0"
+    "sinon": "^3.2.1"
   }
 }
