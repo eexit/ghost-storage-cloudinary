@@ -12,17 +12,17 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 [![Greenkeeper badge](https://badges.greenkeeper.io/mmornati/ghost-cloudinary-store.svg)](https://greenkeeper.io/)
 
 
-## NPM Installation Method (**It is actually NOT installing this latest version !!**)
+## NPM Installation Method
 
 *In Ghost's root directory*
 
-1. Run `npm install ghost-cloudinary-store` (note the lack of `--save`)
+1. Run `npm install cloudinary-store` (note the lack of `--save`)
 
-2. Make the storage folder if it doesn't already exist `mkdir content/storage`
+2. Make the storage folder if it doesn't already exist `mkdir versions/$GHOST_VERSION/core/server/adapters/storage/`
 
-3. Copy `ghost-cloudinary-store` from `node_modules` to `content/storage`
+3. Copy `cloudinary-store` from `node_modules` to `versions/$GHOST_VERSION/core/server/adapters/storage`
   ```
-  cp -r node_modules/ghost-cloudinary-store content/storage/ghost-cloudinary-store
+  cp -r node_modules/cloudinary-store content/storage
   ```
 
 4. Follow the instructions below for [editing config.js][1]
@@ -32,11 +32,11 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 Note: The `master` branch reflects what is published on NPM
 
-1. Navigate to Ghost's `content` directory and create a directory called `storage`
+1. Navigate to Ghost's base folder and create a directory called `versions/$GHOST_VERSION/core/server/adapters/storage`
 
-2. Navigate into this new `storage` directory and run `git clone https://github.com/sethbrasile/ghost-cloudinary-store.git`
+2. Navigate into this new `storage` directory and run `git clone https://github.com/mmornati/ghost-cloudinary-store.git cloudinary-store`
 
-3. Navigate into `ghost-cloudinary-store` and run `npm install`
+3. Navigate into `cloudinary-store` and run `npm install`
 
 4. Follow the instructions below for [editing config.js][1]
 
@@ -75,7 +75,7 @@ In Ghost's `config.production.json` (the file where you set your URL, mail setti
 
 ```json
 "storage": {
-    "active": "ghost-cloudinary-store"
+    "active": "cloudinary-store"
 }
 ```
 
@@ -90,8 +90,8 @@ You can find the documentation of what you can configure, directly on the Cloudi
 
 ```json
 "storage": {
-    "active": "ghost-cloudinary-store",
-    "ghost-cloudinary-store": {
+    "active": "cloudinary-store",
+    "cloudinary-store": {
         "cloud_name": "yourCloudName",
         "api_key": "yourApiKey",
         "api_secret": "yourApiSecret",
@@ -123,4 +123,3 @@ You can find more information about and the list of possible parameters directly
 [1]: #editing-configjs
 [2]: http://cloudinary.com/documentation/node_additional_topics#configuration_options
 [3]: https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps
-[4]: https://github.com/sethbrasile/ghost-cloudinary-store/issues/1
