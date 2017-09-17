@@ -9,6 +9,8 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 # To Use
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mmornati/ghost-cloudinary-store.svg)](https://greenkeeper.io/)
+
 
 ## NPM Installation Method (**It is actually NOT installing this latest version !!**)
 
