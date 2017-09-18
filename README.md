@@ -120,6 +120,6 @@ Configuring this part you can, for example, force Cloudinary to use the name you
 You can find more information about and the list of possible parameters directly on the official Cloudinary documentation: http://cloudinary.com/documentation/image_upload_api_reference#upload
 
 
-[1]: #editing-configjs
+[1]: #editing-configproductionjson
 [2]: http://cloudinary.com/documentation/node_additional_topics#configuration_options
 [3]: https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps
