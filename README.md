@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mmornati/ghost-cloudinary-store.svg?branch=master)](https://travis-ci.org/mmornati/ghost-cloudinary-store) [![Code Climate](https://codeclimate.com/github/mmornati/ghost-cloudinary-store/badges/gpa.svg)](https://codeclimate.com/github/mmornati/ghost-cloudinary-store) [![Test Coverage](https://codeclimate.com/github/mmornati/ghost-cloudinary-store/badges/coverage.svg)](https://codeclimate.com/github/mmornati/ghost-cloudinary-store/coverage) [![Issue Count](https://codeclimate.com/github/mmornati/ghost-cloudinary-store/badges/issue_count.svg)](https://codeclimate.com/github/mmornati/ghost-cloudinary-store)
+[![Build Status](https://travis-ci.org/sethbrasile/ghost-cloudinary-store.svg?branch=master)](https://travis-ci.org/sethbrasile/ghost-cloudinary-store) [![Code Climate](https://codeclimate.com/github/sethbrasile/ghost-cloudinary-store/badges/gpa.svg)](https://codeclimate.com/github/sethbrasile/ghost-cloudinary-store) [![Test Coverage](https://codeclimate.com/github/sethbrasile/ghost-cloudinary-store/badges/coverage.svg)](https://codeclimate.com/github/sethbrasile/ghost-cloudinary-store/coverage) [![Issue Count](https://codeclimate.com/github/sethbrasile/ghost-cloudinary-store/badges/issue_count.svg)](https://codeclimate.com/github/sethbrasile/ghost-cloudinary-store)
 
 
 **IMPORTANT**: You **MUST** be running Ghost 1.0.0 or later.
@@ -9,18 +9,18 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 # To Use
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/mmornati/ghost-cloudinary-store.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/sethbrasile/ghost-cloudinary-store.svg)](https://greenkeeper.io/)
 
 
 ## NPM Installation Method
 
 *In Ghost's root directory*
 
-1. Run `npm install cloudinary-store` (note the lack of `--save`)
+1. Run `npm install ghost-cloudinary-store` (note the lack of `--save`)
 
 2. Make the storage folder if it doesn't already exist `mkdir versions/$GHOST_VERSION/core/server/adapters/storage/`
 
-3. Copy `cloudinary-store` from `node_modules` to `versions/$GHOST_VERSION/core/server/adapters/storage`
+3. Copy `ghost-cloudinary-store` from `node_modules` to `versions/$GHOST_VERSION/core/server/adapters/storage`
   ```
   cp -r node_modules/cloudinary-store content/storage
   ```
@@ -34,9 +34,9 @@ Note: The `master` branch reflects what is published on NPM
 
 1. Navigate to Ghost's base folder and create a directory called `versions/$GHOST_VERSION/core/server/adapters/storage`
 
-2. Navigate into this new `storage` directory and run `git clone https://github.com/mmornati/ghost-cloudinary-store.git cloudinary-store`
+2. Navigate into this new `storage` directory and run `git clone https://github.com/sethbrasile/ghost-cloudinary-store.git cloudinary-store`
 
-3. Navigate into `cloudinary-store` and run `npm install`
+3. Navigate into `ghost-cloudinary-store` and run `npm install`
 
 4. Follow the instructions below for [editing config.js][1]
 
@@ -75,7 +75,7 @@ In Ghost's `config.production.json` (the file where you set your URL, mail setti
 
 ```json
 "storage": {
-    "active": "cloudinary-store"
+    "active": "ghost-cloudinary-store"
 }
 ```
 
@@ -90,8 +90,8 @@ You can find the documentation of what you can configure, directly on the Cloudi
 
 ```json
 "storage": {
-    "active": "cloudinary-store",
-    "cloudinary-store": {
+    "active": "ghost-cloudinary-store",
+    "ghost-cloudinary-store": {
         "cloud_name": "yourCloudName",
         "api_key": "yourApiKey",
         "api_secret": "yourApiSecret",
