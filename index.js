@@ -1,67 +1,65 @@
-var Promise = require('bluebird');
+var BlueBird = require('bluebird');
 var cloudinary = require('cloudinary');
 var util = require('util');
+var BaseAdapter = require('ghost-storage-base');
+var path = require('path');
 
-baseStore = require('../../../core/server/storage/base');
+class CloudinaryAdapter extends BaseAdapter{
+  constructor(options) {
+    super(options);
+    this.config = options || {};
+    cloudinary.config(options);
+  }
 
-// TODO: Add support for private_cdn
-// TODO: Add support for secure_distribution
-// TODO: Add support for cname
-// TODO: Add support for cdn_subdomain
-// http://cloudinary.com/documentation/node_additional_topics#configuration_options
-
-function CloudinaryStore(config) {
-    baseStore.call(this);
-    this.config = config || {};
-    cloudinary.config(config);
-}
-
-function extend(target) {
-    var sources = [].slice.call(arguments, 1);
-    sources.forEach(function (source) {
-        for (var prop in source) {
-            target[prop] = source[prop];
+  exists(filename) {
+    return new BlueBird(function(resolve) {
+      cloudinary.v2.api.resource(path.parse(filename).name, {type: 'upload'}, function(error, result) {
+        if (result) {
+          resolve(result);
+        } else {
+          resolve(false);
         }
+      });
     });
-    return target;
+  }
+
+  save(image, targetDir) {
+    var cloudinaryImageSettings = this.config.configuration.image;
+    var cloudinaryFileSettings = this.config.configuration.file || {};
+    //Using the real image name sanitizing it for the web
+    cloudinaryFileSettings.public_id = this.getSanitizedFileName(image.name);
+
+    return new BlueBird(function(resolve) {
+      cloudinary.uploader.upload(image.path, function(result) {
+        if (result.error) {
+          return reject(new errors.GhostError({
+              err: result.error,
+              message: 'Could not upload the image: ' + image.path
+          }));
+        } else {
+          resolve(cloudinary.url(result.public_id.concat(".", result.format), cloudinaryImageSettings));
+        }
+      }, cloudinaryFileSettings);
+    });
+  }
+
+  serve() {
+    return function customServe(req, res, next) {
+      next();
+    };
+  }
+
+  delete(filename) {
+    return new BlueBird(function(resolve) {
+      cloudinary.uploader.destroy(path.parse(filename).name, function(result) {
+        resolve(result);
+      });
+    });
+  }
+
+  read() {
+    //Not used. The image is uploaded with the direct URL to the Cloudinary Service. No Need to pass through this plugin
+  }
 }
 
-
-util.inherits(CloudinaryStore, baseStore);
-
-CloudinaryStore.prototype.save = function(image) {
-  var cloudinaryImageSetting = this.config.configuration;
-
-  return new Promise(function(resolve) {
-    cloudinary.uploader.upload(image.path, function(result) {
-        resolve(cloudinary.url(result.public_id.concat(".", result.format), cloudinaryImageSetting ));
-    });
-});
-};
-
-CloudinaryStore.prototype.delete = function(image) {
-  return new Promise(function(resolve) {
-    cloudinary.uploader.destroy(image.path, function(result) {
-      resolve(result)
-  });
-});
-};
-
-CloudinaryStore.prototype.exists = function(filename) {
-  return new Promise(function(resolve) {
-    if (cloudinary.image(filename, { quality: 50 })) {
-        resolve(true);
-    } else {
-        resolve(false);
-    }
-});
-
-}
-
-CloudinaryStore.prototype.serve = function() {
-  return function (req, res, next) {
-    next();
-};
-};
-
-module.exports = CloudinaryStore;
+module.exports = CloudinaryAdapter;
