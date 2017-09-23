@@ -18,11 +18,17 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 1. Run `npm install ghost-cloudinary-store` (note the lack of `--save`)
 
-2. Make the storage folder if it doesn't already exist `mkdir versions/$GHOST_VERSION/core/server/adapters/storage/`
-
-3. Copy `ghost-cloudinary-store` from `node_modules` to `versions/$GHOST_VERSION/core/server/adapters/storage`
+2. Install into the Ghost sources folder
+2.1. Make the storage folder if it doesn't already exist `mkdir versions/$GHOST_VERSION/core/server/adapters/storage/`
+2.2. Copy `ghost-cloudinary-store` from `node_modules` to `versions/$GHOST_VERSION/core/server/adapters/storage`
   ```
-  cp -r node_modules/cloudinary-store content/storage
+  cp -r node_modules/cloudinary-store versions/$GHOST_VERSION/core/server/adapters/storage
+  ```
+3. Install into the Ghost content folder
+3.1. Make the storage folder if it doesn't already exist `mkdir /$CONTENT_FOLDER/content/adapters/storage/`
+3.2. Copy `ghost-cloudinary-store` from `node_modules` to `$CONTENT_FOLDER/content/adapters/storage/`
+  ```
+  cp -r node_modules/cloudinary-store $CONTENT_FOLDER/content/adapters/storage/
   ```
 
 4. Follow the instructions below for [editing config.js][1]
