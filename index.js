@@ -27,7 +27,7 @@ class CloudinaryAdapter extends BaseAdapter{
     var cloudinaryImageSettings = this.config.configuration.image;
     var cloudinaryFileSettings = this.config.configuration.file || {};
     //Using the real image name sanitizing it for the web
-    cloudinaryFileSettings.public_id = this.getSanitizedFileName(image.name);
+    cloudinaryFileSettings.public_id = path.parse(this.getSanitizedFileName(image.name)).name;
 
     return new BlueBird(function(resolve) {
       cloudinary.uploader.upload(image.path, function(result) {
