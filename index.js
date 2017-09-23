@@ -63,9 +63,9 @@ class CloudinaryAdapter extends BaseAdapter{
       var request = require('request').defaults({ encoding: null });
       request.get(options.path, function (err, res) {
         if (err) {
-          reject(new Error("Cannot download image"))
+          reject(new Error("Cannot download image"));
         } else {
-          resolve(res.body)
+          resolve(res.body);
         }
       });
     });
