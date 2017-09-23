@@ -57,8 +57,18 @@ class CloudinaryAdapter extends BaseAdapter{
     });
   }
 
-  read() {
-    //Not used. The image is uploaded with the direct URL to the Cloudinary Service. No Need to pass through this plugin
+  read(options) {
+    options = options || {};
+    return new BlueBird(function (resolve, reject) {
+      var request = require('request').defaults({ encoding: null });
+      request.get(options.path, function (err, res) {
+        if (err) {
+          reject(new Error("Cannot download image"))
+        } else {
+          resolve(res.body)
+        }
+      });
+    });
   }
 }
 
