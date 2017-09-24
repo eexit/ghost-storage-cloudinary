@@ -81,7 +81,7 @@ describe('Image Upload', function () {
             phash: 'true',
             overwrite: 'false',
             invalidate: 'true',
-            public_id: 'favicon-with-spaces.png' 
+            public_id: 'favicon-with-spaces' 
         };
 
         sinon.stub(cloudinary.uploader, 'upload').withArgs(image.path, sinon.match.any, expectedConfig).callsArgWith(1, uploadExistsResult);
