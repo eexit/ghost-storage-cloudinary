@@ -24,8 +24,15 @@ class CloudinaryAdapter extends BaseAdapter{
   }
 
   save(image, targetDir) {
-    var cloudinaryImageSettings = this.config.configuration.image;
-    var cloudinaryFileSettings = this.config.configuration.file || {};
+    var cloudinaryImageSettings;
+    var cloudinaryFileSettings;
+    if (this.config.configuration !== undefined) {
+      cloudinaryImageSettings = this.config.configuration.image;
+      cloudinaryFileSettings = this.config.configuration.file || {};
+    } else {
+      cloudinaryImageSettings = {};
+      cloudinaryFileSettings = {};
+    }
     //Using the real image name sanitizing it for the web
     cloudinaryFileSettings.public_id = path.parse(this.getSanitizedFileName(image.name)).name;
 
