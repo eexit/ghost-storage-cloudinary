@@ -252,6 +252,29 @@ describe('Image Delete', function () {
     });
   });
 
+  describe('Image Read', function () {
+    var request = require('request');
+
+    before(function () {
+        
+    });
+
+    it("should find the image", function(done){
+        var res = {"body": "imagecontent"};
+        sinon.stub(request, 'get').yields(undefined, JSON.stringify(res));
+        var options = {"path": "https://blog.mornati.net/myimage.png"};
+        var promise = cloudinaryAdapter.read(options);
+        
+        promise.then(function(value){
+            done();
+        });
+    });
+  
+    after(function () {
+  
+    });
+  });
+
 require('mocha-jshint')({
     git: {
         modified: true,
