@@ -22,7 +22,7 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 2.1. Make the storage folder if it doesn't already exist `mkdir versions/$GHOST_VERSION/core/server/adapters/storage/`
 
-2.2. Copy `ghost-cloudinary-store` from `node_modules` to `versions/$GHOST_VERSION/core/server/adapters/storage`
+2.2. Copy `cloudinary-store` from `node_modules` to `versions/$GHOST_VERSION/core/server/adapters/storage`
   ```
   cp -r node_modules/cloudinary-store versions/$GHOST_VERSION/core/server/adapters/storage
   ```
@@ -31,7 +31,7 @@ Cloudinary has some "advanced configuration options" for Pro users and etc.. tha
 
 3.1. Make the storage folder if it doesn't already exist `mkdir /$CONTENT_FOLDER/content/adapters/storage/`
 
-3.2. Copy `ghost-cloudinary-store` from `node_modules` to `$CONTENT_FOLDER/content/adapters/storage/`
+3.2. Copy `cloudinary-store` from `node_modules` to `$CONTENT_FOLDER/content/adapters/storage/`
   ```
   cp -r node_modules/cloudinary-store $CONTENT_FOLDER/content/adapters/storage/
   ```
@@ -47,7 +47,7 @@ Note: The `master` branch reflects what is published on NPM
 
 2. Navigate into this new `storage` directory and run `git clone https://github.com/mmornati/ghost-cloudinary-store.git cloudinary-store`
 
-3. Navigate into `ghost-cloudinary-store` and run `npm install`
+3. Navigate into `cloudinary-store` and run `npm install`
 
 4. Follow the instructions below for [editing config.js][1]
 
@@ -68,8 +68,8 @@ Note: These values can be obtained from your Cloudinary management console.
 
 ```json
 "storage": {
-    "active": "ghost-cloudinary-store",
-    "ghost-cloudinary-store": {
+    "active": "cloudinary-store",
+    "cloudinary-store": {
         "cloud_name": "yourCloudName",
         "api_key": "yourApiKey",
         "api_secret": "yourApiSecret"
@@ -86,7 +86,7 @@ In Ghost's `config.production.json` (the file where you set your URL, mail setti
 
 ```json
 "storage": {
-    "active": "ghost-cloudinary-store"
+    "active": "cloudinary-store"
 }
 ```
 
@@ -101,8 +101,8 @@ You can find the documentation of what you can configure, directly on the Cloudi
 
 ```json
 "storage": {
-    "active": "ghost-cloudinary-store",
-    "ghost-cloudinary-store": {
+    "active": "cloudinary-store",
+    "cloudinary-store": {
         "cloud_name": "yourCloudName",
         "api_key": "yourApiKey",
         "api_secret": "yourApiSecret",
@@ -112,10 +112,10 @@ You can find the documentation of what you can configure, directly on the Cloudi
                 "secure": "true"
             },
             "file": {
-                "use_filename": "true", 
-                "unique_filename": "false", 
-                "phash": "true", 
-                "overwrite": "false", 
+                "use_filename": "true",
+                "unique_filename": "false",
+                "phash": "true",
+                "overwrite": "false",
                 "invalidate": "true"
             }       
          }
