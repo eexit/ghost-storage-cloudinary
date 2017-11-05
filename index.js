@@ -3,6 +3,7 @@ var cloudinary = require('cloudinary');
 var util = require('util');
 var BaseAdapter = require('ghost-storage-base');
 var path = require('path');
+var request = require('request').defaults({ encoding: null });
 
 class CloudinaryAdapter extends BaseAdapter{
   constructor(options) {
@@ -67,7 +68,6 @@ class CloudinaryAdapter extends BaseAdapter{
   read(options) {
     options = options || {};
     return new BlueBird(function (resolve, reject) {
-      var request = require('request').defaults({ encoding: null });
       request.get(options.path, function (err, res) {
         if (err) {
           reject(new Error("Cannot download image"));

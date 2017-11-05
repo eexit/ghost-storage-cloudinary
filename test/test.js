@@ -5,6 +5,7 @@ var CloudinaryAdapter = require('../index');
 var cloudinary = require('cloudinary');
 var path = require('path');
 var cloudinaryAdapter;
+var request = require('request');
 
 describe('Image Upload', function () {
     var result = false;
@@ -253,7 +254,6 @@ describe('Image Delete', function () {
   });
 
   describe('Image Read', function () {
-    var request = require('request');
 
     before(function () {
         
