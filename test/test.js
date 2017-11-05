@@ -7,9 +7,33 @@ var path = require('path');
 var cloudinaryAdapter;
 var request = require('request');
 
+var baseConfig = {
+    "configuration": {
+        "image": {
+            "quality": "auto:good",
+            "secure": "true"
+        },
+        "file": {
+            "use_filename": "true", 
+            "unique_filename": "false", 
+            "phash": "true", 
+            "overwrite": "false", 
+            "invalidate": "true"
+        }       
+    }
+  };
+
+function generateImage(imageFile, imageName) {
+    imageName = typeof imageName !== 'undefined' ? imageName : imageFile;
+    return {
+        path: path.join(__dirname, imageFile),
+        name: imageName,
+        type: 'image/jpeg'
+    };
+}
+
 describe('Image Upload', function () {
     var result = false;
-    var config = {};
 
     var uploadExistsResult = { 
         public_id: 'favicon', 
@@ -29,30 +53,11 @@ describe('Image Upload', function () {
     };
 
     before(function () {
-        config = {
-            "configuration": {
-                "image": {
-                    "quality": "auto:good",
-                    "secure": "true"
-                },
-                "file": {
-                    "use_filename": "true", 
-                    "unique_filename": "false", 
-                    "phash": "true", 
-                    "overwrite": "false", 
-                    "invalidate": "true"
-                }       
-            }
-          };
-        cloudinaryAdapter = new CloudinaryAdapter(config); 
+        cloudinaryAdapter = new CloudinaryAdapter(baseConfig); 
     });
 
     it("should report OK for upload", function(done){ 
-        image = {
-            path: path.join(__dirname, "favicon.png"),
-            name: 'favicon.png',
-            type: 'image/jpeg'
-        };
+        image = generateImage("favicon.png");
 
         sinon.stub(cloudinary.uploader, 'upload');
         cloudinary.uploader.upload.callsArgWith(1, uploadExistsResult);
@@ -70,12 +75,8 @@ describe('Image Upload', function () {
     });
 
     it("should remove spaces before upload", function(done){ 
-        image = {
-            path: path.join(__dirname, "favicon.png"),
-            name: 'favicon with spaces.png',
-            type: 'image/jpeg'
-        };
-
+        image = generateImage("favicon.png", "favicon with spaces.png");
+        console.log(image);
         var expectedConfig = { 
             use_filename: 'true',
             unique_filename: 'false',
@@ -137,33 +138,14 @@ describe('Image Exists', function () {
     };
 
     before(function () {
-        config = {
-            "configuration": {
-                "image": {
-                    "quality": "auto:good",
-                    "secure": "true"
-                },
-                "file": {
-                    "use_filename": "true", 
-                    "unique_filename": "false", 
-                    "phash": "true", 
-                    "overwrite": "false", 
-                    "invalidate": "true"
-                }       
-            }
-          };
-        cloudinaryAdapter = new CloudinaryAdapter(config);
+        cloudinaryAdapter = new CloudinaryAdapter(baseConfig);
         sinon.stub(cloudinary.v2.api, 'resource');
     });
 
     it("should find an image", function(done){
         cloudinary.v2.api.resource.callsArgWith(2, undefined, resultExists);
 
-        image = {
-            path: path.join(__dirname, "favicon.png"),
-            name: 'favicon.png',
-            type: 'image/jpeg'
-        };
+        image = generateImage("favicon.png");
 
         var promise = cloudinaryAdapter.exists(image.name);
         
@@ -176,11 +158,7 @@ describe('Image Exists', function () {
     it("should not find an image", function(done){
         cloudinary.v2.api.resource.callsArgWith(2, {error: "error"}, undefined);
 
-        image = {
-            path: path.join(__dirname, "favicon.png"),
-            name: 'favicon.png',
-            type: 'image/jpeg'
-        };
+        image = generateImage("favicon.png");
 
         var promise = cloudinaryAdapter.exists(image.name);
         
@@ -199,31 +177,12 @@ describe('Image Delete', function () {
     var result = false;
 
     before(function () {
-        config = {
-            "configuration": {
-                "image": {
-                    "quality": "auto:good",
-                    "secure": "true"
-                },
-                "file": {
-                    "use_filename": "true", 
-                    "unique_filename": "false", 
-                    "phash": "true", 
-                    "overwrite": "false", 
-                    "invalidate": "true"
-                }       
-            }
-          };
-        cloudinaryAdapter = new CloudinaryAdapter(config); 
+        cloudinaryAdapter = new CloudinaryAdapter(baseConfig); 
         sinon.stub(cloudinary.uploader, 'destroy');
     });
 
-    it("should delete image", function(done){ 
-        image = {
-            path: path.join(__dirname, "favicon.png"),
-            name: 'favicon.png',
-            type: 'image/jpeg'
-        };
+    it("should delete image", function(done){
+        image = generateImage("favicon.png");
         cloudinary.uploader.destroy.callsArgWith(1, {"result":"ok"});
         var promise = cloudinaryAdapter.delete(image.name);
         
@@ -233,12 +192,8 @@ describe('Image Delete', function () {
         });
     });
 
-    it("should raise an error", function(done){ 
-        image = {
-            path: path.join(__dirname, "missing_image.png"),
-            name: 'missing_image.png',
-            type: 'image/jpeg'
-        };
+    it("should raise an error", function(done){
+        image = generateImage("missing_image.png");
         cloudinary.uploader.destroy.callsArgWith(1, {"result":"not found"});
         var promise = cloudinaryAdapter.delete(image.name);
         
