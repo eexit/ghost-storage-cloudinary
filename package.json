@@ -46,11 +46,10 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "codeclimate-test-reporter": "^0.5.0",
-    "crypto": "1.0.1",
     "istanbul": "^0.4.5",
-    "jshint": "^2.9.3",
+    "jshint": "^2.9.5",
     "mocha-jshint": "^2.3.1",
     "nock": "^9.2.3",
-    "sinon": "^4.0.0"
+    "sinon": "^4.4.6"
   }
 }
