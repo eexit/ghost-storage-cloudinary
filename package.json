@@ -1,7 +1,7 @@
 {
-  "name": "cloudinary-store",
-  "version": "3.0.0",
-  "description": "A Cloudinary image storage module for Ghost blogs. Updated for Ghost 1.x and following the latest specifications. Based on the first Seth Brasile <seth.brasile@gmail.com> version.",
+  "name": "ghost-storage-cloudinary",
+  "version": "0.1.0",
+  "description": "Cloudinary storage adapter for Ghost >= 1.x",
   "main": "index.js",
   "keywords": [
     "cloudinary",
@@ -13,13 +13,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmornati/ghost-cloudinary-store"
+    "url": "https://github.com/eexit/ghost-storage-cloudinary"
   },
   "bugs": {
-    "url": "https://github.com/mmornati/ghost-cloudinary-store/issues"
+    "url": "https://github.com/eexit/ghost-storage-cloudinary/issues"
   },
-  "author": "Seth Brasile <seth.brasile@gmail.com>",
+  "author": "Joris Berthelot <admin@eexit.net>",
   "contributors": [
+    {
+      "name": "Seth Brasile",
+      "email": "seth.brasile@gmail.com"
+    },
     {
       "name": "Marco Mornati",
       "email": "marco@mornati.net"
@@ -27,10 +31,6 @@
     {
       "name": "aphe",
       "email": "afriyandi@cizzu.com"
-    },
-    {
-      "name": "Joris Berthelot",
-      "email": "admin@eexit.net"
     }
   ],
   "license": "ISC",

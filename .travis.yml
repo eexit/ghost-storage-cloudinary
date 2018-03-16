@@ -1,7 +1,8 @@
 language: node_js
 addons:
-    code_climate:
-        repo_token: $CODE_CLIMATE_TOKEN
+  code_climate:
+    repo_token: $CODE_CLIMATE_TOKEN
+
 node_js:
   - "6"
 
@@ -12,10 +13,10 @@ before_script:
   - npm install -g mocha
 
 after_success:
-  - npm run cover
+  - npm run-script cover
   - codeclimate-test-reporter < coverage/lcov.info
 
-# deploy:
-#   provider: npm
-#   email: "$NPM_EMAIL"
-#   api_key: "$NPM_TOKEN"
+deploy:
+  provider: npm
+  email: $NPM_EMAIL
+  api_key: $NPM_TOKEN
