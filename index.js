@@ -8,15 +8,19 @@ var StorageBase = require('ghost-storage-base'),
     request = require('request').defaults({ encoding: null });
 
 class CloudinaryAdapter extends StorageBase {
+
     constructor(options) {
         super(options);
         var config = options || {};
-        var cloudinaryConfig = config.configuration || {};
+        var auth = config.auth || config;
 
-        this.uploadOptions = cloudinaryConfig.upload || {};
-        this.displayOptions = cloudinaryConfig.display || {};
+        // Kept to avoid a BCB with 2.x versions
+        var legacy = config.configuration || {};
 
-        cloudinary.config(config);
+        this.uploadOptions = config.upload || legacy.file || {};
+        this.displayOptions = config.display || legacy.image || {};
+
+        cloudinary.config(auth);
     }
 
     /**
@@ -45,10 +49,7 @@ class CloudinaryAdapter extends StorageBase {
 
         return new Promise(function(resolve, reject) {
             cloudinary.uploader.explicit(pubId, {type: 'upload'}, function(err, res) {
-                if (err) {
-                    return resolve(false);
-                }
-                resolve(true);
+                return res ? resolve(true) : resolve(false);
             });
         });
     }

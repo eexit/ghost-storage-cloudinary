@@ -1,0 +1,21 @@
+{
+    "auth": {
+        "cloud_name": "",
+        "api_key": "",
+        "api_secret": ""
+    },
+    "upload": {
+        "use_filename": true,
+        "unique_filename": false,
+        "phash": true,
+        "overwrite": false,
+        "invalidate": true,
+        "folder": "",
+        "tags": []
+    },
+    "display": {
+        "quality": "auto",
+        "secure": false,
+        "cdn_subdomain": true
+    }
+}

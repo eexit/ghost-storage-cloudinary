@@ -8,31 +8,60 @@ var CloudinaryAdapter = require('../index'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
     request = require('request'),
-    cloudinaryAdapter = null,
-    baseConfig = function () {
-        return {
-            "configuration": {
-                "display": {
-                    "quality": "auto:good",
-                    "secure": "true"
-                },
-                "upload": {
-                    "use_filename": "true",
-                    "unique_filename": "false",
-                    "phash": "true",
-                    "overwrite": "false",
-                    "invalidate": "true"
-                }
-            }
-        };
+    cloudinaryAdapter = null;
+
+
+var baseConfig = function () {
+    return {
+        "auth": {
+            "cloud_name": "",
+            "api_key": "",
+            "api_secret": ""
+        },
+        "upload": {
+            "use_filename": true,
+            "unique_filename": false,
+            "phash": true,
+            "overwrite": false,
+            "invalidate": true,
+            "folder": "",
+            "tags": []
+        },
+        "display": {
+            "quality": "auto",
+            "secure": false,
+            "cdn_subdomain": false
+        }
     };
+};
+
+var legacyConfig = function () {
+    return {
+        "cloud_name": "",
+        "api_key": "",
+        "api_secret": "",
+        "configuration": {
+            "image": {
+                "quality": "auto:good",
+                "secure": true
+            },
+            "file": {
+                "use_filename": true,
+                "unique_filename": true,
+                "phash": true,
+                "overwrite": false,
+                "invalidate": true
+            }
+        }
+    };
+};
 
 function generateImage(imageFile, imageName) {
     imageName = typeof imageName !== 'undefined' ? imageName : imageFile;
     return {
         path: path.join(__dirname, imageFile),
         name: imageName,
-        type: 'image/jpeg'
+        type: 'image/png'
     };
 }
 
@@ -59,9 +88,49 @@ describe('Image Upload', function () {
 
     it('should upload successfully', function (done) {
         var image = generateImage('favicon.png');
+        var expectedUploadConfig = {
+            "use_filename": true,
+            "unique_filename": false,
+            "phash": true,
+            "overwrite": false,
+            "invalidate": true,
+            "folder": "",
+            "tags": [],
+            "public_id": "favicon"
+        };
 
         sinon.stub(cloudinary.uploader, 'upload');
-        cloudinary.uploader.upload.callsArgWith(2, undefined, apiResult);
+        cloudinary.uploader.upload
+            .withArgs(image.path, expectedUploadConfig, sinon.match.any)
+            .callsArgWith(2, undefined, apiResult);
+
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/favicon.png';
+        });
+
+        cloudinaryAdapter.save(image).then(function (url) {
+            expect(url).to.equals('http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/favicon.png');
+            done();
+        });
+    });
+
+    it('should upload successfully with legacy config', function (done) {
+        var cloudinaryAdapter = new CloudinaryAdapter(legacyConfig());
+
+        var image = generateImage('favicon.png');
+        var expectedUploadConfig = {
+            "use_filename": true,
+            "unique_filename": true,
+            "phash": true,
+            "overwrite": false,
+            "invalidate": true,
+            "public_id": "favicon"
+        };
+
+        sinon.stub(cloudinary.uploader, 'upload');
+        cloudinary.uploader.upload
+            .withArgs(image.path, expectedUploadConfig, sinon.match.any)
+            .callsArgWith(2, undefined, apiResult);
 
         sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
             return 'https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png';
@@ -75,26 +144,65 @@ describe('Image Upload', function () {
 
     it('should normalize image name', function (done) {
         var image = generateImage('favicon.png', 'favicon with spaces.png');
-
-        var expectedConfig = {
-            use_filename: 'true',
-            unique_filename: 'false',
-            phash: 'true',
-            overwrite: 'false',
-            invalidate: 'true',
-            public_id: 'favicon-with-spaces'
+        var expectedUploadConfig = {
+            "use_filename": true,
+            "unique_filename": false,
+            "phash": true,
+            "overwrite": false,
+            "invalidate": true,
+            "folder": "",
+            "tags": [],
+            "public_id": "favicon-with-spaces"
         };
 
         sinon.stub(cloudinary.uploader, 'upload')
-            .withArgs(image.path, expectedConfig, sinon.match.any)
+            .withArgs(image.path, expectedUploadConfig, sinon.match.any)
             .callsArgWith(2, undefined, apiResult);
 
         sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
-            return 'https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon-with-spaces.png';
+            return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/favicon-with-spaces.png';
         });
 
         cloudinaryAdapter.save(image).then(function (url) {
-            expect(url).equals('https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon-with-spaces.png');
+            expect(url).equals('http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/favicon-with-spaces.png');
+            done();
+        });
+    });
+
+    it('should upload successfully with tags and folder', function (done) {
+        var config = baseConfig();
+        config.upload.folder = 'blog.eexit.net/v3';
+        config.upload.tags = ['foo', 'bar'];
+        cloudinaryAdapter = new CloudinaryAdapter(config);
+
+        var image = generateImage('favicon.png');
+        var expectedUploadConfig = {
+            "use_filename": true,
+            "unique_filename": false,
+            "phash": true,
+            "overwrite": false,
+            "invalidate": true,
+            "folder": "blog.eexit.net/v3",
+            "tags": ["foo", "bar"],
+            "public_id": "favicon"
+        };
+        var apiResult2 = Object.assign(apiResult, {
+            public_id: 'blog.eexit.net/v3/favicon',
+            tags: ['foo', 'bar'],
+            url: 'http://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/blog.eexit.net/v3/favicon.png',
+            secure_url: 'https://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/blog.eexit.net/v3/favicon.png'
+        });
+
+        sinon.stub(cloudinary.uploader, 'upload')
+            .withArgs(image.path, expectedUploadConfig, sinon.match.any)
+            .callsArgWith(2, undefined, apiResult2);
+
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/blog.eexit.net/v3/favicon.png';
+        });
+
+        cloudinaryAdapter.save(image).then(function (url) {
+            expect(url).equals('http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/blog.eexit.net/v3/favicon.png');
             done();
         });
     });
@@ -213,7 +321,7 @@ describe('toCloudinaryFile', function () {
 
     it ('returns correct file name (with folder)', function (done) {
         var config = baseConfig();
-        config.configuration.upload.folder = 'test/blog';
+        config.upload.folder = 'test/blog';
         var cloudinaryAdapter = new CloudinaryAdapter(config);
         var tests = [
             ['foo.jpg', 'test/blog/foo.jpg'],
@@ -245,7 +353,7 @@ describe('toCloudinaryId', function () {
 
     it ('returns correct ID (with folder)', function (done) {
         var config = baseConfig();
-        config.configuration.upload.folder = 'test/blog';
+        config.upload.folder = 'test/blog';
         var cloudinaryAdapter = new CloudinaryAdapter(config);
         var tests = [
             ['foo.jpg', 'test/blog/foo'],
