@@ -10,22 +10,22 @@ var CloudinaryAdapter = require('../index'),
     request = require('request'),
     cloudinaryAdapter = null,
     baseConfig = function () {
-    return {
-        "configuration": {
-            "display": {
-                "quality": "auto:good",
-                "secure": "true"
-            },
-            "upload": {
-                "use_filename": "true",
-                "unique_filename": "false",
-                "phash": "true",
-                "overwrite": "false",
-                "invalidate": "true"
+        return {
+            "configuration": {
+                "display": {
+                    "quality": "auto:good",
+                    "secure": "true"
+                },
+                "upload": {
+                    "use_filename": "true",
+                    "unique_filename": "false",
+                    "phash": "true",
+                    "overwrite": "false",
+                    "invalidate": "true"
+                }
             }
-        }
+        };
     };
-};
 
 function generateImage(imageFile, imageName) {
     imageName = typeof imageName !== 'undefined' ? imageName : imageFile;
@@ -223,6 +223,38 @@ describe('toCloudinaryFile', function () {
 
         for (let [input, expected] of tests) {
             expect(cloudinaryAdapter.toCloudinaryFile(input)).to.equals(expected);
+        }
+        done();
+    });
+});
+
+describe('toCloudinaryId', function () {
+    it ('returns correct ID (no folder)', function (done) {
+        var cloudinaryAdapter = new CloudinaryAdapter(baseConfig());
+        var tests = [
+            ['foo.jpg', 'foo'],
+            ['./foo/bar.png', 'bar'],
+            ['http://www.example.com/image.tiff', 'image']
+        ];
+
+        for (let [input, expected] of tests) {
+            expect(cloudinaryAdapter.toCloudinaryId(input)).to.equals(expected);
+        }
+        done();
+    });
+
+    it ('returns correct ID (with folder)', function (done) {
+        var config = baseConfig();
+        config.configuration.upload.folder = 'test/blog';
+        var cloudinaryAdapter = new CloudinaryAdapter(config);
+        var tests = [
+            ['foo.jpg', 'test/blog/foo'],
+            ['./foo/bar.png', 'test/blog/bar'],
+            ['http://www.example.com/image.tiff', 'test/blog/image']
+        ];
+
+        for (let [input, expected] of tests) {
+            expect(cloudinaryAdapter.toCloudinaryId(input)).to.equals(expected);
         }
         done();
     });
