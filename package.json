@@ -1,7 +1,7 @@
 {
   "name": "cloudinary-store",
-  "version": "2.2.0",
-  "description": "A Cloudinary image storage module for Ghost blogs. Updated for Ghost 1.0.0 and following the latest specifications. Based on the first Seth Brasile <seth.brasile@gmail.com> version.",
+  "version": "3.0.0",
+  "description": "A Cloudinary image storage module for Ghost blogs. Updated for Ghost 1.x and following the latest specifications. Based on the first Seth Brasile <seth.brasile@gmail.com> version.",
   "main": "index.js",
   "keywords": [
     "cloudinary",
@@ -27,12 +27,16 @@
     {
       "name": "aphe",
       "email": "afriyandi@cizzu.com"
+    },
+    {
+      "name": "Joris Berthelot",
+      "email": "admin@eexit.net"
     }
   ],
   "license": "ISC",
   "scripts": {
-    "test": "mocha --recursive",
-    "cover": "istanbul cover _mocha -- --recursive"
+    "test": "mocha test",
+    "cover": "istanbul cover _mocha -- test"
   },
   "dependencies": {
     "bluebird": "3.5.1",
@@ -46,6 +50,7 @@
     "istanbul": "^0.4.5",
     "jshint": "^2.9.3",
     "mocha-jshint": "^2.3.1",
+    "nock": "^9.2.3",
     "sinon": "^4.0.0"
   }
 }

@@ -15,7 +15,7 @@ after_success:
   - npm run cover
   - codeclimate-test-reporter < coverage/lcov.info
 
-deploy:
-  provider: npm
-  email: "$NPM_EMAIL"
-  api_key: "$NPM_TOKEN"
+# deploy:
+#   provider: npm
+#   email: "$NPM_EMAIL"
+#   api_key: "$NPM_TOKEN"
