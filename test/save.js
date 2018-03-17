@@ -132,6 +132,22 @@ describe('save', function () {
         });
     });
 
+    it('should return an error on api upload failure', function (done) {
+        sinon.stub(cloudinary.uploader, 'upload');
+        sinon.stub(cloudinary, 'url');
+        cloudinary.uploader.upload.callsArgWith(2, {error: "some error"}, undefined);
+
+        cloudinaryAdapter.save(fixtures.mockImage)
+            .then(function () {
+                done('expected error');
+            })
+            .catch(function (ex) {
+                expect(ex).to.be.an.instanceOf(Error);
+                expect(ex.message).to.equal('Could not upload image ' + fixtures.mockImage.path);
+                done();
+            });
+    });
+
     afterEach(function () {
          // Unwraps the spy
         cloudinary.uploader.upload.restore();

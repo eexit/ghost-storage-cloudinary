@@ -31,7 +31,7 @@ class CloudinaryAdapter extends StorageBase {
                 if (err) {
                     return resolve(false);
                 }
-                return res ? resolve(true) : resolve(false);
+                resolve(true);
             });
         });
     }
@@ -46,7 +46,7 @@ class CloudinaryAdapter extends StorageBase {
         return new Promise(function(resolve, reject) {
             cloudinary.uploader.upload(image.path, uploadOptions, function(err, res) {
                 if (err) {
-                    return reject(new Error('Could not upload the image: ' + image.path));
+                    return reject(new Error('Could not upload image ' + image.path));
                 }
                 resolve(cloudinary.url(res.public_id.concat('.', res.format), displayOptions));
             });
@@ -54,7 +54,7 @@ class CloudinaryAdapter extends StorageBase {
     }
 
     serve() {
-        return function noop(req, res, next) {
+        return function (req, res, next) {
             next();
         };
     }
@@ -65,7 +65,7 @@ class CloudinaryAdapter extends StorageBase {
         return new Promise(function(resolve, reject) {
             cloudinary.uploader.destroy(pubId, function(err, res) {
                 if (err) {
-                    return reject(new Error('Could not delete the image: ' + filename));
+                    return reject(new Error('Could not delete image ' + filename));
                 }
                 resolve(res);
             });
@@ -77,7 +77,7 @@ class CloudinaryAdapter extends StorageBase {
         return new Promise(function (resolve, reject) {
             request.get(options.path, function (err, res) {
                 if (err) {
-                    return reject(new Error('Image not found: ' + options.path));
+                    return reject(new Error('Could not read image ' + options.path));
                 }
                 resolve(res.body);
             });

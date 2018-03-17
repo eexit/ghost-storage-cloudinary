@@ -8,7 +8,9 @@ var CloudinaryAdapter = require('../index'),
 
 describe('toCloudinaryFile', function () {
     it ('returns correct file name (no folder)', function (done) {
-        var cloudinaryAdapter = new CloudinaryAdapter(fixtures.sampleConfig());
+        var config = fixtures.sampleConfig();
+        delete config.upload.folder;
+        var cloudinaryAdapter = new CloudinaryAdapter(config);
         var tests = [
             ['foo.jpg', 'foo.jpg'],
             ['./foo/bar.png', 'bar.png'],

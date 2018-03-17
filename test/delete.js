@@ -31,6 +31,7 @@ describe('delete', function () {
             })
             .catch(function (ex) {
                 expect(ex).to.be.an.instanceOf(Error);
+                expect(ex.message).to.equal('Could not delete image ' + fixtures.mockInexistentImage.name);
                 done();
             });
     });
