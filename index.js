@@ -3,7 +3,6 @@
 var StorageBase = require('ghost-storage-base'),
     Promise = require('bluebird'),
     cloudinary = require('cloudinary').v2,
-    util = require('util'),
     path = require('path'),
     request = require('request').defaults({ encoding: null });
 
@@ -11,6 +10,7 @@ class CloudinaryAdapter extends StorageBase {
 
     constructor(options) {
         super(options);
+
         var config = options || {};
         var auth = config.auth || config;
 
@@ -23,32 +23,14 @@ class CloudinaryAdapter extends StorageBase {
         cloudinary.config(auth);
     }
 
-    /**
-     *  Extracts the a Cloudinary-ready file name for API usage.
-     *  If a "folder" upload option is set, it will prepend its
-     *  value.
-     */
-    toCloudinaryFile(filename) {
-        var file = path.parse(filename).base;
-        if (this.uploadOptions.folder !== undefined) {
-            return path.join(this.uploadOptions.folder, file);
-        }
-        return file;
-    }
-
-    /**
-     * Returns the Cloudinary public ID off a given filename
-     */
-    toCloudinaryId(filename) {
-        var parsed = path.parse(this.toCloudinaryFile(filename));
-        return path.join(parsed.dir, parsed.name);
-    }
-
     exists(filename) {
         var pubId = this.toCloudinaryId(filename);
 
         return new Promise(function(resolve, reject) {
             cloudinary.uploader.explicit(pubId, {type: 'upload'}, function(err, res) {
+                if (err) {
+                    return resolve(false);
+                }
                 return res ? resolve(true) : resolve(false);
             });
         });
@@ -100,6 +82,27 @@ class CloudinaryAdapter extends StorageBase {
                 resolve(res.body);
             });
         });
+    }
+
+    /**
+     *  Extracts the a Cloudinary-ready file name for API usage.
+     *  If a "folder" upload option is set, it will prepend its
+     *  value.
+     */
+    toCloudinaryFile(filename) {
+        var file = path.parse(filename).base;
+        if (this.uploadOptions.folder !== undefined) {
+            return path.join(this.uploadOptions.folder, file);
+        }
+        return file;
+    }
+
+    /**
+     * Returns the Cloudinary public ID off a given filename
+     */
+    toCloudinaryId(filename) {
+        var parsed = path.parse(this.toCloudinaryFile(filename));
+        return path.join(parsed.dir, parsed.name);
     }
 }
 
