@@ -42,7 +42,8 @@
   "dependencies": {
     "bluebird": "3.5.1",
     "cloudinary": "~1.10.0",
-    "ghost-storage-base": "0.0.1"
+    "ghost-storage-base": "0.0.1",
+    "mock-require": "^3.0.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
