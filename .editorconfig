@@ -16,3 +16,9 @@ quote_type = single
 max_line_length = 120
 spaces_around_brackets = true
 spaces_around_operators = true
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[package.json]
+indent_size = 2

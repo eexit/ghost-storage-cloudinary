@@ -1,14 +1,14 @@
 'use strict';
 
-var CloudinaryAdapter = require('../index'),
-    nock = require('nock'),
+const CloudinaryAdapter = require('../index'),
     chai = require('chai'),
     expect = chai.expect,
     sinon = require('sinon'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
-    fixtures = require(path.join(__dirname, '/fixtures')),
-    cloudinaryAdapter = null;
+    fixtures = require(path.join(__dirname, '/fixtures'));
+
+let cloudinaryAdapter = null;
 
 describe('save', function () {
     before(function () {
@@ -16,7 +16,7 @@ describe('save', function () {
     });
 
     it('should upload successfully', function (done) {
-        var expectedUploadConfig = {
+        const expectedUploadConfig = {
             "use_filename": true,
             "unique_filename": false,
             "phash": true,
@@ -30,7 +30,7 @@ describe('save', function () {
         sinon.stub(cloudinary.uploader, 'upload');
         cloudinary.uploader.upload
             .withArgs(fixtures.mockImage.path, expectedUploadConfig, sinon.match.any)
-            .callsArgWith(2, undefined, fixtures.sampleApiResult());
+            .callsArgWith(2, null, fixtures.sampleApiResult());
 
         sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
             return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/favicon.png';
@@ -43,33 +43,33 @@ describe('save', function () {
     });
 
     it('should upload successfully with legacy config', function (done) {
-        var cloudinaryAdapter = new CloudinaryAdapter(fixtures.sampleLegacyConfig());
-        var expectedUploadConfig = {
-            "use_filename": true,
-            "unique_filename": true,
-            "phash": true,
-            "overwrite": false,
-            "invalidate": true,
-            "public_id": "favicon"
-        };
+        const adapter = new CloudinaryAdapter(fixtures.sampleLegacyConfig()),
+            expectedUploadConfig = {
+                "use_filename": true,
+                "unique_filename": true,
+                "phash": true,
+                "overwrite": false,
+                "invalidate": true,
+                "public_id": "favicon"
+            };
 
         sinon.stub(cloudinary.uploader, 'upload');
         cloudinary.uploader.upload
             .withArgs(fixtures.mockImage.path, expectedUploadConfig, sinon.match.any)
-            .callsArgWith(2, undefined, fixtures.sampleApiResult());
+            .callsArgWith(2, null, fixtures.sampleApiResult());
 
         sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
             return 'https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png';
         });
 
-        cloudinaryAdapter.save(fixtures.mockImage).then(function (url) {
+        adapter.save(fixtures.mockImage).then(function (url) {
             expect(url).to.equals('https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png');
             done();
         });
     });
 
     it('should normalize image name', function (done) {
-        var expectedUploadConfig = {
+        const expectedUploadConfig = {
             "use_filename": true,
             "unique_filename": false,
             "phash": true,
@@ -82,7 +82,7 @@ describe('save', function () {
 
         sinon.stub(cloudinary.uploader, 'upload')
             .withArgs(fixtures.mockImageWithSpacesInName.path, expectedUploadConfig, sinon.match.any)
-            .callsArgWith(2, undefined, fixtures.sampleApiResult());
+            .callsArgWith(2, null, fixtures.sampleApiResult());
 
         sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
             return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/favicon-with-spaces.png';
@@ -95,32 +95,32 @@ describe('save', function () {
     });
 
     it('should upload successfully with tags and folder', function (done) {
-        var config = fixtures.sampleConfig();
+        let config = fixtures.sampleConfig();
         config.upload.folder = 'blog.eexit.net/v3';
         config.upload.tags = ['foo', 'bar'];
+
         cloudinaryAdapter = new CloudinaryAdapter(config);
 
-        var expectedUploadConfig = {
-            "use_filename": true,
-            "unique_filename": false,
-            "phash": true,
-            "overwrite": false,
-            "invalidate": true,
-            "folder": "blog.eexit.net/v3",
-            "tags": ["foo", "bar"],
-            "public_id": "favicon"
-        };
-
-        var apiResult = Object.assign(fixtures.sampleApiResult(), {
-            public_id: 'blog.eexit.net/v3/favicon',
-            tags: ['foo', 'bar'],
-            url: 'http://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/blog.eexit.net/v3/favicon.png',
-            secure_url: 'https://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/blog.eexit.net/v3/favicon.png'
-        });
+        const expectedUploadConfig = {
+                "use_filename": true,
+                "unique_filename": false,
+                "phash": true,
+                "overwrite": false,
+                "invalidate": true,
+                "folder": "blog.eexit.net/v3",
+                "tags": ["foo", "bar"],
+                "public_id": "favicon"
+            },
+            apiResult = Object.assign(fixtures.sampleApiResult(), {
+                public_id: 'blog.eexit.net/v3/favicon',
+                tags: ['foo', 'bar'],
+                url: 'http://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/blog.eexit.net/v3/favicon.png',
+                secure_url: 'https://res.cloudinary.com/blog-mornati-net/image/upload/v1505580646/blog.eexit.net/v3/favicon.png'
+            });
 
         sinon.stub(cloudinary.uploader, 'upload')
             .withArgs(fixtures.mockImage.path, expectedUploadConfig, sinon.match.any)
-            .callsArgWith(2, undefined, apiResult);
+            .callsArgWith(2, null, apiResult);
 
         sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
             return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/blog.eexit.net/v3/favicon.png';
@@ -135,7 +135,7 @@ describe('save', function () {
     it('should return an error on api upload failure', function (done) {
         sinon.stub(cloudinary.uploader, 'upload');
         sinon.stub(cloudinary, 'url');
-        cloudinary.uploader.upload.callsArgWith(2, {error: "some error"}, undefined);
+        cloudinary.uploader.upload.callsArgWith(2, {error: "some error"});
 
         cloudinaryAdapter.save(fixtures.mockImage)
             .then(function () {
@@ -143,13 +143,13 @@ describe('save', function () {
             })
             .catch(function (ex) {
                 expect(ex).to.be.an.instanceOf(Error);
-                expect(ex.message).to.equal('Could not upload image ' + fixtures.mockImage.path);
+                expect(ex.message).to.equal(`Could not upload image ${fixtures.mockImage.path}`);
                 done();
             });
     });
 
     afterEach(function () {
-         // Unwraps the spy
+        // Unwraps the spy
         cloudinary.uploader.upload.restore();
         cloudinary.url.restore();
     });
