@@ -1,20 +1,16 @@
 'use strict';
 
-var CloudinaryAdapter = require('../index'),
+const CloudinaryAdapter = require('../index'),
     chai = require('chai'),
-    expect = chai.expect,
-    sinon = require('sinon'),
-    cloudinary = require('cloudinary').v2,
-    path = require('path'),
-    fixtures = require(path.join(__dirname, '/fixtures')),
-    cloudinaryAdapter = null;
+    expect = chai.expect;
+
+let cloudinaryAdapter = null;
 
 describe('serve', function () {
     it('should return a function', function (done) {
+        let called = false;
         cloudinaryAdapter = new CloudinaryAdapter();
-        var called = false;
-
-        var handler = cloudinaryAdapter.serve();
+        const handler = cloudinaryAdapter.serve();
         expect(handler).to.be.a('function');
         handler(null, null, function () {
             called = true;

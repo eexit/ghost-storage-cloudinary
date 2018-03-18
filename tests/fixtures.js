@@ -1,6 +1,6 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
 function sampleApiResult() {
     return {
@@ -66,18 +66,17 @@ function sampleLegacyConfig() {
 }
 
 function generateImage(imageFile, imageName) {
-    imageName = typeof imageName !== 'undefined' ? imageName : imageFile;
     return {
         path: path.join(__dirname, imageFile),
-        name: imageName,
+        name: typeof imageName !== 'undefined' ? imageName : imageFile,
         type: 'image/png'
     };
 }
 
 module.exports = {
-    sampleConfig: sampleConfig,
-    sampleLegacyConfig: sampleLegacyConfig,
-    sampleApiResult: sampleApiResult,
+    sampleConfig,
+    sampleLegacyConfig,
+    sampleApiResult,
     mockImage: generateImage('favicon.png'),
     mockImageWithSpacesInName: generateImage('favicon.png', 'favicon with spaces.png'),
     mockInexistentImage: generateImage('not-found.png')

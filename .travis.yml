@@ -5,8 +5,11 @@ node_js:
 addons:
   code_climate:
     repo_token: $CODE_CLIMATE_TOKEN
+install:
+  - npm install --loglevel=error
+  - npm install --loglevel=error -g mocha
 before_script:
-  - npm install -g mocha
+  - npm --silent run-script eslint
 after_success:
   - npm run-script cover
   - codeclimate-test-reporter < coverage/lcov.info

@@ -1,21 +1,24 @@
 'use strict';
 
-var StorageBase = require('ghost-storage-base'),
-    Promise = require('bluebird'),
+require('bluebird');
+
+const StorageBase = require('ghost-storage-base'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
-    request = require('request').defaults({ encoding: null });
+    request = require('request').defaults({encoding: null});
 
 class CloudinaryAdapter extends StorageBase {
 
+    /**
+     *  @override
+     */
     constructor(options) {
         super(options);
 
-        var config = options || {};
-        var auth = config.auth || config;
-
-        // Kept to avoid a BCB with 2.x versions
-        var legacy = config.configuration || {};
+        const config = options || {},
+            auth = config.auth || config,
+            // Kept to avoid a BCB with 2.x versions
+            legacy = config.configuration || {};
 
         this.uploadOptions = config.upload || legacy.file || {};
         this.fetchOptions = config.fetch || legacy.image || {};
@@ -23,63 +26,78 @@ class CloudinaryAdapter extends StorageBase {
         cloudinary.config(auth);
     }
 
+    /**
+     *  @override
+     */
     exists(filename) {
-        var pubId = this.toCloudinaryId(filename);
+        const pubId = this.toCloudinaryId(filename);
 
-        return new Promise(function(resolve, reject) {
-            cloudinary.uploader.explicit(pubId, {type: 'upload'}, function(err, res) {
+        return new Promise((resolve) => {
+            cloudinary.uploader.explicit(pubId, {type: 'upload'}, (err) => {
                 if (err) {
                     return resolve(false);
                 }
-                resolve(true);
+                return resolve(true);
             });
         });
     }
 
+    /**
+     *  @override
+     */
     save(image) {
-        var fetchOptions = this.fetchOptions;
-        var uploadOptions = Object.assign(
-            this.uploadOptions,
-            { public_id: path.parse(this.getSanitizedFileName(image.name)).name }
-        );
+        const {fetchOptions} = this.fetchOptions,
+            uploadOptions = Object.assign(
+                this.uploadOptions,
+                {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
+            );
 
-        return new Promise(function(resolve, reject) {
-            cloudinary.uploader.upload(image.path, uploadOptions, function(err, res) {
+        return new Promise((resolve, reject) => {
+            cloudinary.uploader.upload(image.path, uploadOptions, (err, res) => {
                 if (err) {
-                    return reject(new Error('Could not upload image ' + image.path));
+                    return reject(new Error(`Could not upload image ${image.path}`));
                 }
-                resolve(cloudinary.url(res.public_id.concat('.', res.format), fetchOptions));
+                return resolve(cloudinary.url(res.public_id.concat('.', res.format), fetchOptions));
             });
         });
     }
 
+    /**
+     *  @override
+     */
     serve() {
-        return function (req, res, next) {
+        return (req, res, next) => {
             next();
         };
     }
 
+    /**
+     *  @override
+     */
     delete(filename) {
-        var pubId = this.toCloudinaryId(filename);
+        const pubId = this.toCloudinaryId(filename);
 
-        return new Promise(function(resolve, reject) {
-            cloudinary.uploader.destroy(pubId, function(err, res) {
+        return new Promise((resolve, reject) => {
+            cloudinary.uploader.destroy(pubId, (err, res) => {
                 if (err) {
-                    return reject(new Error('Could not delete image ' + filename));
+                    return reject(new Error(`Could not delete image ${filename}`));
                 }
-                resolve(res);
+                return resolve(res);
             });
         });
     }
 
+    /**
+     *  @override
+     */
     read(options) {
-        options = options || {};
-        return new Promise(function (resolve, reject) {
-            request.get(options.path, function (err, res) {
+        const opts = options || {};
+        return new Promise((resolve, reject) => {
+            request.get(opts.path, (err, res) => {
                 if (err) {
-                    return reject(new Error('Could not read image ' + options.path));
+                    return reject(new Error(`Could not read image ${opts.path}`));
                 }
-                resolve(res.body);
+                return resolve(res.body);
             });
         });
     }
@@ -88,20 +106,24 @@ class CloudinaryAdapter extends StorageBase {
      *  Extracts the a Cloudinary-ready file name for API usage.
      *  If a "folder" upload option is set, it will prepend its
      *  value.
+     *  @param {string} filename The wanted image filename
+     *  @return {string} Cloudinary-ready image name
      */
     toCloudinaryFile(filename) {
-        var file = path.parse(filename).base;
-        if (this.uploadOptions.folder !== undefined) {
+        const file = path.parse(filename).base;
+        if (typeof this.uploadOptions.folder !== 'undefined') {
             return path.join(this.uploadOptions.folder, file);
         }
         return file;
     }
 
     /**
-     * Returns the Cloudinary public ID off a given filename
+     *  Returns the Cloudinary public ID off a given filename
+     *  @param {string} filename The wanted image filename
+     *  @return {string} Cloudinary-ready ID for given image
      */
     toCloudinaryId(filename) {
-        var parsed = path.parse(this.toCloudinaryFile(filename));
+        const parsed = path.parse(this.toCloudinaryFile(filename));
         return path.join(parsed.dir, parsed.name);
     }
 }

@@ -1,34 +1,31 @@
 'use strict';
 
-var CloudinaryAdapter = require('../index'),
+const CloudinaryAdapter = require('../index'),
     nock = require('nock'),
     chai = require('chai'),
     expect = chai.expect,
-    sinon = require('sinon'),
-    cloudinary = require('cloudinary').v2,
     path = require('path'),
-    fixtures = require(path.join(__dirname, '/fixtures')),
-    cloudinaryAdapter = null;
+    fixtures = require(path.join(__dirname, '/fixtures'));
+
+let cloudinaryAdapter = null;
 
 describe('read', function () {
     it('should find the image', function (done) {
         cloudinaryAdapter = new CloudinaryAdapter(fixtures.sampleConfig);
-        var scope = nock('https://blog.mornati.net')
-            .get('/myimage.png')
-            .reply(200, {"body": "imagecontent"});
+        const scope = nock('https://blog.mornati.net')
+                .get('/myimage.png')
+                .reply(200, {"body": "imagecontent"}),
+            options = {"path": "https://blog.mornati.net/myimage.png"};
 
-        var options = {"path": "https://blog.mornati.net/myimage.png"};
-
-        cloudinaryAdapter.read(options).then(function (res) {
+        cloudinaryAdapter.read(options).then(function () {
             done(scope.done());
         });
     });
 
     it('should return an error on empty options', function (done) {
         cloudinaryAdapter = new CloudinaryAdapter(fixtures.sampleConfig);
-
         cloudinaryAdapter.read()
-            .then(function (res) {
+            .then(function () {
                 done('expected error');
             })
             .catch(function (ex) {
@@ -39,15 +36,14 @@ describe('read', function () {
     });
 
     it('should return an error on inexistent resource', function (done) {
+        const scope = nock('https://blog.mornati.net')
+                .get('/myimage.png')
+                .replyWithError('some error occurred'),
+            options = {"path": "https://blog.mornati.net/myimage.png"};
+
         cloudinaryAdapter = new CloudinaryAdapter(fixtures.sampleConfig);
-        var scope = nock('https://blog.mornati.net')
-            .get('/myimage.png')
-            .replyWithError('some error occurred');
-
-        var options = {"path": "https://blog.mornati.net/myimage.png"};
-
         cloudinaryAdapter.read(options)
-            .then(function (res) {
+            .then(function () {
                 done('expected error');
             })
             .catch(function (ex) {
