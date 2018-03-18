@@ -6,6 +6,7 @@ const CloudinaryAdapter = require('../index'),
     sinon = require('sinon'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
+    common = require(path.join(__dirname, '/errors')),
     fixtures = require(path.join(__dirname, '/fixtures'));
 
 let cloudinaryAdapter = null;
@@ -142,7 +143,7 @@ describe('save', function () {
                 done('expected error');
             })
             .catch(function (ex) {
-                expect(ex).to.be.an.instanceOf(Error);
+                expect(ex).to.be.an.instanceOf(common.errors.GhostError);
                 expect(ex.message).to.equal(`Could not upload image ${fixtures.mockImage.path}`);
                 done();
             });

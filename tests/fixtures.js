@@ -74,9 +74,9 @@ function generateImage(imageFile, imageName) {
 }
 
 module.exports = {
-    sampleConfig,
-    sampleLegacyConfig,
-    sampleApiResult,
+    sampleConfig: sampleConfig,
+    sampleLegacyConfig: sampleLegacyConfig,
+    sampleApiResult: sampleApiResult,
     mockImage: generateImage('favicon.png'),
     mockImageWithSpacesInName: generateImage('favicon.png', 'favicon with spaces.png'),
     mockInexistentImage: generateImage('not-found.png')

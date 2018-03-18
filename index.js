@@ -5,7 +5,16 @@ require('bluebird');
 const StorageBase = require('ghost-storage-base'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
-    request = require('request').defaults({encoding: null});
+    request = require('request').defaults({encoding: null}),
+    common = (() => {
+        // Tries to include GhostError helper
+        try {
+            return require(path.join(__dirname, '../../../lib/common'));
+        } catch (ex) {
+            // Use local mock instead
+            return require(path.join(__dirname, '/tests/errors'));
+        }
+    })();
 
 class CloudinaryAdapter extends StorageBase {
 
@@ -32,34 +41,33 @@ class CloudinaryAdapter extends StorageBase {
     exists(filename) {
         const pubId = this.toCloudinaryId(filename);
 
-        return new Promise((resolve) => {
-            cloudinary.uploader.explicit(pubId, {type: 'upload'}, (err) => {
-                if (err) {
-                    return resolve(false);
-                }
-                return resolve(true);
-            });
-        });
+        return new Promise((resolve) => cloudinary.uploader.explicit(pubId, {type: 'upload'}, (err) => {
+            if (err) {
+                return resolve(false);
+            }
+            return resolve(true);
+        }));
     }
 
     /**
      *  @override
      */
     save(image) {
-        const {fetchOptions} = this.fetchOptions,
+        const fetchOptions = this.fetchOptions,
             uploadOptions = Object.assign(
                 this.uploadOptions,
                 {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
             );
 
-        return new Promise((resolve, reject) => {
-            cloudinary.uploader.upload(image.path, uploadOptions, (err, res) => {
-                if (err) {
-                    return reject(new Error(`Could not upload image ${image.path}`));
-                }
-                return resolve(cloudinary.url(res.public_id.concat('.', res.format), fetchOptions));
-            });
-        });
+        return new Promise((resolve, reject) => cloudinary.uploader.upload(image.path, uploadOptions, (err, res) => {
+            if (err) {
+                return reject(new common.errors.GhostError({
+                    err: err,
+                    message: `Could not upload image ${image.path}`
+                }));
+            }
+            return resolve(cloudinary.url(res.public_id.concat('.', res.format), fetchOptions));
+        }));
     }
 
     /**
@@ -77,14 +85,15 @@ class CloudinaryAdapter extends StorageBase {
     delete(filename) {
         const pubId = this.toCloudinaryId(filename);
 
-        return new Promise((resolve, reject) => {
-            cloudinary.uploader.destroy(pubId, (err, res) => {
-                if (err) {
-                    return reject(new Error(`Could not delete image ${filename}`));
-                }
-                return resolve(res);
-            });
-        });
+        return new Promise((resolve, reject) => cloudinary.uploader.destroy(pubId, (err, res) => {
+            if (err) {
+                return reject(new common.errors.GhostError({
+                    err: err,
+                    message: `Could not delete image ${filename}`
+                }));
+            }
+            return resolve(res);
+        }));
     }
 
     /**
@@ -92,14 +101,15 @@ class CloudinaryAdapter extends StorageBase {
      */
     read(options) {
         const opts = options || {};
-        return new Promise((resolve, reject) => {
-            request.get(opts.path, (err, res) => {
-                if (err) {
-                    return reject(new Error(`Could not read image ${opts.path}`));
-                }
-                return resolve(res.body);
-            });
-        });
+        return new Promise((resolve, reject) => request.get(opts.path, (err, res) => {
+            if (err) {
+                return reject(new common.errors.GhostError({
+                    err: err,
+                    message: `Could not read image ${opts.path}`
+                }));
+            }
+            return resolve(res.body);
+        }));
     }
 
     /**
