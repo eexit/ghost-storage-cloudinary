@@ -18,7 +18,7 @@ class CloudinaryAdapter extends StorageBase {
         var legacy = config.configuration || {};
 
         this.uploadOptions = config.upload || legacy.file || {};
-        this.displayOptions = config.display || legacy.image || {};
+        this.fetchOptions = config.fetch || legacy.image || {};
 
         cloudinary.config(auth);
     }
@@ -37,7 +37,7 @@ class CloudinaryAdapter extends StorageBase {
     }
 
     save(image) {
-        var displayOptions = this.displayOptions;
+        var fetchOptions = this.fetchOptions;
         var uploadOptions = Object.assign(
             this.uploadOptions,
             { public_id: path.parse(this.getSanitizedFileName(image.name)).name }
@@ -48,7 +48,7 @@ class CloudinaryAdapter extends StorageBase {
                 if (err) {
                     return reject(new Error('Could not upload image ' + image.path));
                 }
-                resolve(cloudinary.url(res.public_id.concat('.', res.format), displayOptions));
+                resolve(cloudinary.url(res.public_id.concat('.', res.format), fetchOptions));
             });
         });
     }

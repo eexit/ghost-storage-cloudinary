@@ -36,7 +36,7 @@ function sampleConfig() {
             "folder": "",
             "tags": []
         },
-        "display": {
+        "fetch": {
             "quality": "auto",
             "secure": false,
             "cdn_subdomain": false

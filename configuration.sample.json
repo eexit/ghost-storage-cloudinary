@@ -14,7 +14,7 @@
                 "folder": "blog-images",
                 "tags": ["blog"]
             },
-            "display": {
+            "fetch": {
                 "quality": "auto",
                 "secure": false,
                 "cdn_subdomain": true

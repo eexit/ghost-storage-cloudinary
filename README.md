@@ -36,7 +36,7 @@ $ npm install --production
 
 ### Docker
 
-Here's an example of using this adapter with a containerired Ghost:
+Here's an example of using this adapter with a containerized Ghost:
 
 ```Dockerfile
 FROM ghost:1.21-alpine
@@ -49,8 +49,8 @@ RUN set -ex; \
     su-exec node ghost config storage.ghost-storage-cloudinary.upload.use_filename true; \
     su-exec node ghost config storage.ghost-storage-cloudinary.upload.unique_filename false; \
     su-exec node ghost config storage.ghost-storage-cloudinary.upload.overwrite false; \
-    su-exec node ghost config storage.ghost-storage-cloudinary.display.quality auto; \
-    su-exec node ghost config storage.ghost-storage-cloudinary.display.cdn_subdomain true;
+    su-exec node ghost config storage.ghost-storage-cloudinary.fetch.quality auto; \
+    su-exec node ghost config storage.ghost-storage-cloudinary.fetch.cdn_subdomain true;
 ```
 
 Here, we use the Ghost CLI to set some pre-defined values.
@@ -61,7 +61,7 @@ Check out [configuration.sample.json](configuration.sample.json) for a complete 
 
 - The `auth` section is optional is you use the `CLOUDINARY_URL` environment variable [authentification method](https://cloudinary.com/documentation/node_additional_topics#configuration_options)
 - The `upload` section contains Cloudinary API [upload options](https://cloudinary.com/documentation/image_upload_api_reference#upload)
-- The `display` section contains Cloudinary API [image transformation options](https://cloudinary.com/documentation/image_transformation_reference)
+- The `fetch` section contains Cloudinary API [image transformation options](https://cloudinary.com/documentation/image_transformation_reference)
 
 ### Recommended options
 
@@ -73,7 +73,7 @@ Check out [configuration.sample.json](configuration.sample.json) for a complete 
 - `folder = "my-blog"` allows to upload all your images into a specific directory instead of Cloudinary media library root
 - `tags = ['blog', 'personal']` if you want to add some taxonomy to your uploaded images
 
-#### `display` section
+#### `fetch` section
 
 - `quality = "auto"` equals `auto:good` (see [doc](https://cloudinary.com/documentation/image_transformation_reference#quality_parameter))
 - `secure = true` if you want to serve images over SSL (not recommended for performances)
