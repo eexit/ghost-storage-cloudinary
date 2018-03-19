@@ -1,5 +1,6 @@
 # Ghost Storage Cloudinary
 
+[![npm version](https://badge.fury.io/js/ghost-storage-cloudinary.svg)](https://badge.fury.io/js/ghost-storage-cloudinary)
 [![Build Status](https://travis-ci.org/eexit/ghost-storage-cloudinary.svg?branch=master)](https://travis-ci.org/eexit/ghost-storage-cloudinary)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f55e8c82a9a526fe9b2f/maintainability)](https://codeclimate.com/github/eexit/ghost-storage-cloudinary/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f55e8c82a9a526fe9b2f/test_coverage)](https://codeclimate.com/github/eexit/ghost-storage-cloudinary/test_coverage)
