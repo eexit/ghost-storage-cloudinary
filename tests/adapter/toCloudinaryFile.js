@@ -1,10 +1,10 @@
 'use strict';
 
-const CloudinaryAdapter = require('../index'),
-    chai = require('chai'),
+const chai = require('chai'),
     expect = chai.expect,
     path = require('path'),
-    fixtures = require(path.join(__dirname, '/fixtures'));
+    CloudinaryAdapter = require(path.join(__dirname, '../../')),
+    fixtures = require(path.join(__dirname, 'fixtures'));
 
 describe('toCloudinaryFile', function () {
     it('returns correct file name (no folder)', function (done) {

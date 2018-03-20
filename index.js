@@ -12,7 +12,7 @@ const StorageBase = require('ghost-storage-base'),
             return require(path.join(__dirname, '../../../lib/common'));
         } catch (ex) {
             // Use local mock instead
-            return require(path.join(__dirname, '/tests/errors'));
+            return require(path.join(__dirname, 'errors'));
         }
     })();
 

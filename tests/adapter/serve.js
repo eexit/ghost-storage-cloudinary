@@ -1,8 +1,9 @@
 'use strict';
 
-const CloudinaryAdapter = require('../index'),
-    chai = require('chai'),
-    expect = chai.expect;
+const chai = require('chai'),
+    expect = chai.expect,
+    path = require('path'),
+    CloudinaryAdapter = require(path.join(__dirname, '../../'));
 
 let cloudinaryAdapter = null;
 
