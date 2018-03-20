@@ -53,8 +53,9 @@ class CloudinaryAdapter extends StorageBase {
      *  @override
      */
     save(image) {
-        const fetchOptions = this.fetchOptions,
+        const fetchOptions = Object.assign({}, this.fetchOptions),
             uploadOptions = Object.assign(
+                {},
                 this.uploadOptions,
                 {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
             );
