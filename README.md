@@ -12,6 +12,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 - Ghost version `>=1`
 - Latest Cloudinary NodeJS [SDK](https://github.com/cloudinary/cloudinary_npm)
 - Image upload, existence check & deletion
+- Ability to upload in dated sub-directories (alike Ghost default Local storage adapter `YYYY/MM`)
 - Ability to upload images into a directory
 - Ability to tag images
 - Cool [plugins](plugins)!
@@ -61,8 +62,9 @@ Here, we use the Ghost CLI to set some pre-defined values.
 
 ## Configuration
 
-Check out [configuration.sample.json](configuration.sample.json) for a complete example of Ghost integration.
+Check out [configuration.sample.json](configuration.sample.json) for a complete example.
 
+- The optional `useDatedFolder = false` to upload images in dated sub-directories (alike default Ghost Local storage adapter)
 - The `auth` property is optional if you use the `CLOUDINARY_URL` environment variable [authentification method](https://cloudinary.com/documentation/node_additional_topics#configuration_options)
 - The optional `upload` property contains Cloudinary API [upload options](https://cloudinary.com/documentation/image_upload_api_reference#upload)
 - The optional `fetch` property contains Cloudinary API [image transformation options](https://cloudinary.com/documentation/image_transformation_reference)

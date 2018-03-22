@@ -52,6 +52,7 @@
     "eslint": "^4.19.0",
     "eslint-plugin-mocha": "^4.12.1",
     "istanbul": "^0.4.5",
+    "moment": "^2.21.0",
     "nock": "^9.2.3",
     "sinon": "^4.4.6"
   }

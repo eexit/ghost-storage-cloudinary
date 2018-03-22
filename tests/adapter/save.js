@@ -5,6 +5,7 @@ const chai = require('chai'),
     sinon = require('sinon'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
+    moment = require('moment'),
     CloudinaryAdapter = require(path.join(__dirname, '../../')),
     common = require(path.join(__dirname, '../../errors')),
     fixtures = require(path.join(__dirname, 'fixtures'));
@@ -129,6 +130,71 @@ describe('save', function () {
 
         cloudinaryAdapter.save(fixtures.mockImage).then(function (url) {
             expect(url).equals('http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/blog.eexit.net/v3/favicon.png');
+            done();
+        });
+    });
+
+    it('should upload successfully in a dated folder at root', function (done) {
+        let config = fixtures.sampleConfig();
+        config.useDatedFolder = true;
+        cloudinaryAdapter = new CloudinaryAdapter(config);
+
+        const
+            date = moment(),
+            year = date.format('YYYY'),
+            month = date.format('MM'),
+            expectedUploadConfig = {
+                "folder": `${year}/${month}`,
+                "public_id": "favicon"
+            },
+            apiResult = Object.assign(fixtures.sampleApiResult(), {
+                public_id: `${year}/${month}/favicon`,
+                url: `http://res.cloudinary.com/foo/image/upload/v1/${year}/${month}/favicon.png`
+            });
+
+        sinon.stub(cloudinary.uploader, 'upload')
+            .withArgs(fixtures.mockImage.path, sinon.match(expectedUploadConfig), sinon.match.any)
+            .callsArgWith(2, null, apiResult);
+
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return `http://res.cloudinary.com/foo/image/upload/v1/${year}/${month}/favicon.png`;
+        });
+
+        cloudinaryAdapter.save(fixtures.mockImage).then(function (url) {
+            expect(url).equals(`http://res.cloudinary.com/foo/image/upload/v1/${year}/${month}/favicon.png`);
+            done();
+        });
+    });
+
+    it('should upload successfully in a dated folder in subfolder', function (done) {
+        let config = fixtures.sampleConfig();
+        config.useDatedFolder = true;
+        config.upload.folder = 'blog/eexit.net';
+        cloudinaryAdapter = new CloudinaryAdapter(config);
+
+        const
+            date = moment(),
+            year = date.format('YYYY'),
+            month = date.format('MM'),
+            expectedUploadConfig = {
+                "folder": `blog/eexit.net/${year}/${month}`,
+                "public_id": "favicon"
+            },
+            apiResult = Object.assign(fixtures.sampleApiResult(), {
+                public_id: `blog/eexit.net/${year}/${month}/favicon`,
+                url: `http://res.cloudinary.com/foo/image/upload/v1/blog/eexit.net/${year}/${month}/favicon.png`
+            });
+
+        sinon.stub(cloudinary.uploader, 'upload')
+            .withArgs(fixtures.mockImage.path, sinon.match(expectedUploadConfig), sinon.match.any)
+            .callsArgWith(2, null, apiResult);
+
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return `http://res.cloudinary.com/foo/image/upload/v1/blog/eexit.net/${year}/${month}/favicon.png`;
+        });
+
+        cloudinaryAdapter.save(fixtures.mockImage).then(function (url) {
+            expect(url).equals(`http://res.cloudinary.com/foo/image/upload/v1/blog/eexit.net/${year}/${month}/favicon.png`);
             done();
         });
     });

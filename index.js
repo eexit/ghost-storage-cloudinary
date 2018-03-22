@@ -30,6 +30,7 @@ class CloudinaryAdapter extends StorageBase {
             // Kept to avoid a BCB with 2.x versions
             legacy = config.configuration || {};
 
+        this.useDatedFolder = config.useDatedFolder || false;
         this.uploadOptions = config.upload || legacy.file || {};
         this.fetchOptions = config.fetch || legacy.image || {};
         this.rjsOptions = config.rjs || null;
@@ -60,6 +61,12 @@ class CloudinaryAdapter extends StorageBase {
             {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
         );
 
+        // Appends the dated folder if enabled
+        if (this.useDatedFolder) {
+            uploadOptions.folder = this.getTargetDir(uploadOptions.folder);
+        }
+
+        // Retinizes images if there is any config provided
         if (this.rjsOptions) {
             const rjs = new plugin.RetinaJS(this.uploader, uploadOptions, this.rjsOptions);
             return rjs.retinize(image);

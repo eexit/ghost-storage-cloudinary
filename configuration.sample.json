@@ -2,6 +2,7 @@
     "storage": {
         "active": "ghost-storage-cloudinary",
         "ghost-storage-cloudinary": {
+            "useDatedFolder": false,
             "auth": {
                 "cloud_name": "",
                 "api_key": "",
