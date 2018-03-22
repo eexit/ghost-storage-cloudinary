@@ -6,6 +6,7 @@ const StorageBase = require('ghost-storage-base'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
     request = require('request').defaults({encoding: null}),
+    plugin = require(path.join(__dirname, '/plugins')),
     common = (() => {
         // Tries to include GhostError helper
         try {
@@ -31,6 +32,7 @@ class CloudinaryAdapter extends StorageBase {
 
         this.uploadOptions = config.upload || legacy.file || {};
         this.fetchOptions = config.fetch || legacy.image || {};
+        this.rjsOptions = config.rjs || null;
 
         cloudinary.config(auth);
     }
@@ -53,21 +55,40 @@ class CloudinaryAdapter extends StorageBase {
      *  @override
      */
     save(image) {
-        const fetchOptions = Object.assign({}, this.fetchOptions),
-            uploadOptions = Object.assign(
-                {},
-                this.uploadOptions,
-                {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
-            );
+        const uploadOptions = Object.assign(
+            {}, this.uploadOptions,
+            {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
+        );
 
-        return new Promise((resolve, reject) => cloudinary.uploader.upload(image.path, uploadOptions, (err, res) => {
+        if (this.rjsOptions) {
+            const rjs = new plugin.RetinaJS(this.uploader, uploadOptions, this.rjsOptions);
+            return rjs.retinize(image);
+        }
+
+        return this.uploader(image, uploadOptions, true);
+    }
+
+    /**
+     *  Uploads an image with options to Cloudinary
+     *  @param {object} image The image object to upload
+     *  @param {object} options Cloudinary upload options
+     *  @param {boolean} url If true, will do an extra Cloudinary API call to fetch the uploaded image with fetch options
+     *  @return {Promise} The uploader Promise
+     */
+    uploader(image, options, url) {
+        const fetchOptions = Object.assign({}, this.fetchOptions);
+
+        return new Promise((resolve, reject) => cloudinary.uploader.upload(image.path, options, (err, res) => {
             if (err) {
                 return reject(new common.errors.GhostError({
                     err: err,
                     message: `Could not upload image ${image.path}`
                 }));
             }
-            return resolve(cloudinary.url(res.public_id.concat('.', res.format), fetchOptions));
+            if (url) {
+                return resolve(cloudinary.url(res.public_id.concat('.', res.format), fetchOptions));
+            }
+            return resolve();
         }));
     }
 
