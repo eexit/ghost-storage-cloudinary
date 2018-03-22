@@ -149,6 +149,26 @@ describe('save', function () {
             });
     });
 
+    it('should upload successfully with RetinaJS plugin', function (done) {
+        const config = fixtures.sampleConfig();
+        config.rjs = {baseWidth: 48};
+
+        cloudinaryAdapter = new CloudinaryAdapter(config);
+
+        sinon.stub(cloudinary.uploader, 'upload').callsArgWith(2, null, fixtures.sampleApiResult());
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return 'https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png';
+        });
+
+        cloudinaryAdapter.save(fixtures.mockImage)
+            .then(function (url) {
+                expect(url).equals('https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png');
+                expect(cloudinary.uploader.upload.callCount).to.equal(2, 'cloudinary.uploader.upload should have been called 2 times');
+                expect(cloudinary.url.callCount).to.equal(1, 'cloudinary.url should have been called 1 time');
+                done();
+            });
+    });
+
     afterEach(function () {
         // Unwraps the spy
         cloudinary.uploader.upload.restore();
