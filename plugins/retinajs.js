@@ -33,7 +33,7 @@ class RetinaJS {
     }
 
     /**
-     *  Creates the RetinaJS variant of given filename on Cloudinary
+     *  Generates and creates the RetinaJS variants for given image
      *  @param {object} image The image object to retinize
      *  @return {Promise} A Promise
      */
@@ -41,20 +41,20 @@ class RetinaJS {
         const that = this,
             [head, ...tail] = this.generateDprConfigs(this.resolveMaxDpr(image.path));
 
-        // Image is not retinizable: only upload DPR 1.0
+        // Image is not retinizable: creates DPR 1.0 variant only
         if (tail.length === 0) {
             return that.uploader(image.path, head, true);
         }
 
-        // Uploads the highest DRP index first then cascade with others
+        // Creates the highest DPR variant first then creates subsequent variants
         return that.uploader(image.path, head, true).
             then((url) => {
                 const tasks = _.map(tail, (c) => that.uploader(url, c, false)),
-                    // As the head call return URL is a DPR image, removes the retinajs
-                    // identifier of the URL (strips "@{i}x")
+                    // First creation call returns URL for highest DPR, in the post editor
+                    // we need the DPR 1.0 variant (RetinaJS identifier-free) URL
                     finalUrl = that.sanitize(url);
 
-                // Triggers remaining uploads and returned URL ignoring if they fail or not
+                // Creates subsequent variants and returns URL regardless their fulfillment status
                 if (that.rjsOptions.fireForget) {
                     Promise.all(tasks).catch((err) => {
                         console.error(new Error(`Fire&Forget RetinaJS: ${err}`));
@@ -62,7 +62,7 @@ class RetinaJS {
                     return finalUrl;
                 }
 
-                // Waits for all uploads to be done before returning the URL
+                // Waits for all subsequent variants to be done then returns the URL
                 return Promise.all(tasks).then(() => finalUrl);
             });
     }
@@ -77,7 +77,7 @@ class RetinaJS {
     }
 
     /**
-     *  Resolves the max DPR available for given filename and baseWidth configuration.
+     *  Resolves the max DPR index available for given filename and baseWidth configuration.
      *  If baseWidth configuration is set to 800 and filename image has a width of 2500,
      *  the value returned by this method will be 2500 / 800 = 3.125 => 3.
      *  @param {string} filename Image filename
@@ -100,7 +100,7 @@ class RetinaJS {
 
     /**
      *  Generates a collection of uploadOptions derivated from the original
-     *  uploadOptions for each DPR index.
+     *  uploadOptions for each variant in desc mode (highest DPR on the top).
      *  @param {int} dpr A DPR index returned by resolveMaxDpr()
      *  @return {array} A collection customized uploadOptions for all DPRs
      */
@@ -113,7 +113,7 @@ class RetinaJS {
         for (let i = dpr; i >= 1; i -= 1) {
             const config = Object.assign({}, this.uploadOptions),
                 dprConfig = {
-                    // Forces the image width to wanted baseWidth
+                    // Forces the image width to baseWidth
                     width: this.rjsOptions.baseWidth,
                     // No scale-up!
                     if: `iw_gt_${this.rjsOptions.baseWidth}`,
@@ -125,13 +125,12 @@ class RetinaJS {
                     tags: [`dpr${i}`]
                 };
 
-            // Mutates the public_id for DPR > 1 in order
-            // to match the retinajs identifier (public_id@{dpr}x.ext)
+            // Builds the RetinaJS identifier (@{i}x) for variants
+            // with DPR > 1.0
             if (i > 1) {
                 dprConfig.public_id = `${config.public_id}@${i}x`;
             }
 
-            // Merges DPR generated config into uploadOptions
             _.mergeWith(config, dprConfig, (objv, srcv) => {
                 if (_.isArray(objv)) {
                     return objv.concat(srcv);

@@ -63,8 +63,11 @@ The plugin will compute the available variants for your image off this number.
 
 When truthy, the plugin will upload the first variant and return its URL while it will continue to create the subsequent variants in the background. This is useful when the RetinaJS is a *nice-to-have* asset to your blog.
 
+**Gotchas:**
+
 - If the first variant creation fails, an error will be returned and other variants will be discarded
 - Each subsequent variant creation process is isolated and asynchronous
 - When a subsequent variant creation error occurs, the error is logged then discarded
+- It won't be *much faster* since the plugin won't upload the image for every variants: it reuses the first variant URL to generate subsequent variants
 
 When falsy (default behavior), the plugin will wait for all variants to be successfully created to return the image URL.
