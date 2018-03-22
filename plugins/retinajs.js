@@ -32,6 +32,11 @@ class RetinaJS {
         }
     }
 
+    /**
+     *  Creates the RetinaJS variant of given filename on Cloudinary
+     *  @param {string} filename The image to retinize
+     *  @return {Promise} A Promise
+     */
     retinize(filename) {
         const that = this,
             [head, ...tail] = this.generateDprConfigs(this.resolveMaxDpr(filename.path));
