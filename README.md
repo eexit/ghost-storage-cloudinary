@@ -20,7 +20,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 
 ## Installation
 
-### Direct install
+### Install from Git
 
 - Go into Ghost root directory
 - Navigate to the `/core/server/adapters/storage` directory
@@ -39,14 +39,26 @@ $ npm install --production
 
 - Done, go configure
 
-### Docker
+### Install from NPM
+
+- Go into Ghost root directory
+- Download the adpater:
+
+```bash
+$ npm install --production ghost-storage-cloudinary
+$ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
+```
+
+- Done, go configure
+
+### Install on Docker
 
 Here's an example of using this adapter with a containerized Ghost:
 
 ```Dockerfile
 FROM ghost:1.21-alpine
 WORKDIR $GHOST_INSTALL/current
-RUN npm install ghost-storage-cloudinary --production --loglevel=error --no-save
+RUN npm install --production --loglevel=error --no-save ghost-storage-cloudinary
 RUN mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
 WORKDIR $GHOST_INSTALL
 RUN set -ex; \
