@@ -65,24 +65,24 @@ class CloudinaryAdapter extends StorageBase {
             return rjs.retinize(image);
         }
 
-        return this.uploader(image, uploadOptions, true);
+        return this.uploader(image.path, uploadOptions, true);
     }
 
     /**
      *  Uploads an image with options to Cloudinary
-     *  @param {object} image The image object to upload
+     *  @param {string} imagePath The image path to upload (local or remote)
      *  @param {object} options Cloudinary upload options
      *  @param {boolean} url If true, will do an extra Cloudinary API call to fetch the uploaded image with fetch options
      *  @return {Promise} The uploader Promise
      */
-    uploader(image, options, url) {
+    uploader(imagePath, options, url) {
         const fetchOptions = Object.assign({}, this.fetchOptions);
 
-        return new Promise((resolve, reject) => cloudinary.uploader.upload(image.path, options, (err, res) => {
+        return new Promise((resolve, reject) => cloudinary.uploader.upload(imagePath, options, (err, res) => {
             if (err) {
                 return reject(new common.errors.GhostError({
                     err: err,
-                    message: `Could not upload image ${image.path}`
+                    message: `Could not upload image ${imagePath}`
                 }));
             }
             if (url) {

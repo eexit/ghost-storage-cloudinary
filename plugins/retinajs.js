@@ -34,20 +34,20 @@ class RetinaJS {
 
     /**
      *  Creates the RetinaJS variant of given filename on Cloudinary
-     *  @param {string} filename The image to retinize
+     *  @param {object} image The image object to retinize
      *  @return {Promise} A Promise
      */
-    retinize(filename) {
+    retinize(image) {
         const that = this,
-            [head, ...tail] = this.generateDprConfigs(this.resolveMaxDpr(filename.path));
+            [head, ...tail] = this.generateDprConfigs(this.resolveMaxDpr(image.path));
 
         // Image is not retinizable: only upload DPR 1.0
         if (tail.length === 0) {
-            return that.uploader(filename, head, true);
+            return that.uploader(image.path, head, true);
         }
 
         // Uploads the highest DRP index first then cascade with others
-        return that.uploader(filename, head, true).
+        return that.uploader(image.path, head, true).
             then((url) => {
                 const tasks = _.map(tail, (c) => that.uploader(url, c, false)),
                     // As the head call return URL is a DPR image, removes the retinajs

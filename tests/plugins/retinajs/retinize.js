@@ -23,7 +23,7 @@ describe('retinize', function () {
             config = {public_id: image.name},
             rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 500});
 
-        uploader.withArgs(image, sinon.match(config), true).resolves('http://example.com/500x250.png');
+        uploader.withArgs(image.path, sinon.match(config), true).resolves('http://example.com/500x250.png');
 
         rjs.retinize(image).then(function (url) {
             expect(url).to.equal('http://example.com/500x250.png');
@@ -40,7 +40,7 @@ describe('retinize', function () {
             config = {public_id: image.name},
             rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 500});
 
-        uploader.withArgs(image, sinon.match(config), true).rejects(new Error('some error occurred'));
+        uploader.withArgs(image.path, sinon.match(config), true).rejects(new Error('some error occurred'));
 
         rjs.retinize(image).then(function () {
             done('should raise an error');
@@ -57,7 +57,7 @@ describe('retinize', function () {
             config = {public_id: `${image.name}@4x`},
             rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 125});
 
-        uploader.withArgs(image, sinon.match(config), true).resolves('http://example.com/500x250.png');
+        uploader.withArgs(image.path, sinon.match(config), true).resolves('http://example.com/500x250.png');
         uploader.withArgs('http://example.com/500x250.png', sinon.match.object, false).resolves();
 
         rjs.retinize(image).then(function (url) {
@@ -76,7 +76,7 @@ describe('retinize', function () {
             config4 = {public_id: `${image.name}@4x`},
             rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 125});
 
-        uploader.withArgs(image, sinon.match(config4), true).resolves('http://example.com/500x250.png');
+        uploader.withArgs(image.path, sinon.match(config4), true).resolves('http://example.com/500x250.png');
         uploader.withArgs('http://example.com/500x250.png', sinon.match(config3), false).rejects(new Error('Oops!'));
 
         rjs.retinize(image).then(function () {
@@ -97,7 +97,7 @@ describe('retinize', function () {
                 fireForget: true
             });
 
-        uploader.withArgs(image, sinon.match(config), true).resolves('http://example.com/500x250.png');
+        uploader.withArgs(image.path, sinon.match(config), true).resolves('http://example.com/500x250.png');
         uploader.withArgs('http://example.com/500x250.png', sinon.match.object, false).resolves();
 
         rjs.retinize(image).then(function (url) {
@@ -119,7 +119,7 @@ describe('retinize', function () {
                 fireForget: true
             });
 
-        uploader.withArgs(image, sinon.match(config4), true).rejects(new Error('Oops!'));
+        uploader.withArgs(image.path, sinon.match(config4), true).rejects(new Error('Oops!'));
         uploader.withArgs('http://example.com/500x250.png', sinon.match(config3), false).resolves();
 
         rjs.retinize(image).then(function () {
@@ -141,7 +141,7 @@ describe('retinize', function () {
                 fireForget: true
             });
 
-        uploader.withArgs(image, sinon.match(config4), true).resolves('http://example.com/500x250.png');
+        uploader.withArgs(image.path, sinon.match(config4), true).resolves('http://example.com/500x250.png');
         uploader.withArgs('http://example.com/500x250.png', sinon.match(config3), false).rejects('Oops!');
 
         rjs.retinize(image).then(function (url) {
