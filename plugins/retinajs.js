@@ -115,6 +115,8 @@ class RetinaJS {
                 dprConfig = {
                     // Forces the image width to wanted baseWidth
                     width: this.rjsOptions.baseWidth,
+                    // No scale-up!
+                    if: `iw_gt_${this.rjsOptions.baseWidth}`,
                     // Resizing method
                     crop: 'scale',
                     // The DPR will resize the image accordingly to its value
