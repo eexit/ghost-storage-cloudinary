@@ -4,7 +4,7 @@ require('bluebird');
 
 const _ = require('lodash'),
     sizeOf = require('image-size'),
-    maxSupportedDrp = 5;
+    maxSupportedDpr = 5;
 
 class RetinaJS {
 
@@ -83,7 +83,7 @@ class RetinaJS {
      *  @param {string} filename Image filename
      *  @return {int} Max available DPR index or:
      *      - 1 if image is smaller than baseWidth
-     *      - maxSupportedDrp if image max DPR is higher than Cloudinary can support
+     *      - maxSupportedDpr if image max DPR is higher than Cloudinary can support
      */
     resolveMaxDpr(filename) {
         const dim = sizeOf(filename),
@@ -92,8 +92,8 @@ class RetinaJS {
         if (mdpr === 0) {
             return 1;
         }
-        if (mdpr > maxSupportedDrp) {
-            return maxSupportedDrp;
+        if (mdpr > maxSupportedDpr) {
+            return maxSupportedDpr;
         }
         return mdpr;
     }
