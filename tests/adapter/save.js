@@ -1,13 +1,13 @@
 'use strict';
 
-const CloudinaryAdapter = require('../index'),
-    chai = require('chai'),
+const chai = require('chai'),
     expect = chai.expect,
     sinon = require('sinon'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
-    common = require(path.join(__dirname, '/errors')),
-    fixtures = require(path.join(__dirname, '/fixtures'));
+    CloudinaryAdapter = require(path.join(__dirname, '../../')),
+    common = require(path.join(__dirname, '../../errors')),
+    fixtures = require(path.join(__dirname, 'fixtures'));
 
 let cloudinaryAdapter = null;
 
@@ -145,6 +145,26 @@ describe('save', function () {
             .catch(function (ex) {
                 expect(ex).to.be.an.instanceOf(common.errors.GhostError);
                 expect(ex.message).to.equal(`Could not upload image ${fixtures.mockImage.path}`);
+                done();
+            });
+    });
+
+    it('should upload successfully with RetinaJS plugin', function (done) {
+        const config = fixtures.sampleConfig();
+        config.rjs = {baseWidth: 48};
+
+        cloudinaryAdapter = new CloudinaryAdapter(config);
+
+        sinon.stub(cloudinary.uploader, 'upload').callsArgWith(2, null, fixtures.sampleApiResult());
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return 'https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png';
+        });
+
+        cloudinaryAdapter.save(fixtures.mockImage)
+            .then(function (url) {
+                expect(url).equals('https://res.cloudinary.com/blog-mornati-net/image/upload/q_auto:good/favicon.png');
+                expect(cloudinary.uploader.upload.callCount).to.equal(2, 'cloudinary.uploader.upload should have been called 2 times');
+                expect(cloudinary.url.callCount).to.equal(1, 'cloudinary.url should have been called 1 time');
                 done();
             });
     });

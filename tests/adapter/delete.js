@@ -1,13 +1,13 @@
 'use strict';
 
-const CloudinaryAdapter = require('../index'),
-    chai = require('chai'),
+const chai = require('chai'),
     expect = chai.expect,
     sinon = require('sinon'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
-    common = require(path.join(__dirname, '/errors')),
-    fixtures = require(path.join(__dirname, '/fixtures'));
+    CloudinaryAdapter = require(path.join(__dirname, '../../')),
+    common = require(path.join(__dirname, '../../errors')),
+    fixtures = require(path.join(__dirname, 'fixtures'));
 
 let cloudinaryAdapter = null;
 
