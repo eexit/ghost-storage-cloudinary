@@ -12,9 +12,11 @@ branches:
   - /^greenkeeper/.*$/
 install:
   - npm install --loglevel=error
-  - npm install --loglevel=error -g mocha
+  - npm install --loglevel=error -g mocha greenkeeper-lockfile@1
 before_script:
   - npm --silent run-script eslint
+  - greenkeeper-lockfile-update
+after_script: greenkeeper-lockfile-upload
 after_success:
   - npm run-script cover
   - codeclimate-test-reporter < coverage/lcov.info
