@@ -18,10 +18,6 @@
                 "quality": "auto",
                 "secure": false,
                 "cdn_subdomain": true
-            },
-            "rjs": {
-                "baseWidth": 960,
-                "fireForget": false
             }
         }
     }

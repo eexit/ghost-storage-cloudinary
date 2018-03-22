@@ -5,13 +5,16 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/f55e8c82a9a526fe9b2f/maintainability)](https://codeclimate.com/github/eexit/ghost-storage-cloudinary/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f55e8c82a9a526fe9b2f/test_coverage)](https://codeclimate.com/github/eexit/ghost-storage-cloudinary/test_coverage)
 
+A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost](https://github.com/TryGhost/Ghost) storage adapter.
+
 ### Features
 
-- [Ghost](https://github.com/TryGhost/Ghost) version `>=1.x`
+- Ghost version `>=1`
 - Latest Cloudinary NodeJS [SDK](https://github.com/cloudinary/cloudinary_npm)
 - Image upload, existence check & deletion
 - Ability to upload images into a directory
 - Ability to tag images
+- Cool [plugins](plugins)!
 - Compatible with [mmornati/ghost-cloudinary-store](https://github.com/mmornati/ghost-cloudinary-store) configuration
 
 ## Installation
@@ -60,25 +63,23 @@ Here, we use the Ghost CLI to set some pre-defined values.
 
 Check out [configuration.sample.json](configuration.sample.json) for a complete example of Ghost integration.
 
-- The `auth` section is optional is you use the `CLOUDINARY_URL` environment variable [authentification method](https://cloudinary.com/documentation/node_additional_topics#configuration_options)
-- The `upload` section contains Cloudinary API [upload options](https://cloudinary.com/documentation/image_upload_api_reference#upload)
-- The `fetch` section contains Cloudinary API [image transformation options](https://cloudinary.com/documentation/image_transformation_reference)
+- The `auth` property is optional if you use the `CLOUDINARY_URL` environment variable [authentification method](https://cloudinary.com/documentation/node_additional_topics#configuration_options)
+- The optional `upload` property contains Cloudinary API [upload options](https://cloudinary.com/documentation/image_upload_api_reference#upload)
+- The optional `fetch` property contains Cloudinary API [image transformation options](https://cloudinary.com/documentation/image_transformation_reference)
 
-### Recommended options
+### Recommended configuration
 
-#### `upload` section
+- `upload.use_filename = true` in order use the original image name
+- `upload.unique_filename = false` unlikely Ghost local storage adapter which auto-dedup an existing file name, Cloudinary will return the existing image URL instead of deduping the image
+- `upload.overwrite = false ` goes along with previous option: returns existing image instead of overwriting it
+- `upload.folder = "my-blog"` allows to upload all your images into a specific directory instead of Cloudinary media library root
+- `upload.tags = ["blog", "photography"]` if you want to add some taxonomy to your uploaded images
+- `fetch.quality = "auto"` equals `auto:good` (see [doc](https://cloudinary.com/documentation/image_transformation_reference#quality_parameter))
+- `fetch.secure = false` set to true if you want to serve images over SSL (not recommended for performances)
+- `fetch.cdn_subdomain = true` to really use the benefit of Cloudinary CDN
 
-- `use_filename = true` in order use the original image name
-- `unique_filename = false` unlikely Ghost local storage adapter which auto-dedup an existing file name, Cloudinary will return the existing image URL instead of deduping the image
-- `overwrite = false` goes along with previous option: returns existing image instead of overwriting it
-- `folder = "my-blog"` allows to upload all your images into a specific directory instead of Cloudinary media library root
-- `tags = ['blog', 'personal']` if you want to add some taxonomy to your uploaded images
 
-#### `fetch` section
-
-- `quality = "auto"` equals `auto:good` (see [doc](https://cloudinary.com/documentation/image_transformation_reference#quality_parameter))
-- `secure = true` if you want to serve images over SSL (not recommended for performances)
-- `cdn_subdomain = true` to really use the benefit of Cloudinary CDN
+:heart: Don't forget to checkout the [plugins](plugins)!
 
 ---
 
