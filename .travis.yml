@@ -9,6 +9,7 @@ branches:
   only:
   - master
   - /^[0-9]+(\.[0-9]+)*((-staging|-beta|-alpha|-test)[0-9]*)?$/
+  - /^greenkeeper/.*$/
 install:
   - npm install --loglevel=error
   - npm install --loglevel=error -g mocha
