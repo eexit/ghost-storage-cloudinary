@@ -42,6 +42,7 @@
   "dependencies": {
     "bluebird": "3.5.1",
     "cloudinary": "~1.11.0",
+    "ghost-ignition": "^2.9.0",
     "ghost-storage-base": "0.0.2",
     "image-size": "^0.6.2",
     "lodash": "^4.17.5"

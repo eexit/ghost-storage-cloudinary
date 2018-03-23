@@ -7,6 +7,7 @@ const StorageBase = require('ghost-storage-base'),
     path = require('path'),
     request = require('request').defaults({encoding: null}),
     plugin = require(path.join(__dirname, '/plugins')),
+    debug = require('ghost-ignition').debug('adapter'),
     common = (() => {
         // Tries to include GhostError helper
         try {
@@ -34,6 +35,11 @@ class CloudinaryAdapter extends StorageBase {
         this.uploadOptions = config.upload || legacy.file || {};
         this.fetchOptions = config.fetch || legacy.image || {};
         this.rjsOptions = config.rjs || null;
+
+        debug('useDatedFolder:', this.useDatedFolder);
+        debug('uploadOptions:', this.uploadOptions);
+        debug('fetchOptions:', this.fetchOptions);
+        debug('rjsOptions:', this.rjsOptions);
 
         cloudinary.config(auth);
     }
@@ -66,6 +72,8 @@ class CloudinaryAdapter extends StorageBase {
             uploadOptions.folder = this.getTargetDir(uploadOptions.folder);
         }
 
+        debug('save:uploadOptions:', uploadOptions);
+
         // Retinizes images if there is any config provided
         if (this.rjsOptions) {
             const rjs = new plugin.RetinaJS(this.uploader, uploadOptions, this.rjsOptions);
@@ -83,7 +91,12 @@ class CloudinaryAdapter extends StorageBase {
      *  @return {Promise} The uploader Promise
      */
     uploader(imagePath, options, url) {
-        const fetchOptions = Object.assign({}, this.fetchOptions);
+        const fetchOptions = this.fetchOptions;
+
+        debug('uploader:imagePath', imagePath);
+        debug('uploader:options', options);
+        debug('uploader:url', url);
+        debug('uploader:fetchOptions:', fetchOptions);
 
         return new Promise((resolve, reject) => cloudinary.uploader.upload(imagePath, options, (err, res) => {
             if (err) {
