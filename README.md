@@ -46,7 +46,7 @@ $ npm install --production
 - Download the adpater:
 
 ```bash
-$ npm install --production ghost-storage-cloudinary
+$ npm install --production --no-save ghost-storage-cloudinary
 $ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
 ```
 
@@ -95,6 +95,26 @@ Check out [configuration.sample.json](configuration.sample.json) for a complete 
 
 
 :heart: Don't forget to checkout the [plugins](plugins)!
+
+## Development
+
+Run `npm install` without the `--production` flag.
+
+Runs the tests:
+
+	$ npm t
+
+Generates the coverage:
+
+	$ npm run-script cover
+
+Runs the linter:
+
+	$ npm run-script eslint
+
+To enable debug logs, set the following environment variable:
+
+	DEBUG=ghost-storage-cloudinary:*
 
 ---
 
