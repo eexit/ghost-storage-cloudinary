@@ -20,8 +20,8 @@ describe('retinize', function () {
 
     it('should retinize successfully (dpr1)', function (done) {
         const image = fixtures.mockImage,
-            config = {public_id: image.name},
-            rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 500});
+            config = {upload: {public_id: image.name}},
+            rjs = new RetinaJS(uploader, config, {baseWidth: 500});
 
         uploader.withArgs(image.path, sinon.match(config), true).resolves('http://example.com/500x250.png');
 
@@ -37,8 +37,8 @@ describe('retinize', function () {
 
     it('should return an error when an error occurs (dpr1)', function (done) {
         const image = fixtures.mockImage,
-            config = {public_id: image.name},
-            rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 500});
+            config = {upload: {public_id: image.name}},
+            rjs = new RetinaJS(uploader, config, {baseWidth: 500});
 
         uploader.withArgs(image.path, sinon.match(config), true).rejects(new Error('some error occurred'));
 
@@ -54,8 +54,8 @@ describe('retinize', function () {
 
     it('should retinize successfully (dpr4/sync)', function (done) {
         const image = fixtures.mockImage,
-            config = {public_id: `${image.name}@4x`},
-            rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 125});
+            config = {upload: {public_id: `${image.name}@4x`}},
+            rjs = new RetinaJS(uploader, {upload: {public_id: image.name}}, {baseWidth: 125});
 
         uploader.withArgs(image.path, sinon.match(config), true).resolves('http://example.com/500x250.png');
         uploader.withArgs('http://example.com/500x250.png', sinon.match.object, false).resolves();
@@ -72,9 +72,9 @@ describe('retinize', function () {
 
     it('should return an error when an error occurs (dpr4/sync)', function (done) {
         const image = fixtures.mockImage,
-            config3 = {public_id: `${image.name}@3x`},
-            config4 = {public_id: `${image.name}@4x`},
-            rjs = new RetinaJS(uploader, {public_id: image.name}, {baseWidth: 125});
+            config3 = {upload: {public_id: `${image.name}@3x`}},
+            config4 = {upload: {public_id: `${image.name}@4x`}},
+            rjs = new RetinaJS(uploader, {upload: {public_id: image.name}}, {baseWidth: 125});
 
         uploader.withArgs(image.path, sinon.match(config4), true).resolves('http://example.com/500x250.png');
         uploader.withArgs('http://example.com/500x250.png', sinon.match(config3), false).rejects(new Error('Oops!'));
@@ -91,8 +91,8 @@ describe('retinize', function () {
 
     it('should retinize successfully (dpr4/async)', function (done) {
         const image = fixtures.mockImage,
-            config = {public_id: `${image.name}@4x`},
-            rjs = new RetinaJS(uploader, {public_id: image.name}, {
+            config = {upload: {public_id: `${image.name}@4x`}},
+            rjs = new RetinaJS(uploader, {upload: {public_id: image.name}}, {
                 baseWidth: 125,
                 fireForget: true
             });
@@ -112,9 +112,9 @@ describe('retinize', function () {
 
     it('should return an error when a retinize errors at first dpr (dpr4/async)', function (done) {
         const image = fixtures.mockImage,
-            config3 = {public_id: `${image.name}@3x`},
-            config4 = {public_id: `${image.name}@4x`},
-            rjs = new RetinaJS(uploader, {public_id: image.name}, {
+            config3 = {upload: {public_id: `${image.name}@3x`}},
+            config4 = {upload: {public_id: `${image.name}@4x`}},
+            rjs = new RetinaJS(uploader, {upload: {public_id: image.name}}, {
                 baseWidth: 125,
                 fireForget: true
             });
@@ -134,9 +134,9 @@ describe('retinize', function () {
 
     it('should not return an error when a retinize error occurs after the first dpr (dpr4/async)', function (done) {
         const image = fixtures.mockImage,
-            config3 = {public_id: `${image.name}@3x`},
-            config4 = {public_id: `${image.name}@4x`},
-            rjs = new RetinaJS(uploader, {public_id: image.name}, {
+            config3 = {upload: {public_id: `${image.name}@3x`}},
+            config4 = {upload: {public_id: `${image.name}@4x`}},
+            rjs = new RetinaJS(uploader, {upload: {public_id: image.name}}, {
                 baseWidth: 125,
                 fireForget: true
             });

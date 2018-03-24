@@ -21,31 +21,31 @@ describe('constructor', function () {
         }
     });
 
-    it('should fail with empty uploadOptions', function (done) {
+    it('should fail with empty uploaderOptions', function (done) {
         try {
             new RetinaJS(emptyFunc, {}, {baseWidth: 100});
             done('should raise an error');
         } catch (e) {
             expect(e).to.be.instanceOf(TypeError);
-            expect(e.message).to.equal('RetinaJS error: invalid uploadOptions.public_id');
+            expect(e.message).to.equal('RetinaJS error: invalid uploaderOptions.upload.public_id');
             done();
         }
     });
 
-    it('should fail with empty public_id uploadOptions', function (done) {
+    it('should fail with empty public_id uploaderOptions.upload', function (done) {
         try {
-            new RetinaJS(emptyFunc, {public_id: ''}, {baseWidth: 100});
+            new RetinaJS(emptyFunc, {upload: {public_id: ''}}, {baseWidth: 100});
             done('should raise an error');
         } catch (e) {
             expect(e).to.be.instanceOf(TypeError);
-            expect(e.message).to.equal('RetinaJS error: invalid uploadOptions.public_id');
+            expect(e.message).to.equal('RetinaJS error: invalid uploaderOptions.upload.public_id');
             done();
         }
     });
 
     it('should fail with invalid rjs.baseWidth option', function (done) {
         try {
-            new RetinaJS(emptyFunc, {public_id: 'foo'}, {});
+            new RetinaJS(emptyFunc, {upload: {public_id: 'foo'}}, {});
             done('should raise an error');
         } catch (e) {
             expect(e).to.be.instanceOf(TypeError);
@@ -56,7 +56,7 @@ describe('constructor', function () {
 
     it('should fail with non-integer rjs.baseWidth value', function (done) {
         try {
-            new RetinaJS(emptyFunc, {public_id: 'foo'}, {baseWidth: 'string'});
+            new RetinaJS(emptyFunc, {upload: {public_id: 'foo'}}, {baseWidth: 'string'});
             done('should raise an error');
         } catch (e) {
             expect(e).to.be.instanceOf(TypeError);
@@ -67,7 +67,7 @@ describe('constructor', function () {
 
     it('should fail with rjs.baseWidth value < 1', function (done) {
         try {
-            new RetinaJS(emptyFunc, {public_id: 'foo'}, {baseWidth: -12});
+            new RetinaJS(emptyFunc, {upload: {public_id: 'foo'}}, {baseWidth: -12});
             done('should raise an error');
         } catch (e) {
             expect(e).to.be.instanceOf(RangeError);
