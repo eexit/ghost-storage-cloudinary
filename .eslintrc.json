@@ -13,7 +13,7 @@
         "brace-style": 2,
         "callback-return": 2,
         "capitalized-comments": [2, "always", {"ignoreConsecutiveComments": true}],
-        "class-methods-use-this": [2, {"exceptMethods": ["serve", "read", "sanitize"]}],
+        "class-methods-use-this": [2, {"exceptMethods": ["serve", "uploader", "read", "sanitize"]}],
         "comma-dangle": 2,
         "comma-spacing": 2,
         "comma-style": 2,

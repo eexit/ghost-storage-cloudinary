@@ -8,9 +8,9 @@ const _ = require('lodash'),
 
 class RetinaJS {
 
-    constructor(uploader, uploadOptions, rjsOptions) {
+    constructor(uploader, uploaderOptions, rjsOptions) {
         this.uploader = uploader;
-        this.uploadOptions = uploadOptions || {};
+        this.uploaderOptions = uploaderOptions || {};
         this.rjsOptions = rjsOptions || {};
         this.rjsOptions.baseWidth = parseInt(this.rjsOptions.baseWidth, 10);
         this.rjsOptions.fireForget = this.rjsOptions.fireForget || false;
@@ -19,8 +19,11 @@ class RetinaJS {
             throw new TypeError('RetinaJS: uploader must be callable');
         }
 
-        if (typeof this.uploadOptions.public_id === 'undefined' || this.uploadOptions.public_id.length === 0) {
-            throw new TypeError('RetinaJS error: invalid uploadOptions.public_id');
+        if (typeof this.uploaderOptions.upload === 'undefined' ||
+            typeof this.uploaderOptions.upload.public_id === 'undefined' ||
+            this.uploaderOptions.upload.public_id.length === 0
+        ) {
+            throw new TypeError('RetinaJS error: invalid uploaderOptions.upload.public_id');
         }
 
         if (isNaN(this.rjsOptions.baseWidth)) {
@@ -49,21 +52,21 @@ class RetinaJS {
         // Creates the highest DPR variant first then creates subsequent variants
         return that.uploader(image.path, head, true).
             then((url) => {
-                const tasks = _.map(tail, (c) => that.uploader(url, c, false)),
+                const variants = _.map(tail, (c) => that.uploader(url, c, false)),
                     // First creation call returns URL for highest DPR, in the post editor
                     // we need the DPR 1.0 variant (RetinaJS identifier-free) URL
                     finalUrl = that.sanitize(url);
 
                 // Creates subsequent variants and returns URL regardless their fulfillment status
                 if (that.rjsOptions.fireForget) {
-                    Promise.all(tasks).catch((err) => {
+                    Promise.all(variants).catch((err) => {
                         console.error(new Error(`Fire&Forget RetinaJS: ${err}`));
                     });
                     return finalUrl;
                 }
 
                 // Waits for all subsequent variants to be done then returns the URL
-                return Promise.all(tasks).then(() => finalUrl);
+                return Promise.all(variants).then(() => finalUrl);
             });
     }
 
@@ -99,10 +102,10 @@ class RetinaJS {
     }
 
     /**
-     *  Generates a collection of uploadOptions derivated from the original
-     *  uploadOptions for each variant in desc mode (highest DPR on the top).
-     *  @param {int} dpr A DPR index returned by resolveMaxDpr()
-     *  @return {array} A collection customized uploadOptions for all DPRs
+     *  Generates a collection of upload options derivated from the original
+     *  upload otions for each variant in desc mode (highest DPR on the top).
+     *  @param {int} dpr The highest DPR value
+     *  @return {array} A collection customized upload options for all DPRs
      */
     generateDprConfigs(dpr) {
         if (dpr < 1) {
@@ -111,7 +114,8 @@ class RetinaJS {
 
         const configs = [];
         for (let i = dpr; i >= 1; i -= 1) {
-            const config = Object.assign({}, this.uploadOptions),
+            // Deep clone
+            const config = JSON.parse(JSON.stringify(Object.assign({}, this.uploaderOptions))),
                 dprConfig = {
                     // Forces the image width to baseWidth
                     width: this.rjsOptions.baseWidth,
@@ -128,10 +132,10 @@ class RetinaJS {
             // Builds the RetinaJS identifier (@{i}x) for variants
             // with DPR > 1.0
             if (i > 1) {
-                dprConfig.public_id = `${config.public_id}@${i}x`;
+                dprConfig.public_id = `${config.upload.public_id}@${i}x`;
             }
 
-            _.mergeWith(config, dprConfig, (objv, srcv) => {
+            _.mergeWith(config.upload, dprConfig, (objv, srcv) => {
                 if (_.isArray(objv)) {
                     return objv.concat(srcv);
                 }

@@ -13,7 +13,7 @@ describe('sanitize', function () {
                 ['encoded.ext', 'encoded%403x.ext'],
                 ['foo@2x.ext', 'foo@2x@1x.ext']
             ],
-            rjs = new RetinaJS(function(){/* Do nothing */ }, {public_id: 'foo'}, {baseWidth: 1});
+            rjs = new RetinaJS(function(){/* Do nothing */ }, {upload: {public_id: 'foo'}}, {baseWidth: 1});
 
         for (const [expected, input] of tests) {
             expect(rjs.sanitize(input)).to.equal(expected);
