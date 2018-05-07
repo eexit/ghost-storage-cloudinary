@@ -35,8 +35,7 @@
   ],
   "license": "ISC",
   "scripts": {
-    "test": "mocha tests/index",
-    "cover": "istanbul cover _mocha -- tests",
+    "test": "nyc --reporter=lcov mocha tests/index",
     "eslint": "$(npm bin)/eslint ."
   },
   "dependencies": {
@@ -54,6 +53,7 @@
     "istanbul": "^0.4.5",
     "moment": "^2.21.0",
     "nock": "^9.2.3",
+    "nyc": "^11.7.1",
     "sinon": "^5.0.6"
   }
 }
