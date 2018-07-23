@@ -21,6 +21,9 @@ If you wish to integrate RetinaJS on your Ghost blog, [read this blog article](h
 - *Fire&Forget* support
 - Excellent [test coverage](https://codeclimate.com/github/eexit/ghost-storage-cloudinary) (100% as I write this)
 
+### Caveat
+
+It will generate Retina image variants for all images, including banners, author profile images and so on. Unfortunately, Ghost does not provide a contextualized storage adapter instance so for now, it's not possible to tell the adapter [the purpose of the image](https://forum.ghost.org/t/storage-adapter-context/1693).
 
 ### Configuration
 
