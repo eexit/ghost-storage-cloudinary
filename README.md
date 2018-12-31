@@ -10,7 +10,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 
 ### Features
 
-- Ghost version `>=1`
+- Ghost version `1.x` (not tested on Ghost `2.x`)
 - Latest Cloudinary NodeJS [SDK](https://github.com/cloudinary/cloudinary_npm)
 - Image upload, existence check & deletion
 - Ability to upload in dated sub-directories (alike Ghost default Local storage adapter `YYYY/MM`)
