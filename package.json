@@ -39,7 +39,7 @@
     "eslint": "$(npm bin)/eslint ."
   },
   "dependencies": {
-    "bluebird": "3.5.2",
+    "bluebird": "3.5.4",
     "cloudinary": "~1.12.0",
     "ghost-ignition": "^3.0.0",
     "ghost-storage-base": "0.0.3",
