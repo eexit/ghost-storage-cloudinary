@@ -44,7 +44,7 @@
     "ghost-ignition": "^3.0.0",
     "ghost-storage-base": "0.0.3",
     "image-size": "^0.7.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "npm": "^6.10.3"
   },
   "devDependencies": {
