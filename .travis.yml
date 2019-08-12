@@ -13,15 +13,14 @@ branches:
 install:
 - npm install --loglevel=error
 - npm install --loglevel=error -g mocha greenkeeper-lockfile@1
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-  > ./cc-test-reporter
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
 before_script:
 - npm --silent run-script eslint
-- "./cc-test-reporter before-build"
+- ./cc-test-reporter before-build
 - greenkeeper-lockfile-update
 after_script:
-- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 - greenkeeper-lockfile-upload
 jobs:
   include:
