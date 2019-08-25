@@ -27,6 +27,8 @@ It will generate Retina image variants for all images, including banners, author
 
 ### Configuration
 
+Make sure to disable [Ghost optimization feature](https://ghost.org/docs/concepts/config/#image-optimisation).
+
 In order to **activate** and configure the plugin, you need to add the `rjs` property in the [storage configuration](../configuration.sample.json):
 
 ```json
@@ -56,7 +58,7 @@ In order to **activate** and configure the plugin, you need to add the `rjs` pro
 - Is an `integer` or parseable number
 - Value must be `>=1`
 
-It should match the blog post/page image predefined width of your theme: if your theme displays images with a width of `800px`, this property value must be `800`.  
+It should match the blog post/page image predefined width of your theme: if your theme displays images with a width of `800px`, this property value must be `800`.
 The plugin will compute the available variants for your image off this number.
 
 #### Property `fireForget`

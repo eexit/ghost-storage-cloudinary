@@ -10,7 +10,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 
 ### Features
 
-- Ghost version `1.x` (not tested on Ghost `2.x`)
+- Compatible with Ghost version `1.x` and `2.x`
 - Latest Cloudinary NodeJS [SDK](https://github.com/cloudinary/cloudinary_npm)
 - Image upload, existence check & deletion
 - Ability to upload in dated sub-directories (alike Ghost default Local storage adapter `YYYY/MM`)
@@ -21,32 +21,13 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 
 ## Installation
 
-### Install from Git
-
-- Go into Ghost root directory
-- Navigate to the `/core/server/adapters/storage` directory
-- Download the adpater:
-
-```bash
-$ git clone git@github.com:eexit/ghost-storage-cloudinary.git
-```
-
-- Install the dependencies:
-
-```bash
-$ cd ghost-storage-cloudinary
-$ npm install --production
-```
-
-- Done, go configure
-
-### Install from NPM
+### Install from Yarn
 
 - Go into Ghost root directory
 - Download the adpater:
 
 ```bash
-$ npm install --production --no-save ghost-storage-cloudinary
+$ yarn add ghost-storage-cloudinary
 $ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
 ```
 
@@ -57,11 +38,11 @@ $ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
 Here's an example of using this adapter with a containerized Ghost:
 
 ```Dockerfile
-FROM ghost:1.26.0-alpine as cloudinary
+FROM ghost:2-alpine as cloudinary
 WORKDIR $GHOST_INSTALL/current
-RUN su-exec node yarn add ghost-storage-cloudinary@1.1.5
+RUN su-exec node yarn add ghost-storage-cloudinary@2
 
-FROM ghost:1.26.0-alpine
+FROM ghost:2-alpine
 COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules $GHOST_INSTALL/current/node_modules
 COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/current/core/server/adapters/storage/ghost-storage-cloudinary
 RUN set -ex; \
@@ -100,19 +81,15 @@ Check out [configuration.sample.json](configuration.sample.json) for a complete 
 
 ## Development
 
-Run `npm install` without the `--production` flag.
+Run `yarn install` without the `--production` flag.
 
-Runs the tests:
+Runs the tests and generate coverage:
 
 	$ npm t
 
-Generates the coverage:
-
-	$ npm run-script cover
-
 Runs the linter:
 
-	$ npm run-script eslint
+	$ npm run eslint
 
 To enable debug logs, set the following environment variable:
 
@@ -121,4 +98,3 @@ To enable debug logs, set the following environment variable:
 ---
 
 Many thanks to @[mmornati](https://github.com/mmornati), @[sethbrasile](https://github.com/sethbrasile) and all other contributors for their work. In the continuation of this project, don't hesitate to fork, contribute and add more features.
-
