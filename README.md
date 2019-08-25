@@ -57,11 +57,13 @@ $ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
 Here's an example of using this adapter with a containerized Ghost:
 
 ```Dockerfile
-FROM ghost:1.21-alpine
+FROM ghost:1.26.0-alpine as cloudinary
 WORKDIR $GHOST_INSTALL/current
-RUN npm install --production --loglevel=error --no-save ghost-storage-cloudinary
-RUN mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
-WORKDIR $GHOST_INSTALL
+RUN su-exec node yarn add ghost-storage-cloudinary@1.1.5
+
+FROM ghost:1.26.0-alpine
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules $GHOST_INSTALL/current/node_modules
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/current/core/server/adapters/storage/ghost-storage-cloudinary
 RUN set -ex; \
     su-exec node ghost config storage.active ghost-storage-cloudinary; \
     su-exec node ghost config storage.ghost-storage-cloudinary.upload.use_filename true; \
