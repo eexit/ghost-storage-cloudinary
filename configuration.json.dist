@@ -21,5 +21,8 @@
                 "cdn_subdomain": true
             }
         }
+    },
+    "imageOptimization": {
+        "resize": false
     }
 }
