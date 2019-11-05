@@ -24,7 +24,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 ### Install from Yarn
 
 - Go into Ghost root directory
-- Download the adpater:
+- Download the adapter:
 
 ```bash
 $ yarn add ghost-storage-cloudinary
