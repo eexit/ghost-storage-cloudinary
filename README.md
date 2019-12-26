@@ -10,10 +10,10 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 
 ### Features
 
-- Compatible with Ghost version `1.x` and `2.x`
+- Compatible with all Ghost versions :rocket:
 - Latest Cloudinary NodeJS [SDK](https://github.com/cloudinary/cloudinary_npm)
-- Image upload, existence check & deletion
-- Ability to upload in dated sub-directories (alike Ghost default Local storage adapter `YYYY/MM`)
+- Image upload, existence check & deletion (when Ghost will support it)
+- Ability to upload in dated sub-directories (alike first Ghost default Local storage adapter `YYYY/MM`)
 - Ability to upload images into a specific directory
 - Ability to tag images
 - Cool [plugins](plugins)!
@@ -27,7 +27,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 - Download the adapter:
 
 ```bash
-$ yarn add ghost-storage-cloudinary
+$ yarn add ghost-storage-cloudinary@2
 $ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
 ```
 
@@ -38,11 +38,11 @@ $ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
 Here's an example of using this adapter with a containerized Ghost:
 
 ```Dockerfile
-FROM ghost:2-alpine as cloudinary
+FROM ghost:3-alpine as cloudinary
 WORKDIR $GHOST_INSTALL/current
 RUN su-exec node yarn add ghost-storage-cloudinary@2
 
-FROM ghost:2-alpine
+FROM ghost:3-alpine
 COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules $GHOST_INSTALL/current/node_modules
 COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/current/core/server/adapters/storage/ghost-storage-cloudinary
 RUN set -ex; \
@@ -56,6 +56,8 @@ RUN set -ex; \
 
 Here, we use the Ghost CLI to set some pre-defined values.
 
+:information_source: For Ghost version `1.x`, use `ghost-storage-cloudinary@1` package version.
+
 ## Configuration
 
 Check out [configuration.json.dist](configuration.json.dist) for a complete example.
@@ -64,7 +66,7 @@ Check out [configuration.json.dist](configuration.json.dist) for a complete exam
 - The optional `useDatedFolder = false` to upload images in dated sub-directories (alike default Ghost Local storage adapter)
 - The `auth` property is optional if you use the `CLOUDINARY_URL` environment variable [authentification method](https://cloudinary.com/documentation/node_additional_topics#configuration_options)
 - The optional `upload` property contains Cloudinary API [upload options](https://cloudinary.com/documentation/image_upload_api_reference#upload)
-- The optional `fetch` property contains Cloudinary API [image transformation options](https://cloudinary.com/documentation/image_transformation_reference)
+- The optional `fetch` property contains Cloudinary API [image transformation options](https://cloudinary.com/documentation/image_transformations)
 
 ### Recommended configuration
 
