@@ -1,7 +1,7 @@
 {
   "name": "ghost-storage-cloudinary",
   "version": "1.1.5",
-  "description": "Cloudinary storage adapter for Ghost >= 1.x",
+  "description": "Cloudinary storage adapter for Ghost 1.x",
   "main": "index.js",
   "keywords": [
     "cloudinary",
@@ -11,10 +11,7 @@
     "storage",
     "module"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eexit/ghost-storage-cloudinary"
-  },
+  "repository": "https://github.com/eexit/ghost-storage-cloudinary",
   "bugs": {
     "url": "https://github.com/eexit/ghost-storage-cloudinary/issues"
   },
@@ -39,21 +36,21 @@
     "eslint": "$(npm bin)/eslint ."
   },
   "dependencies": {
-    "bluebird": "3.5.5",
-    "cloudinary": "~1.14.0",
+    "bluebird": "^3.7.0",
+    "cloudinary": "~1.18.0",
     "ghost-ignition": "^3.0.0",
     "ghost-storage-base": "0.0.3",
-    "image-size": "^0.7.0",
+    "image-size": "^0.8.0",
     "lodash": "^4.17.15",
-    "npm": "^6.10.3"
+    "npm": "^6.12.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "v5.16.0",
-    "eslint-plugin-mocha": "v5.3.0",
+    "eslint": "^5.0.0",
+    "eslint-plugin-mocha": "5.3.0",
     "moment": "^2.24.0",
-    "nock": "^10.0.6",
-    "nyc": "^14.1.1",
-    "sinon": "^7.0.0"
+    "nock": "^10.0.0",
+    "nyc": "^14.0.0",
+    "sinon": "^8.0.0"
   }
 }

@@ -1,15 +1,10 @@
 language: node_js
 node_js:
-- '8'
 - '6'
+- '8'
 addons:
   code_climate:
     repo_token: "$CODE_CLIMATE_TOKEN"
-branches:
-  only:
-  - master
-  - "/^[0-9]+(\\.[0-9]+)*((-staging|-beta|-alpha|-test)[0-9]*)?$/"
-  - "/^greenkeeper/.*$/"
 install:
 - npm install --loglevel=error
 - npm install --loglevel=error -g mocha greenkeeper-lockfile@1
