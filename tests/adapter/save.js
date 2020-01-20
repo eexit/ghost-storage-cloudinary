@@ -44,16 +44,48 @@ describe('save', function () {
         });
     });
 
+    it('should upload successfully and generate random public id', function (done) {
+        const configForRandomPublicId = fixtures.sampleConfig();
+        configForRandomPublicId.upload.use_filename = false;
+        const adapter = new CloudinaryAdapter(configForRandomPublicId);
+        const expectedUploadConfig = {
+            "use_filename": false,
+            "unique_filename": false,
+            "phash": true,
+            "overwrite": false,
+            "invalidate": true,
+            "folder": "",
+            "tags": []
+        };
+
+        const apiResult = fixtures.sampleApiResult();
+        apiResult.public_id = '06e288276dbab60c5fe48a51b03735b2';
+
+        sinon.stub(cloudinary.uploader, 'upload');
+        cloudinary.uploader.upload
+            .withArgs(fixtures.mockImage.path, expectedUploadConfig, sinon.match.any)
+            .callsArgWith(2, null, apiResult);
+
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/06e288276dbab60c5fe48a51b03735b2.png';
+        });
+
+        adapter.save(fixtures.mockImage).then(function (url) {
+            expect(url).to.equals('http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/06e288276dbab60c5fe48a51b03735b2.png');
+            done();
+        });
+    });
+
     it('should upload successfully with legacy config', function (done) {
         const adapter = new CloudinaryAdapter(fixtures.sampleLegacyConfig()),
-            expectedUploadConfig = {
-                "use_filename": true,
-                "unique_filename": true,
-                "phash": true,
-                "overwrite": false,
-                "invalidate": true,
-                "public_id": "favicon"
-            };
+        expectedUploadConfig = {
+            "use_filename": true,
+            "unique_filename": true,
+            "phash": true,
+            "overwrite": false,
+            "invalidate": true,
+            "public_id": "favicon"
+        };
 
         sinon.stub(cloudinary.uploader, 'upload');
         cloudinary.uploader.upload

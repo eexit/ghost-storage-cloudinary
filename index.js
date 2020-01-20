@@ -67,10 +67,15 @@ class CloudinaryAdapter extends StorageBase {
     save(image) {
         // Creates a deep clone of Cloudinary options
         const uploaderOptions = JSON.parse(JSON.stringify(Object.assign({}, this.uploaderOptions)));
-        Object.assign(
-            uploaderOptions.upload,
-            {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
-        );
+
+        // Force the Cloudinary Public ID based on the file name when upload option use_filename
+        // is set to false. This allows to leverage random Public ID generation Cloudinary feature.
+        if (uploaderOptions.upload.use_filename !== 'undefined' && uploaderOptions.upload.use_filename) {
+            Object.assign(
+                uploaderOptions.upload,
+                {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
+            );
+        }
 
         // Appends the dated folder if enabled
         if (this.useDatedFolder) {

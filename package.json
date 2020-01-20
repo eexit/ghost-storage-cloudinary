@@ -45,7 +45,7 @@
     "ghost-storage-base": "0.0.3",
     "image-size": "^0.8.2",
     "lodash": "^4.17.15",
-    "npm": "^6.11.2",
+    "npm": "^6.13.6",
     "os-locale": "^4.0.0"
   },
   "devDependencies": {

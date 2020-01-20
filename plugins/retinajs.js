@@ -23,7 +23,7 @@ class RetinaJS {
             typeof this.uploaderOptions.upload.public_id === 'undefined' ||
             this.uploaderOptions.upload.public_id.length === 0
         ) {
-            throw new TypeError('RetinaJS error: invalid uploaderOptions.upload.public_id');
+            throw new TypeError('RetinaJS error: invalid uploaderOptions.upload.public_id. Ensure to enable Cloudinary upload.use_filename option.');
         }
 
         if (isNaN(this.rjsOptions.baseWidth)) {

@@ -27,7 +27,7 @@ describe('constructor', function () {
             done('should raise an error');
         } catch (e) {
             expect(e).to.be.instanceOf(TypeError);
-            expect(e.message).to.equal('RetinaJS error: invalid uploaderOptions.upload.public_id');
+            expect(e.message).to.equal('RetinaJS error: invalid uploaderOptions.upload.public_id. Ensure to enable Cloudinary upload.use_filename option.');
             done();
         }
     });
@@ -38,7 +38,7 @@ describe('constructor', function () {
             done('should raise an error');
         } catch (e) {
             expect(e).to.be.instanceOf(TypeError);
-            expect(e.message).to.equal('RetinaJS error: invalid uploaderOptions.upload.public_id');
+            expect(e.message).to.equal('RetinaJS error: invalid uploaderOptions.upload.public_id. Ensure to enable Cloudinary upload.use_filename option.');
             done();
         }
     });
