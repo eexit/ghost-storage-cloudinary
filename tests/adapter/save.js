@@ -45,21 +45,23 @@ describe('save', function () {
     });
 
     it('should upload successfully and generate random public id', function (done) {
-        const configForRandomPublicId = fixtures.sampleConfig();
-        configForRandomPublicId.upload.use_filename = false;
-        const adapter = new CloudinaryAdapter(configForRandomPublicId);
-        const expectedUploadConfig = {
-            "use_filename": false,
-            "unique_filename": false,
-            "phash": true,
-            "overwrite": false,
-            "invalidate": true,
-            "folder": "",
-            "tags": []
-        };
+        /* eslint one-var: ["error", "consecutive"] */
+        const configForRandomPublicId = fixtures.sampleConfig(),
+            apiResult = fixtures.sampleApiResult();
 
-        const apiResult = fixtures.sampleApiResult();
+        configForRandomPublicId.upload.use_filename = false;
         apiResult.public_id = '06e288276dbab60c5fe48a51b03735b2';
+
+        const adapter = new CloudinaryAdapter(configForRandomPublicId),
+            expectedUploadConfig = {
+                "use_filename": false,
+                "unique_filename": false,
+                "phash": true,
+                "overwrite": false,
+                "invalidate": true,
+                "folder": "",
+                "tags": []
+            };
 
         sinon.stub(cloudinary.uploader, 'upload');
         cloudinary.uploader.upload
@@ -78,14 +80,14 @@ describe('save', function () {
 
     it('should upload successfully with legacy config', function (done) {
         const adapter = new CloudinaryAdapter(fixtures.sampleLegacyConfig()),
-        expectedUploadConfig = {
-            "use_filename": true,
-            "unique_filename": true,
-            "phash": true,
-            "overwrite": false,
-            "invalidate": true,
-            "public_id": "favicon"
-        };
+            expectedUploadConfig = {
+                "use_filename": true,
+                "unique_filename": true,
+                "phash": true,
+                "overwrite": false,
+                "invalidate": true,
+                "public_id": "favicon"
+            };
 
         sinon.stub(cloudinary.uploader, 'upload');
         cloudinary.uploader.upload
