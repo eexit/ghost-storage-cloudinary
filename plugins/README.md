@@ -41,7 +41,9 @@ In order to **activate** and configure the plugin, you need to add the `rjs` pro
                 "api_key": "",
                 "api_secret": ""
             },
-            "upload": {},
+            "upload": {
+                "use_filename": true
+            },
             "fetch": {},
             "rjs": {
                 "baseWidth": 960,
@@ -51,6 +53,8 @@ In order to **activate** and configure the plugin, you need to add the `rjs` pro
     }
 }
 ```
+
+:warning: The `upload`.`use_filename` option must be enabled as the plugin generates the variants *before* they are uploaded and thus cannot rely on a Cloudinary generated public ID.
 
 #### Property `baseWidth`
 

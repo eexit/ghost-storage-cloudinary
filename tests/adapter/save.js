@@ -44,6 +44,40 @@ describe('save', function () {
         });
     });
 
+    it('should upload successfully and generate random public id', function (done) {
+        /* eslint one-var: ["error", "consecutive"] */
+        const configForRandomPublicId = fixtures.sampleConfig(),
+            apiResult = fixtures.sampleApiResult();
+
+        configForRandomPublicId.upload.use_filename = false;
+        apiResult.public_id = '06e288276dbab60c5fe48a51b03735b2';
+
+        const adapter = new CloudinaryAdapter(configForRandomPublicId),
+            expectedUploadConfig = {
+                "use_filename": false,
+                "unique_filename": false,
+                "phash": true,
+                "overwrite": false,
+                "invalidate": true,
+                "folder": "",
+                "tags": []
+            };
+
+        sinon.stub(cloudinary.uploader, 'upload');
+        cloudinary.uploader.upload
+            .withArgs(fixtures.mockImage.path, expectedUploadConfig, sinon.match.any)
+            .callsArgWith(2, null, apiResult);
+
+        sinon.stub(cloudinary, 'url').callsFake(function urlStub() {
+            return 'http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/06e288276dbab60c5fe48a51b03735b2.png';
+        });
+
+        adapter.save(fixtures.mockImage).then(function (url) {
+            expect(url).to.equals('http://res.cloudinary.com/blog-mornati-net/image/upload/q_auto/06e288276dbab60c5fe48a51b03735b2.png');
+            done();
+        });
+    });
+
     it('should upload successfully with legacy config', function (done) {
         const adapter = new CloudinaryAdapter(fixtures.sampleLegacyConfig()),
             expectedUploadConfig = {
