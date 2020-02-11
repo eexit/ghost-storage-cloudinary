@@ -1,7 +1,7 @@
 {
   "name": "ghost-storage-cloudinary",
   "version": "2.1.0",
-  "description": "Cloudinary storage adapter for Ghost >= 2.x",
+  "description": "Cloudinary storage adapter for Ghost",
   "main": "index.js",
   "keywords": [
     "cloudinary",
@@ -36,7 +36,7 @@
     "eslint": "$(npm bin)/eslint ."
   },
   "engines": {
-    "node": "^8.10.0 || ^10.13.0"
+    "node": "^8.0.0 || ^10.0.0 || ^12.0.0"
   },
   "dependencies": {
     "bluebird": "^3.7.0",
