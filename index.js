@@ -3,6 +3,7 @@
 require('bluebird');
 
 const StorageBase = require('ghost-storage-base'),
+    LocalFileStore = require('ghost/core/server/adapters/storage/LocalFileStorage'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
     request = require('request').defaults({encoding: null}),
@@ -25,6 +26,10 @@ class CloudinaryAdapter extends StorageBase {
      */
     constructor(options) {
         super(options);
+
+        if (options.serveLocalFiles) {
+            this.localFileStore = new LocalFileStore();
+        }
 
         const config = options || {},
             auth = config.auth || config,
@@ -50,7 +55,11 @@ class CloudinaryAdapter extends StorageBase {
     /**
      *  @override
      */
-    exists(filename) {
+    exists(filename, targetDir) {
+        if (this.localFileStore && this.localFileStore.exists(filename, targetDir)) {
+            return true;
+        }
+
         const pubId = this.toCloudinaryId(filename);
 
         return new Promise((resolve) => cloudinary.uploader.explicit(pubId, {type: 'upload'}, (err) => {
@@ -123,6 +132,7 @@ class CloudinaryAdapter extends StorageBase {
      *  @override
      */
     serve() {
+        if (this.localFileStore) return this.localFileStore.serve();
         return (req, res, next) => {
             next();
         };
@@ -149,6 +159,25 @@ class CloudinaryAdapter extends StorageBase {
      *  @override
      */
     read(options) {
+        if (!this.localFileStore) {
+            return this.readCloudinary(options);
+        }
+
+        return new Promise((resolve, reject) => {
+            this.localFileStore.read(options).then(
+                resolve,
+                function(error) {
+                    if (error.errorType === 'NotFoundError') {
+                        // Try Cloudinary after FileStorage can't find the file locally
+                        return this.readCloudinary(options).then(resolve, reject);
+                    }
+                    reject(error);
+                }
+            );
+        })
+    }
+
+    readCloudinary(options) {
         const opts = options || {};
         return new Promise((resolve, reject) => request.get(opts.path, (err, res) => {
             if (err) {
