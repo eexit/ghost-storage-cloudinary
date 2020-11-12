@@ -43,7 +43,7 @@
     "cloudinary": "~1.21.0",
     "ghost-ignition": "^4.2.2",
     "ghost-storage-base": "0.0.5",
-    "image-size": "^0.8.2",
+    "image-size": "^0.9.1",
     "lodash": "^4.17.15",
     "npm": "^6.14.8",
     "os-locale": "^5.0.0"
