@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "bluebird": "^3.7.0",
-    "cloudinary": "~1.21.0",
+    "cloudinary": "~1.22.0",
     "ghost-ignition": "^4.2.2",
     "ghost-storage-base": "0.0.5",
     "image-size": "^0.9.2",
