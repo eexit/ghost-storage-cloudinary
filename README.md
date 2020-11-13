@@ -4,7 +4,9 @@
 [![Build Status](https://travis-ci.org/eexit/ghost-storage-cloudinary.svg?branch=master)](https://travis-ci.org/eexit/ghost-storage-cloudinary)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f55e8c82a9a526fe9b2f/maintainability)](https://codeclimate.com/github/eexit/ghost-storage-cloudinary/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f55e8c82a9a526fe9b2f/test_coverage)](https://codeclimate.com/github/eexit/ghost-storage-cloudinary/test_coverage)
-[![Greenkeeper badge](https://badges.greenkeeper.io/eexit/ghost-storage-cloudinary.svg)](https://greenkeeper.io/)
+[![Known Vulnerabilities](https://snyk.io/test/github/eexit/ghost-storage-cloudinary/badge.svg)](https://snyk.io/test/github/eexit/ghost-storage-cloudinary)
+
+
 
 A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost](https://github.com/TryGhost/Ghost) storage adapter.
 
