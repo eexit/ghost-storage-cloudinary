@@ -1,25 +1,24 @@
 language: node_js
 node_js:
-- '10'
-- '12'
+  - 10
+  - 12
+  - 14
 addons:
   code_climate:
     repo_token: "$CODE_CLIMATE_TOKEN"
 install:
-- npm install --loglevel=error
-- npm install --loglevel=error -g mocha greenkeeper-lockfile@1
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-- chmod +x ./cc-test-reporter
+  - yarn
+  - yarn global add mocha
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 before_script:
-- npm --silent run-script eslint
-- ./cc-test-reporter before-build
-- greenkeeper-lockfile-update
+  - yarn run eslint
+  - ./cc-test-reporter before-build
 after_script:
-- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-- greenkeeper-lockfile-upload
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 jobs:
   include:
-  - stage: npm release
+  - stage: yarn publish
     if: tag IS present
     script: skip
     deploy:
