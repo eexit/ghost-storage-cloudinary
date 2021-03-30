@@ -15,9 +15,9 @@ describe('read', function () {
 
         cloudinaryAdapter = new CloudinaryAdapter(fixtures.sampleConfig);
         const scope = nock('https://blog.mornati.net')
-                .get('/myimage.png')
-                .reply(200, {"body": "imagecontent"}),
-            options = {"path": "https://blog.mornati.net/myimage.png"};
+            .get('/myimage.png')
+            .reply(200, { "body": "imagecontent" }),
+            options = { "path": "https://blog.mornati.net/myimage.png" };
 
         cloudinaryAdapter.read(options).then(function () {
             done(scope.done());
@@ -39,9 +39,9 @@ describe('read', function () {
 
     it('should return an error on inexistent resource', function (done) {
         const scope = nock('https://blog.mornati.net')
-                .get('/myimage.png')
-                .replyWithError('some error occurred'),
-            options = {"path": "https://blog.mornati.net/myimage.png"};
+            .get('/myimage.png')
+            .replyWithError('some error occurred'),
+            options = { "path": "https://blog.mornati.net/myimage.png" };
 
         cloudinaryAdapter = new CloudinaryAdapter(fixtures.sampleConfig);
         cloudinaryAdapter.read(options)
