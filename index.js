@@ -152,7 +152,8 @@ class CloudinaryAdapter extends StorageBase {
         const opts = options || {};
         return new Promise(async (resolve, reject) => {
             try {
-                return resolve(await got(opts.path, { responseType: 'buffer', resolveBodyOnly: true }));
+                return resolve(await got(opts.path, { responseType: 'buffer',
+                    resolveBodyOnly: true }));
             } catch (err) {
                 return reject(new common.errors.GhostError({
                     err: err,
