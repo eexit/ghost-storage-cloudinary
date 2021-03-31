@@ -5,7 +5,7 @@ require('bluebird');
 const StorageBase = require('ghost-storage-base'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
-    request = require('request').defaults({encoding: null}),
+    got = require('got'),
     plugin = require(path.join(__dirname, '/plugins')),
     debug = require('ghost-ignition').debug('adapter'),
     common = (() => {
@@ -53,7 +53,7 @@ class CloudinaryAdapter extends StorageBase {
     exists(filename) {
         const pubId = this.toCloudinaryId(filename);
 
-        return new Promise((resolve) => cloudinary.uploader.explicit(pubId, {type: 'upload'}, (err) => {
+        return new Promise((resolve) => cloudinary.uploader.explicit(pubId, { type: 'upload' }, (err) => {
             if (err) {
                 return resolve(false);
             }
@@ -73,7 +73,7 @@ class CloudinaryAdapter extends StorageBase {
         if (uploaderOptions.upload.use_filename !== 'undefined' && uploaderOptions.upload.use_filename) {
             Object.assign(
                 uploaderOptions.upload,
-                {public_id: path.parse(this.getSanitizedFileName(image.name)).name}
+                { public_id: path.parse(this.getSanitizedFileName(image.name)).name }
             );
         }
 
@@ -150,15 +150,17 @@ class CloudinaryAdapter extends StorageBase {
      */
     read(options) {
         const opts = options || {};
-        return new Promise((resolve, reject) => request.get(opts.path, (err, res) => {
-            if (err) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                return resolve(await got(opts.path, { responseType: 'buffer',
+                    resolveBodyOnly: true }));
+            } catch (err) {
                 return reject(new common.errors.GhostError({
                     err: err,
                     message: `Could not read image ${opts.path}`
                 }));
             }
-            return resolve(res.body);
-        }));
+        });
     }
 
     /**
