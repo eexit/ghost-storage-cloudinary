@@ -30,7 +30,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 
 ```bash
 $ yarn add ghost-storage-cloudinary@2
-$ mv node_modules/ghost-storage-cloudinary core/server/adapters/storage
+$ mv node_modules/ghost-storage-cloudinary content/adapters/storage/ghost-storage-cloudinary
 ```
 
 - Done, go configure
