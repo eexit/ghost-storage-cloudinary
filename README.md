@@ -91,7 +91,7 @@ Runs the tests and generate coverage:
 
 Runs the linter:
 
-    $ yarneslint
+    $ yarn eslint
 
 To enable debug logs, set the following environment variable:
 
