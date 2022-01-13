@@ -1,0 +1,36 @@
+name: Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12, 14]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm install -g yarn
+    - run: yarn
+    - run: yarn run eslint
+    - run: yarn global add mocha
+    - name: Run yarn test
+      if: ${{ !startsWith(matrix.node-version, '14') }}
+      run: yarn test
+    - name: Run yarn coverage
+      if: ${{ startsWith(matrix.node-version, '14') }}
+      uses: paambaati/codeclimate-action@v3.0.0
+      env:
+        CC_TEST_REPORTER_ID: 0d3707693eec3617898169fa9d7f91a86d5a98a252beb81bd9fe89009647a456
+      with:
+        coverageCommand: yarn coverage
+        coverageLocations: ${{ github.workspace }}/coverage/lcov.info:lcov

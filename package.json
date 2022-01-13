@@ -32,7 +32,8 @@
   ],
   "license": "ISC",
   "scripts": {
-    "test": "nyc --reporter=lcov mocha tests/index",
+    "test": "mocha tests/index",
+    "coverage": "nyc --reporter=lcov mocha tests/index",
     "eslint": "$(npm bin)/eslint ."
   },
   "engines": {
