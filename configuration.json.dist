@@ -11,13 +11,14 @@
             "upload": {
                 "use_filename": true,
                 "unique_filename": false,
-                "overwrite": false,
+                "overwrite": true,
+                "format": webp,
                 "folder": "blog-images",
                 "tags": ["blog"]
             },
             "fetch": {
                 "quality": "auto",
-                "secure": false,
+                "secure": true,
                 "cdn_subdomain": true
             }
         }
