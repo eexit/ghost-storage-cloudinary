@@ -7,7 +7,7 @@ const StorageBase = require('ghost-storage-base'),
     path = require('path'),
     got = require('got'),
     plugin = require(path.join(__dirname, '/plugins')),
-    debug = require('ghost-ignition').debug('adapter'),
+    debug = require('@tryghost/debug')('adapters:storage:ghost-storage-cloudinary'),
     common = (() => {
         // Tries to include GhostError helper
         try {
@@ -152,8 +152,10 @@ class CloudinaryAdapter extends StorageBase {
         const opts = options || {};
         return new Promise(async (resolve, reject) => {
             try {
-                return resolve(await got(opts.path, { responseType: 'buffer',
-                    resolveBodyOnly: true }));
+                return resolve(await got(opts.path, {
+                    responseType: 'buffer',
+                    resolveBodyOnly: true
+                }));
             } catch (err) {
                 return reject(new common.errors.GhostError({
                     err: err,
