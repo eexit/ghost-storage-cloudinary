@@ -6,8 +6,6 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f55e8c82a9a526fe9b2f/test_coverage)](https://codeclimate.com/github/eexit/ghost-storage-cloudinary/test_coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/eexit/ghost-storage-cloudinary/badge.svg)](https://snyk.io/test/github/eexit/ghost-storage-cloudinary)
 
-
-
 A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost](https://github.com/TryGhost/Ghost) storage adapter.
 
 ### Features
@@ -22,14 +20,14 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 
 ## Installation
 
-### Install from Yarn
+### Install using yarn
 
 - Go into Ghost root directory
 - Download the adapter:
 
 ```bash
-$ yarn add ghost-storage-cloudinary
-$ mv node_modules/ghost-storage-cloudinary content/adapters/storage/ghost-storage-cloudinary
+yarn add ghost-storage-cloudinary
+mv node_modules/ghost-storage-cloudinary content/adapters/storage/ghost-storage-cloudinary
 ```
 
 - Done, go configure
@@ -39,13 +37,14 @@ $ mv node_modules/ghost-storage-cloudinary content/adapters/storage/ghost-storag
 Here's an example of using this adapter with a containerized Ghost:
 
 ```Dockerfile
-FROM ghost:4-alpine as cloudinary
+FROM ghost:5-alpine as cloudinary
 WORKDIR $GHOST_INSTALL/current
+RUN apk add g++ make python3
 RUN su-exec node yarn add ghost-storage-cloudinary
 
-FROM ghost:4-alpine
-COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules $GHOST_INSTALL/current/node_modules
-COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/current/content/adapters/storage/ghost-storage-cloudinary
+FROM ghost:5-alpine
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules $GHOST_INSTALL/node_modules
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/content/adapters/storage/ghost-storage-cloudinary
 RUN set -ex; \
     su-exec node ghost config storage.active ghost-storage-cloudinary; \
     su-exec node ghost config storage.ghost-storage-cloudinary.upload.use_filename true; \
@@ -71,13 +70,12 @@ Check out [configuration.json.dist](configuration.json.dist) for a complete exam
 
 - `upload.use_filename = true` in order use the original image name
 - `upload.unique_filename = false` unlikely Ghost local storage adapter which auto-dedup an existing file name, Cloudinary will return the existing image URL instead of deduping the image
-- `upload.overwrite = false ` goes along with previous option: returns existing image instead of overwriting it
+- `upload.overwrite = false` goes along with previous option: returns existing image instead of overwriting it
 - `upload.folder = "my-blog"` allows to upload all your images into a specific directory instead of Cloudinary media library root
 - `upload.tags = ["blog", "photography"]` if you want to add some taxonomy to your uploaded images
 - `fetch.quality = "auto"` equals `auto:good` (see [doc](https://cloudinary.com/documentation/image_transformation_reference#quality_parameter))
 - `fetch.secure = false` set to true if you want to serve images over SSL (not recommended for performances)
 - `fetch.cdn_subdomain = true` to really use the benefit of Cloudinary CDN
-
 
 :heart: Don't forget to checkout the [plugins](plugins)!
 
@@ -87,11 +85,11 @@ Run `yarn install` without the `--production` flag.
 
 Runs the tests and generate coverage:
 
-    $ yarn coverage
+    yarn coverage
 
 Runs the linter:
 
-    $ yarn eslint
+    yarn eslint
 
 To enable debug logs, set the following environment variable:
 
