@@ -37,7 +37,8 @@
     "eslint": "$(npm bin)/eslint ."
   },
   "engines": {
-    "node": "^12.22.1 || ^14.17.0 || ^16.13.0"
+    "node": "^14.17.0 || ^16.13.0",
+    "cli": "^1.17.0"
   },
   "dependencies": {
     "bluebird": "^3.7.0",
