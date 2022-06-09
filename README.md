@@ -38,13 +38,13 @@ Here's an example of using this adapter with a containerized Ghost:
 
 ```Dockerfile
 FROM ghost:5-alpine as cloudinary
-WORKDIR $GHOST_INSTALL/current
 RUN apk add g++ make python3
 RUN su-exec node yarn add ghost-storage-cloudinary
 
 FROM ghost:5-alpine
-COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules $GHOST_INSTALL/node_modules
-COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/current/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/content/adapters/storage/ghost-storage-cloudinary
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/node_modules $GHOST_INSTALL/node_modules
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/content/adapters/storage/ghost-storage-cloudinary
+# Here, we use the Ghost CLI to set some pre-defined values.
 RUN set -ex; \
     su-exec node ghost config storage.active ghost-storage-cloudinary; \
     su-exec node ghost config storage.ghost-storage-cloudinary.upload.use_filename true; \
@@ -54,7 +54,13 @@ RUN set -ex; \
     su-exec node ghost config storage.ghost-storage-cloudinary.fetch.cdn_subdomain true;
 ```
 
-Here, we use the Ghost CLI to set some pre-defined values.
+Make sure to set the content path right in the Ghost config as well:
+
+```json
+"paths": {
+    "contentPath": "/var/lib/ghost/content/"
+}
+```
 
 ## Configuration
 
