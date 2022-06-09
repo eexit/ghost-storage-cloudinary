@@ -7,7 +7,7 @@ const StorageBase = require('ghost-storage-base'),
     path = require('path'),
     got = require('got'),
     plugin = require(path.join(__dirname, '/plugins')),
-    debug = require('@tryghost/debug')('adapters:storage:ghost-storage-cloudinary'),
+    debug = require('@tryghost/debug'),
     common = (() => {
         // Tries to include GhostError helper
         try {
