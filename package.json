@@ -1,15 +1,18 @@
 {
   "name": "ghost-storage-cloudinary",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Cloudinary storage adapter for Ghost",
   "main": "index.js",
   "keywords": [
     "cloudinary",
     "ghost",
+    "ghost-blog",
+    "tryghost",
+    "ghost-adapter",
     "blog",
-    "image",
+    "image-hosting",
     "storage",
-    "module"
+    "storage-adapter"
   ],
   "repository": "https://github.com/eexit/ghost-storage-cloudinary",
   "bugs": {
