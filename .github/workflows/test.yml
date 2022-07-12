@@ -13,7 +13,7 @@ jobs:
       matrix:
         node-version: [14, 16]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
@@ -34,8 +34,3 @@ jobs:
       with:
         coverageCommand: yarn coverage
         coverageLocations: ${{ github.workspace }}/coverage/lcov.info:lcov
-    - name: Dependency review
-      if: ${{ startsWith(matrix.node-version, '16') }}
-      uses: actions/dependency-review-action@v2
-      with:
-        fail-on-severity: high
