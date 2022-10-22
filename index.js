@@ -7,7 +7,7 @@ const StorageBase = require('ghost-storage-base'),
     path = require('path'),
     got = require('got'),
     plugin = require(path.join(__dirname, '/plugins')),
-    debug = require('@tryghost/debug'),
+    debug = require('@tryghost/debug')('adapter'),
     common = (() => {
         // Tries to include GhostError helper
         try {
@@ -40,9 +40,9 @@ class CloudinaryAdapter extends StorageBase {
             fetch: fetchOptions
         };
 
-        debug('useDatedFolder:', this.useDatedFolder);
-        debug('uploaderOptions:', this.uploaderOptions);
-        debug('rjsOptions:', this.rjsOptions);
+        debug('constructor:useDatedFolder:', this.useDatedFolder);
+        debug('constructor:uploaderOptions:', this.uploaderOptions);
+        debug('constructor:rjsOptions:', this.rjsOptions);
 
         cloudinary.config(auth);
     }
@@ -51,6 +51,8 @@ class CloudinaryAdapter extends StorageBase {
      *  @override
      */
     exists(filename) {
+        debug('exists:filename', filename);
+
         const pubId = this.toCloudinaryId(filename);
 
         return new Promise((resolve) => cloudinary.uploader.explicit(pubId, { type: 'upload' }, (err) => {
@@ -107,12 +109,16 @@ class CloudinaryAdapter extends StorageBase {
 
         return new Promise((resolve, reject) => cloudinary.uploader.upload(imagePath, options.upload, (err, res) => {
             if (err) {
+                debug('uploader:error', err);
+
                 return reject(new common.errors.GhostError({
                     err: err,
                     message: `Could not upload image ${imagePath}`
                 }));
             }
             if (url) {
+                debug('uploader:url', url);
+
                 return resolve(cloudinary.url(res.public_id.concat('.', res.format), options.fetch));
             }
             return resolve();
@@ -132,10 +138,14 @@ class CloudinaryAdapter extends StorageBase {
      *  @override
      */
     delete(filename) {
+        debug('delete:filename', filename);
+
         const pubId = this.toCloudinaryId(filename);
 
         return new Promise((resolve, reject) => cloudinary.uploader.destroy(pubId, (err, res) => {
             if (err) {
+                debug('delete:error', err);
+
                 return reject(new common.errors.GhostError({
                     err: err,
                     message: `Could not delete image ${filename}`
@@ -150,6 +160,9 @@ class CloudinaryAdapter extends StorageBase {
      */
     read(options) {
         const opts = options || {};
+
+        debug('read:opts', opts);
+
         return new Promise(async (resolve, reject) => {
             try {
                 return resolve(await got(opts.path, {
@@ -157,6 +170,9 @@ class CloudinaryAdapter extends StorageBase {
                     resolveBodyOnly: true
                 }));
             } catch (err) {
+
+                debug('read:error', err);
+
                 return reject(new common.errors.GhostError({
                     err: err,
                     message: `Could not read image ${opts.path}`

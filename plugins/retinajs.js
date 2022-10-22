@@ -4,6 +4,7 @@ require('bluebird');
 
 const _ = require('lodash'),
     sizeOf = require('image-size'),
+    debug = require('@tryghost/debug')('plugins:retinajs'),
     maxSupportedDpr = 5;
 
 class RetinaJS {
@@ -14,6 +15,8 @@ class RetinaJS {
         this.rjsOptions = rjsOptions || {};
         this.rjsOptions.baseWidth = parseInt(this.rjsOptions.baseWidth, 10);
         this.rjsOptions.fireForget = this.rjsOptions.fireForget || false;
+
+        debug('constructor:rjsOptions', this.rjsOptions);
 
         if (typeof this.uploader !== 'function') {
             throw new TypeError('RetinaJS: uploader must be callable');
@@ -43,6 +46,11 @@ class RetinaJS {
     retinize(image) {
         const that = this,
             [head, ...tail] = this.generateDprConfigs(this.resolveMaxDpr(image.path));
+
+        debug('retinize:configs', {
+            head: head,
+            tail: tail
+        });
 
         // Image is not retinizable: creates DPR 1.0 variant only
         if (tail.length === 0) {
