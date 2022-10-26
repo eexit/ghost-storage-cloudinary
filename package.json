@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@tryghost/debug": "^0.1.17",
+    "@tryghost/errors": "^1.2.18",
     "bluebird": "^3.7.0",
     "cloudinary": "^1.30.0",
     "ghost-storage-base": "^1.0.0",

@@ -5,7 +5,7 @@ const nock = require('nock'),
     expect = chai.expect,
     path = require('path'),
     CloudinaryAdapter = require(path.join(__dirname, '../../')),
-    common = require(path.join(__dirname, '../../errors')),
+    CloudinaryAdapterError = require(path.join(__dirname, '../../errors')).CloudinaryAdapterError,
     fixtures = require(path.join(__dirname, 'fixtures'));
 
 let cloudinaryAdapter = null;
@@ -31,7 +31,7 @@ describe('read', function () {
                 done('expected error');
             })
             .catch(function (ex) {
-                expect(ex).to.be.an.instanceOf(common.errors.GhostError);
+                expect(ex).to.be.an.instanceOf(CloudinaryAdapterError);
                 expect(ex.message).to.equal('Could not read image undefined');
                 done();
             });
@@ -49,7 +49,7 @@ describe('read', function () {
                 done('expected error');
             })
             .catch(function (ex) {
-                expect(ex).to.be.an.instanceOf(common.errors.GhostError);
+                expect(ex).to.be.an.instanceOf(CloudinaryAdapterError);
                 expect(ex.message).to.equal('Could not read image https://blog.mornati.net/myimage.png');
                 done(scope.done());
             });
