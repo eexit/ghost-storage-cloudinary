@@ -3,20 +3,20 @@
 require('bluebird');
 
 const _ = require('lodash'),
-    sizeOf = require('image-size'),
     debug = require('@tryghost/debug')('plugins:retinajs'),
-    maxSupportedDpr = 5;
+    maxSupportedDpr = 5,
+    sizeOf = require('image-size');
 
 class RetinaJS {
 
-    constructor(uploader, uploaderOptions, rjsOptions) {
+    constructor(uploader, uploaderOptions, retinajsOptions) {
         this.uploader = uploader;
         this.uploaderOptions = uploaderOptions || {};
-        this.rjsOptions = rjsOptions || {};
-        this.rjsOptions.baseWidth = parseInt(this.rjsOptions.baseWidth, 10);
-        this.rjsOptions.fireForget = this.rjsOptions.fireForget || false;
+        this.retinajsOptions = retinajsOptions || {};
+        this.retinajsOptions.baseWidth = parseInt(this.retinajsOptions.baseWidth, 10);
+        this.retinajsOptions.fireForget = this.retinajsOptions.fireForget || false;
 
-        debug('constructor:rjsOptions', this.rjsOptions);
+        debug('constructor:retinajsOptions', this.retinajsOptions);
 
         if (typeof this.uploader !== 'function') {
             throw new TypeError('RetinaJS: uploader must be callable');
@@ -29,12 +29,12 @@ class RetinaJS {
             throw new TypeError('RetinaJS error: invalid uploaderOptions.upload.public_id. Ensure to enable Cloudinary upload.use_filename option.');
         }
 
-        if (isNaN(this.rjsOptions.baseWidth)) {
-            throw new TypeError('RetinaJS config error: invalid rjs.baseWidth option');
+        if (isNaN(this.retinajsOptions.baseWidth)) {
+            throw new TypeError('RetinaJS config error: invalid retinajs.baseWidth option');
         }
 
-        if (this.rjsOptions.baseWidth < 1) {
-            throw new RangeError('RetinaJS config error: rjs.baseWidth must be >= 1');
+        if (this.retinajsOptions.baseWidth < 1) {
+            throw new RangeError('RetinaJS config error: retinajs.baseWidth must be >= 1');
         }
     }
 
@@ -66,7 +66,7 @@ class RetinaJS {
                     finalUrl = that.sanitize(url);
 
                 // Creates subsequent variants and returns URL regardless their fulfillment status
-                if (that.rjsOptions.fireForget) {
+                if (that.retinajsOptions.fireForget) {
                     Promise.all(variants).catch((err) => {
                         console.error(new Error(`Fire&Forget RetinaJS: ${err}`));
                     });
@@ -98,7 +98,7 @@ class RetinaJS {
      */
     resolveMaxDpr(filename) {
         const dim = sizeOf(filename),
-            mdpr = Math.floor(dim.width / this.rjsOptions.baseWidth);
+            mdpr = Math.floor(dim.width / this.retinajsOptions.baseWidth);
 
         if (mdpr === 0) {
             return 1;
@@ -126,9 +126,9 @@ class RetinaJS {
             const config = JSON.parse(JSON.stringify(Object.assign({}, this.uploaderOptions))),
                 dprConfig = {
                     // Forces the image width to baseWidth
-                    width: this.rjsOptions.baseWidth,
+                    width: this.retinajsOptions.baseWidth,
                     // No scale-up!
-                    if: `iw_gt_${this.rjsOptions.baseWidth}`,
+                    if: `iw_gt_${this.retinajsOptions.baseWidth}`,
                     // Resizing method
                     crop: 'scale',
                     // The DPR will resize the image accordingly to its value

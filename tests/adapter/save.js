@@ -251,7 +251,7 @@ describe('save', function () {
 
     it('should upload successfully with RetinaJS plugin', function (done) {
         const config = fixtures.sampleConfig();
-        config.rjs = { baseWidth: 48 };
+        config.plugins = { retinajs: { baseWidth: 48 } };
 
         cloudinaryAdapter = new CloudinaryAdapter(config);
 
