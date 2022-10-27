@@ -8,7 +8,7 @@ const StorageBase = require('ghost-storage-base'),
     debug = require('@tryghost/debug')('adapter'),
     cloudinary = require('cloudinary').v2,
     got = require('got'),
-    plugin = require(path.join(__dirname, '/plugins'));
+    plugins = require(path.join(__dirname, '/plugins'));
 
 class CloudinaryAdapter extends StorageBase {
 
@@ -26,7 +26,7 @@ class CloudinaryAdapter extends StorageBase {
             fetchOptions = config.fetch || legacy.image || {};
 
         this.useDatedFolder = config.useDatedFolder || false;
-        this.rjsOptions = config.rjs || null;
+        this.plugins = config.plugins || {};
         this.uploaderOptions = {
             upload: uploadOptions,
             fetch: fetchOptions
@@ -34,7 +34,7 @@ class CloudinaryAdapter extends StorageBase {
 
         debug('constructor:useDatedFolder:', this.useDatedFolder);
         debug('constructor:uploaderOptions:', this.uploaderOptions);
-        debug('constructor:rjsOptions:', this.rjsOptions);
+        debug('constructor:plugins:', this.plugins);
 
         cloudinary.config(auth);
     }
@@ -79,9 +79,9 @@ class CloudinaryAdapter extends StorageBase {
         debug('save:uploadOptions:', uploaderOptions);
 
         // Retinizes images if there is any config provided
-        if (this.rjsOptions) {
-            const rjs = new plugin.RetinaJS(this.uploader, uploaderOptions, this.rjsOptions);
-            return rjs.retinize(image);
+        if (this.plugins.retinajs) {
+            const retinajs = new plugins.RetinaJS(this.uploader, uploaderOptions, this.plugins.retinajs);
+            return retinajs.retinize(image);
         }
 
         return this.uploader(image.path, uploaderOptions, true);

@@ -10,8 +10,8 @@ const chai = require('chai'),
 
 describe('generateDprConfigs', function () {
     it('should return 1 config when dpr = 1 and have public_id untouched', function (done) {
-        const rjs = new RetinaJS(emptyFunc, {upload: {public_id: 'foo'}}, {baseWidth: 200}),
-            dprConfig = rjs.generateDprConfigs(1);
+        const retinajs = new RetinaJS(emptyFunc, { upload: { public_id: 'foo' } }, { baseWidth: 200 }),
+            dprConfig = retinajs.generateDprConfigs(1);
 
         expect(dprConfig).to.have.lengthOf(1);
         expect(dprConfig[0].upload.public_id).to.equal('foo');
@@ -29,8 +29,8 @@ describe('generateDprConfigs', function () {
                     tags: ['test']
                 }
             },
-            rjs = new RetinaJS(emptyFunc, uploaderConfig, {baseWidth: 200}),
-            dprConfig = rjs.generateDprConfigs(3);
+            retinajs = new RetinaJS(emptyFunc, uploaderConfig, { baseWidth: 200 }),
+            dprConfig = retinajs.generateDprConfigs(3);
 
         expect(dprConfig).to.have.lengthOf(3);
 
@@ -52,9 +52,9 @@ describe('generateDprConfigs', function () {
     });
 
     it('should throw an error when dpr < 1', function (done) {
-        const rjs = new RetinaJS(emptyFunc, {upload: {public_id: 'foo'}}, {baseWidth: 1});
+        const retinajs = new RetinaJS(emptyFunc, { upload: { public_id: 'foo' } }, { baseWidth: 1 });
         try {
-            rjs.generateDprConfigs(0);
+            retinajs.generateDprConfigs(0);
             done('should raise an error');
         } catch (e) {
             expect(e.message).to.equal('Unexpected dpr value: 0');

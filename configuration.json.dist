@@ -19,7 +19,8 @@
                 "quality": "auto",
                 "secure": false,
                 "cdn_subdomain": true
-            }
+            },
+            "plugins": {}
         }
     },
     "imageOptimization": {

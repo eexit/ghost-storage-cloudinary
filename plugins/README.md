@@ -29,7 +29,7 @@ It will generate Retina image variants for all images, including banners, author
 
 Make sure to disable [Ghost optimization feature](https://ghost.org/docs/concepts/config/#image-optimisation).
 
-In order to **activate** and configure the plugin, you need to add the `rjs` property in the [storage configuration](../configuration.sample.json):
+In order to **activate** and configure the plugin, you need to add the `retinajs` property in the [storage plugins configuration](../configuration.sample.json):
 
 ```json
 {
@@ -45,9 +45,11 @@ In order to **activate** and configure the plugin, you need to add the `rjs` pro
                 "use_filename": true
             },
             "fetch": {},
-            "rjs": {
-                "baseWidth": 960,
-                "fireForget": true
+            "plugins": {
+                "retinajs": {
+                    "baseWidth": 960,
+                    "fireForget": true
+                }
             }
         }
     }
