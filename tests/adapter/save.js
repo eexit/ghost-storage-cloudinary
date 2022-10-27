@@ -7,7 +7,7 @@ const chai = require('chai'),
     path = require('path'),
     moment = require('moment'),
     CloudinaryAdapter = require(path.join(__dirname, '../../')),
-    common = require(path.join(__dirname, '../../errors')),
+    CloudinaryAdapterError = require(path.join(__dirname, '../../errors')).CloudinaryAdapterError,
     fixtures = require(path.join(__dirname, 'fixtures'));
 
 let cloudinaryAdapter = null;
@@ -236,14 +236,14 @@ describe('save', function () {
     it('should return an error on api upload failure', function (done) {
         sinon.stub(cloudinary.uploader, 'upload');
         sinon.stub(cloudinary, 'url');
-        cloudinary.uploader.upload.callsArgWith(2, {error: "some error"});
+        cloudinary.uploader.upload.callsArgWith(2, { error: "some error" });
 
         cloudinaryAdapter.save(fixtures.mockImage)
             .then(function () {
                 done('expected error');
             })
             .catch(function (ex) {
-                expect(ex).to.be.an.instanceOf(common.errors.GhostError);
+                expect(ex).to.be.an.instanceOf(CloudinaryAdapterError);
                 expect(ex.message).to.equal(`Could not upload image ${fixtures.mockImage.path}`);
                 done();
             });
@@ -251,7 +251,7 @@ describe('save', function () {
 
     it('should upload successfully with RetinaJS plugin', function (done) {
         const config = fixtures.sampleConfig();
-        config.rjs = {baseWidth: 48};
+        config.rjs = { baseWidth: 48 };
 
         cloudinaryAdapter = new CloudinaryAdapter(config);
 

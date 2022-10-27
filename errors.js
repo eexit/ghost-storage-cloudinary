@@ -1,9 +1,16 @@
 'use strict';
 
-class GhostError extends Error {
-    constructor(options) {
-        super(options.message);
-    }
-}
+const _ = require('lodash'),
+    GhostInternalError = require('@tryghost/errors').InternalServerError;
 
-module.exports = {errors: {GhostError: GhostError}};
+module.exports = {
+    CloudinaryAdapterError: class CloudinaryAdapterError extends GhostInternalError {
+        constructor(options) {
+            super(_.merge({
+                errorType: 'ImageStorageAdapterError',
+                message: 'An error has occurred while handling image storage.',
+                level: 'error'
+            }, options));
+        }
+    }
+};

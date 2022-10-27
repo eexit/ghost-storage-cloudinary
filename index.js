@@ -3,20 +3,12 @@
 require('bluebird');
 
 const StorageBase = require('ghost-storage-base'),
-    cloudinary = require('cloudinary').v2,
     path = require('path'),
-    got = require('got'),
-    plugin = require(path.join(__dirname, '/plugins')),
+    errors = require(path.join(__dirname, 'errors')),
     debug = require('@tryghost/debug')('adapter'),
-    common = (() => {
-        // Tries to include GhostError helper
-        try {
-            return require(path.join(__dirname, '../../../lib/common'));
-        } catch (ex) {
-            // Use local mock instead
-            return require(path.join(__dirname, 'errors'));
-        }
-    })();
+    cloudinary = require('cloudinary').v2,
+    got = require('got'),
+    plugin = require(path.join(__dirname, '/plugins'));
 
 class CloudinaryAdapter extends StorageBase {
 
@@ -111,7 +103,7 @@ class CloudinaryAdapter extends StorageBase {
             if (err) {
                 debug('uploader:error', err);
 
-                return reject(new common.errors.GhostError({
+                return reject(new errors.CloudinaryAdapterError({
                     err: err,
                     message: `Could not upload image ${imagePath}`
                 }));
@@ -146,7 +138,7 @@ class CloudinaryAdapter extends StorageBase {
             if (err) {
                 debug('delete:error', err);
 
-                return reject(new common.errors.GhostError({
+                return reject(new errors.CloudinaryAdapterError({
                     err: err,
                     message: `Could not delete image ${filename}`
                 }));
@@ -173,7 +165,7 @@ class CloudinaryAdapter extends StorageBase {
 
                 debug('read:error', err);
 
-                return reject(new common.errors.GhostError({
+                return reject(new errors.CloudinaryAdapterError({
                     err: err,
                     message: `Could not read image ${opts.path}`
                 }));

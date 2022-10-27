@@ -6,7 +6,7 @@ const chai = require('chai'),
     cloudinary = require('cloudinary').v2,
     path = require('path'),
     CloudinaryAdapter = require(path.join(__dirname, '../../')),
-    common = require(path.join(__dirname, '../../errors')),
+    CloudinaryAdapterError = require(path.join(__dirname, '../../errors')).CloudinaryAdapterError,
     fixtures = require(path.join(__dirname, 'fixtures'));
 
 let cloudinaryAdapter = null;
@@ -18,21 +18,21 @@ describe('delete', function () {
     });
 
     it('should delete image successfully', function (done) {
-        cloudinary.uploader.destroy.callsArgWith(1, null, {response: "whatever the api returns as a response"});
+        cloudinary.uploader.destroy.callsArgWith(1, null, { response: "whatever the api returns as a response" });
         cloudinaryAdapter.delete(fixtures.mockImage.name).then(function (res) {
-            expect(res).to.deep.equal({response: "whatever the api returns as a response"});
+            expect(res).to.deep.equal({ response: "whatever the api returns as a response" });
             done();
         });
     });
 
     it('returns an error when delete image fails', function (done) {
-        cloudinary.uploader.destroy.callsArgWith(1, {error: "error"});
+        cloudinary.uploader.destroy.callsArgWith(1, { error: "error" });
         cloudinaryAdapter.delete(fixtures.mockInexistentImage.name)
             .then(function () {
                 done('expected error');
             })
             .catch(function (ex) {
-                expect(ex).to.be.an.instanceOf(common.errors.GhostError);
+                expect(ex).to.be.an.instanceOf(CloudinaryAdapterError);
                 expect(ex.message).to.equal(`Could not delete image ${fixtures.mockInexistentImage.name}`);
                 done();
             });
