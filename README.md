@@ -16,6 +16,7 @@ A fully featured and deeply tested [Cloudinary](https://cloudinary.com/) [Ghost]
 - Ability to upload in dated sub-directories (alike first Ghost default Local storage adapter `YYYY/MM`)
 - Ability to upload images into a specific directory
 - Ability to tag images
+- Ability to apply a vanity CDN URL to proxy requests to Cloudinary (works with [this](https://github.com/wesbos/cloudflare-cloudinary-proxy))
 - Cool [plugins](plugins)!
 
 ## Installation

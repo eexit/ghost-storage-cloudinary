@@ -20,6 +20,9 @@
                 "secure": false,
                 "cdn_subdomain": true
             },
+            "vanity": {
+                "baseUrl": ""
+            },
             "plugins": {}
         }
     },

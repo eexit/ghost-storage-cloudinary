@@ -31,10 +31,15 @@ class CloudinaryAdapter extends StorageBase {
             upload: uploadOptions,
             fetch: fetchOptions
         };
+        this.vanityOptions = {
+            ...config.vanity,
+            cloudName: auth.cloud_name
+        };
 
         debug('constructor:useDatedFolder:', this.useDatedFolder);
         debug('constructor:uploaderOptions:', this.uploaderOptions);
         debug('constructor:plugins:', this.plugins);
+        debug('constructor:vanityOptions:', this.vanityOptions);
 
         cloudinary.config(auth);
     }
@@ -82,6 +87,15 @@ class CloudinaryAdapter extends StorageBase {
         if (this.plugins.retinajs) {
             const retinajs = new plugins.RetinaJS(this.uploader, uploaderOptions, this.plugins.retinajs);
             return retinajs.retinize(image);
+        }
+
+        // Apply vanity options if there is any config provided
+        if (this.vanityOptions && this.vanityOptions.baseUrl) {
+            const clRegex = new RegExp(`^https?:\\/\\/res(-\\d*)?\\.cloudinary\\.com(\\/${this.vanityOptions.cloudName})?(\\/image\\/upload)?\/`);
+            return this.uploader(image.path, uploaderOptions, true)
+                .then((cloudinaryUrl) => {
+                    return cloudinaryUrl.replace(clRegex, this.vanityOptions.baseUrl);
+                });
         }
 
         return this.uploader(image.path, uploaderOptions, true);
