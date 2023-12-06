@@ -101,16 +101,17 @@ class CloudinaryAdapter extends StorageBase {
 
         return new Promise((resolve, reject) => cloudinary.uploader.upload(imagePath, options.upload, (err, res) => {
             if (err) {
-                debug('uploader:error', err);
+                debug('cloudinary.uploader:error', err);
 
                 return reject(new errors.CloudinaryAdapterError({
                     err: err,
                     message: `Could not upload image ${imagePath}`
                 }));
             }
-            if (url) {
-                debug('uploader:url', url);
 
+            debug('cloudinary.uploader:res', res);
+
+            if (url) {
                 return resolve(cloudinary.url(res.public_id.concat('.', res.format), options.fetch));
             }
             return resolve();
