@@ -37,11 +37,11 @@
   "scripts": {
     "test": "mocha tests/index",
     "coverage": "nyc --reporter=lcov mocha tests/index",
-    "eslint": "$(npm bin)/eslint ."
+    "eslint": "$(yarn bin)/eslint ."
   },
   "engines": {
-    "node": "^14.17.0 || ^16.13.0",
-    "cli": "^1.17.0"
+    "node": "^18",
+    "cli": "^1.25.0"
   },
   "dependencies": {
     "@tryghost/debug": "^0.1.17",
