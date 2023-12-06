@@ -1,0 +1,48 @@
+FROM ghost:5-alpine as cloudinary
+RUN apk add g++ make python3
+COPY --chown=node:node . /tmp/ghost-storage-cloudinary
+RUN su-exec node yarn add file:/tmp/ghost-storage-cloudinary
+
+FROM ghost:5-alpine
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/node_modules $GHOST_INSTALL/node_modules
+COPY --chown=node:node --from=cloudinary $GHOST_INSTALL/node_modules/ghost-storage-cloudinary $GHOST_INSTALL/content/adapters/storage/ghost-storage-cloudinary
+ENV DEBUG="ghost:*,ghost-config,ghost-storage-cloudinary:*"
+ARG CLOUDINARY_URL
+ENV CLOUDINARY_URL=${CLOUDINARY_URL}
+ENV NODE_ENV=development
+COPY <<EOF /var/lib/ghost/config.development.json
+{
+    "url": "http://localhost:2368",
+    "database": {"client": "sqlite3"},
+    "logging": {
+        "level": "debug",
+        "transports": ["stdout"]
+    },
+    "server": {"host": "0.0.0.0"},
+    "paths": {"contentPath": "/var/lib/ghost/content/"},
+    "imageOptimization": {"resize": false},
+    "storage": {
+        "active": "ghost-storage-cloudinary",
+        "ghost-storage-cloudinary": {
+            "upload": {
+                "use_filename": true,
+                "unique_filename": false,
+                "overwrite": false,
+                "folder": "test",
+                "tags": ["test"]
+            },
+            "fetch": {
+                "transformation": "blog",
+                "secure": false,
+                "cdn_subdomain": true
+            },
+            "plugins": {
+                "retinajs": {
+                    "fireForget": true,
+                    "baseWidth": 500
+                }
+            }
+        }
+    }
+}
+EOF

@@ -101,6 +101,19 @@ To enable debug logs, set the following environment variable:
 
     DEBUG=ghost-storage-cloudinary:*
 
+Integration testing:
+
+```bash
+docker build \
+    --build-arg CLOUDINARY_URL=cloudinary://.... \
+    --file Dockerfile.test \
+    --tag test \
+    .
+docker run -itp 2368:2368 test
+```
+
+Go to <http://localhost:2368>.
+
 ---
 
 Many thanks to @[mmornati](https://github.com/mmornati), @[sethbrasile](https://github.com/sethbrasile) and all other contributors for their work. In the continuation of this project, don't hesitate to fork, contribute and add more features.
