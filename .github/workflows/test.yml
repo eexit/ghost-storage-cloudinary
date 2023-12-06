@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 16]
+        node-version: [18]
     steps:
     - uses: actions/checkout@v3
     - name: Node.js ${{ matrix.node-version }}
@@ -24,10 +24,10 @@ jobs:
     - run: yarn run eslint
     - run: yarn global add mocha
     - name: Run yarn test
-      if: ${{ !startsWith(matrix.node-version, '16') }}
+      if: ${{ !startsWith(matrix.node-version, '18') }}
       run: yarn test
     - name: Run yarn coverage
-      if: ${{ startsWith(matrix.node-version, '16') }}
+      if: ${{ startsWith(matrix.node-version, '18') }}
       uses: paambaati/codeclimate-action@v3.0.0
       env:
         CC_TEST_REPORTER_ID: 0d3707693eec3617898169fa9d7f91a86d5a98a252beb81bd9fe89009647a456
