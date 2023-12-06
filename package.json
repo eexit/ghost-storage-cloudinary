@@ -49,10 +49,10 @@
     "bluebird": "^3.7.0",
     "cloudinary": "^1.30.0",
     "ghost-storage-base": "^1.0.0",
-    "got": "^11.8.2",
+    "got": "^11.0",
     "image-size": "^1.0.1",
     "lodash": "^4.17.20",
-    "os-locale": "^5.0.0"
+    "os-locale": "^6.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -61,6 +61,6 @@
     "moment": "^2.29.1",
     "nock": "^13.2.8",
     "nyc": "^15.0.0",
-    "sinon": "^14.0.0"
+    "sinon": "^17.0.1"
   }
 }
