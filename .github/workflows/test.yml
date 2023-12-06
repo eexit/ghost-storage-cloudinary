@@ -28,7 +28,7 @@ jobs:
       run: yarn test
     - name: Run yarn coverage
       if: ${{ startsWith(matrix.node-version, '18') }}
-      uses: paambaati/codeclimate-action@v3.0.0
+      uses: paambaati/codeclimate-action@v5.0.0
       env:
         CC_TEST_REPORTER_ID: 0d3707693eec3617898169fa9d7f91a86d5a98a252beb81bd9fe89009647a456
       with:
