@@ -67,7 +67,7 @@ class CloudinaryAdapter extends StorageBase {
         if (uploaderOptions.upload.use_filename !== 'undefined' && uploaderOptions.upload.use_filename) {
             Object.assign(
                 uploaderOptions.upload,
-                { public_id: path.parse(this.getSanitizedFileName(image.name)).name }
+                { public_id: path.parse(this.sanitizeFileName(image.name)).name }
             );
         }
 
