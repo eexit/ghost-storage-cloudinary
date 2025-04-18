@@ -48,7 +48,7 @@
     "@tryghost/errors": "^1.2.18",
     "bluebird": "^3.7.0",
     "cloudinary": "^1.30.0",
-    "ghost-storage-base": "^1.0.0",
+    "ghost-storage-base": "^1.1.1",
     "got": "^11.0",
     "image-size": "^1.0.1",
     "lodash": "^4.17.20",
